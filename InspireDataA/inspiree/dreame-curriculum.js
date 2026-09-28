@@ -1,0 +1,14 @@
+(()=>{
+  const expectations={
+    'DreamE1.html':{title:'DreamE1 – Mean Data Investigation',grade:'Grade 3 – Data (D1.4)',items:['Determine the mean and identify the mode(s) for data sets involving whole numbers.','Explain what the mean and mode tell them about a data set.','Mean is the average: add all values, then divide by the number of values.','D2.2 also has students make predictions about whether the mean and mode may be the same for data from different populations.','Median is included here as enrichment; it is not part of the Grade 3 D1.4 expectation.']},
+    'DreamE2.html':{title:'DreamE2 – Share 40 Leaves',grade:'Grade 3 – Number',items:['Represent and solve equal-sharing situations.','Connect equal groups with multiplication and division.','Explain how the total stays the same as leaves are shared among four pads.']},
+    'DreamE3.html':{title:'DreamE3 – Food-Bank Can Reserve',grade:'Grade 3 – Number',items:['Represent equal sharing by moving quantities between groups.','Use an equal-share model to make four groups have the same amount.','Explain that cans removed from a group go into the reserve and can be used to build another group.']},
+    'DreamE4.html':{title:'DreamE4 – Card Classification Tree',grade:'Grades 2–3 – Data',items:['Grade 2: sort and classify objects using attributes.','Grade 3: organize and classify data using more than one attribute.','Use a tree diagram to show relationships among type, category, and condition.']},
+    'DreamE5.html':{title:'DreamE5 – Game Card Collection',grade:'Grade 3 – Data',items:['Read and interpret a pictograph with a key.','Use the key to determine the quantity represented by each picture.','Compare categories and describe how many more are in one category than another.']},
+    'DreamE6.html':{title:'DreamE6 – Panda Exhibit Bar Graph',grade:'Grade 3 – Data',items:['Read a tally chart and use the totals to create a bar graph.','Use a scale of 2 when representing data in a graph.','Include a title and labels that clearly communicate the data.']}
+  };
+  const button=document.getElementById('curriculum'),frame=document.getElementById('frame');
+  if(!button||!frame)return;
+  const current=()=>{const file=new URL(frame.src,location.href).pathname.split('/').pop();return expectations[file]||expectations['DreamE1.html']};
+  button.onclick=()=>{const info=current(),modal=document.createElement('div');modal.className='dreame-curriculum-modal';modal.innerHTML=`<section><button type="button">Close</button><h2>✿ Ontario Curriculum</h2><h3>${info.title}</h3><p><b>${info.grade}</b></p><ul>${info.items.map(item=>`<li>${item}</li>`).join('')}</ul></section>`;modal.querySelector('button').onclick=()=>modal.remove();modal.onclick=event=>{if(event.target===modal)modal.remove()};document.body.append(modal)};
+})();

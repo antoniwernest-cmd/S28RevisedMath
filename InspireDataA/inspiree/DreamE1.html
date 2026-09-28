@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CatMean</title>
+  <style>
+    :root{--ink:#232323;--blue:#9fd2f1;--pale:#fff6c8;--soft:#eef8ff;--green:#4fb96f;--orange:#ffb347;--purple:#7566c9}
+    *{box-sizing:border-box}
+    body{margin:0;overscroll-behavior-y:none;background:#eef8ff;color:var(--ink);font-family:"Century Gothic","Trebuchet MS",Arial,sans-serif;font-weight:700}
+    button,select,input,textarea{font:inherit}
+    .hidden{display:none!important}
+    .start{position:fixed;inset:0;background:#eef8ff;display:grid;place-items:center;z-index:20}
+    .start-card{width:min(520px,92vw);border:4px solid var(--ink);background:#fff;box-shadow:8px 8px 0 var(--blue);padding:22px;display:grid;gap:14px}
+    .start-card h1{margin:0;font-size:34px;text-align:center}
+    .start-card label{display:grid;gap:5px}
+    .start-card input,.start-card select{border:3px solid var(--ink);padding:10px;background:#fff}
+    .start-card button,.controls button,.admin button{border:3px solid var(--ink);background:#dff2ff;padding:9px 12px;cursor:pointer}
+    .shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh;gap:8px;padding:8px}
+    aside{border:4px solid var(--ink);background:#fff;box-shadow:6px 6px 0 var(--blue);padding:10px;display:flex;flex-direction:column;gap:9px;max-height:calc(100vh - 16px);overflow:auto}
+    .brand{font-size:24px;text-align:center;border-bottom:3px solid var(--ink);padding-bottom:5px}
+    .status-row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #b9cde0;padding:3px 0;font-size:14px}
+    .timer{font-variant-numeric:tabular-nums;min-width:54px;text-align:right}
+    .admin label{display:grid;gap:4px;font-size:14px}
+    .admin select,.admin input,.admin textarea{width:100%;border:3px solid var(--ink);background:#fff;padding:8px}
+    .checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .checkgrid label{border:1px solid #98bad4;background:#f6fbff;padding:5px;display:flex;gap:6px;align-items:center;font-size:13px}
+    .submit{background:#c7f4c9!important}
+    .top{border:4px solid var(--ink);background:#fff;box-shadow:6px 6px 0 var(--blue);padding:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+    .prompt{flex:1 1 100%;border:3px solid var(--ink);border-radius:10px;padding:8px;background:#fff;font-size:18px}
+    .controls{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .controls select{border:3px solid var(--ink);background:#fff;padding:8px}
+    main{min-width:0}
+    .work{display:grid;grid-template-columns:1fr 230px;gap:8px;align-items:start}
+    .panel{border:4px solid var(--ink);background:#fff;box-shadow:6px 6px 0 var(--blue);padding:8px}
+    .mean-board{display:grid;grid-template-columns:repeat(8,minmax(78px,1fr));gap:6px;align-items:end}
+    .kid{border:3px solid var(--ink);background:#f8fbff;padding:5px;display:grid;gap:4px;justify-items:center;min-height:438px}
+    .kid-name{font-size:14px;text-align:center}
+    .face{width:70px;height:70px;object-fit:cover;object-position:center center}
+    .bars{height:245px;display:grid;grid-template-columns:34px 34px;gap:5px;align-items:end;justify-content:center}
+    .bars>div{display:grid;justify-items:center;align-content:end;gap:2px}
+    .bar-wrap{height:210px;width:34px;display:flex;align-items:end;justify-content:center;background:transparent;position:relative}
+    .bar-fill{width:22px;display:grid;place-items:end center;color:#111;font-size:13px;padding-bottom:2px;transition:height .15s ease}
+    .given .bar-fill{background:linear-gradient(#ffd56a,#ffad55)}
+    .student .bar-fill{background:linear-gradient(#8ed2ff,#69c17a)}
+    .bar-caption{font-size:11px;text-align:center}
+    .mean-slider{width:100%;accent-color:var(--green);cursor:pointer}
+    .slider-readout{border:2px solid var(--ink);background:var(--pale);padding:5px;text-align:center;font-size:18px}
+    .side-card{display:grid;gap:8px}
+    .math-box{border:3px solid var(--ink);background:var(--pale);padding:8px;text-align:center;font-size:18px}
+    .math-box small{display:block;font-size:13px;margin-top:3px}
+    .answer-box{border:3px solid var(--ink);padding:8px;display:grid;gap:6px;background:#fff}
+    .answer-box select{border:3px solid var(--ink);background:#fff;padding:8px;font-size:22px;text-align:center}
+    .answer-box .effect-select,.question-card select{font-size:16px;text-align:left}
+    .question-strip{margin-top:8px;display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:6px}
+    .question-card{border:3px solid var(--ink);background:#fff;padding:6px;display:grid;gap:4px;font-size:13px}
+    .question-card label,.question-title{font-size:13px}
+    .question-card select{width:100%;border:2px solid var(--ink);background:#fff;padding:6px}
+    .multi-pick{position:relative}
+    .multi-pick summary{border:2px solid var(--ink);background:#fff;padding:6px;cursor:pointer;list-style:none}
+    .multi-pick summary::-webkit-details-marker{display:none}
+    .multi-list{position:absolute;z-index:12;left:0;right:0;top:100%;border:2px solid var(--ink);background:#fff;display:grid;gap:2px;padding:5px;max-height:170px;overflow:auto}
+    .multi-list label{display:flex;gap:5px;align-items:center;font-size:12px}
+    .calculator{border:3px solid var(--ink);background:#fff;padding:8px;display:grid;gap:6px}
+    .calc-display{border:3px solid var(--ink);background:var(--pale);padding:7px;text-align:right;font-size:20px;min-height:42px;overflow:hidden;white-space:nowrap}
+    .calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+    .calc-grid button{border:2px solid var(--ink);background:#eef8ff;padding:7px 0;cursor:pointer}
+    .calc-grid .op{background:#fff1d6}
+    .calc-grid .wide{grid-column:span 2}
+    .feedback{grid-column:1/-1;border:3px solid var(--ink);background:#fff;padding:8px;font-size:17px;min-height:42px}.answer-dot{width:22px;height:22px;padding:0!important;border:2px solid #7b1111!important;border-radius:50%!important;background:#e42a2a!important;box-shadow:none!important;flex:0 0 22px}
+    @media(max-width:1180px){.shell{grid-template-columns:1fr}.work{grid-template-columns:1fr}.mean-board{grid-template-columns:repeat(4,1fr)}aside{max-height:none}.kid{min-height:390px}.bars{height:210px}.bar-wrap{height:175px}}
+    @media(max-width:680px){.mean-board{grid-template-columns:repeat(2,1fr)}.question-strip{grid-template-columns:1fr}.prompt{font-size:16px}.controls button,.controls select{padding:7px}.shell{padding:6px}}
+  </style>
+<style id="dreame-compact-controls">.shell{grid-template-columns:1fr}aside.admin{display:none!important}</style><style data-inline-css="import-inner.css">html,body{overscroll-behavior:none}#fillAnswers,#feedback,#score,.topbar,.nav-link,#resetBtn,#submitWork{display:none!important}
+/* Keep source activities inside the available iframe, with host navigation outside. */
+body[data-import="1"] .shell{padding:3px;min-height:100vh;display:block}
+body[data-import="1"] .top{padding:3px;margin-bottom:4px;gap:3px;box-shadow:none;border-width:2px}
+body[data-import="1"] .prompt{font-size:13px;padding:3px;border-width:2px}
+body[data-import="1"] .controls button,body[data-import="1"] .controls select{font-size:12px;padding:3px}
+body[data-import="1"] .work{grid-template-columns:1fr 180px;gap:5px}
+body[data-import="1"] .panel{padding:4px;border-width:2px;box-shadow:none}
+body[data-import="1"] .mean-board{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+body[data-import="1"] .kid{min-height:0;padding:3px;border-width:2px;gap:2px}
+body[data-import="1"] .bars{height:clamp(100px,29vh,210px);grid-template-columns:24px 24px;gap:2px}
+body[data-import="1"] .bar-wrap{height:clamp(80px,25vh,180px);width:24px}
+body[data-import="1"] .face{width:38px;height:38px}body[data-import="1"] .kid-name{font-size:10px}
+body[data-import="1"] .question-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+body[data-import="1"] .question-card{padding:3px;border-width:2px;font-size:11px}
+body[data-import="1"] .question-card select,body[data-import="1"] .multi-pick summary{font-size:11px;padding:3px}
+body[data-import="1"] .multi-list{top:auto;bottom:100%}
+body[data-import="1"] .calculator{display:grid}
+body[data-import="1"] .answer-box{padding:4px;gap:3px;border-width:2px;font-size:12px}
+body[data-import="1"] .answer-box select{padding:3px;font-size:15px;border-width:2px}
+body[data-import="1"] .math-box{font-size:12px;padding:3px;border-width:2px}
+body[data-import="1"] .math-box small{font-size:10px}
+body[data-import="3"] .bar{height:180px}
+body[data-import="4"] .hero,body[data-import="4"] .note,body[data-import="4"] h2{display:none}
+body[data-import="4"] .shell{padding:4px}
+body[data-import="4"] .shell{height:100vh;min-height:0!important;width:100%!important;transform:none}
+body[data-import="4"] .page{height:100%;padding:0;margin:0}
+body[data-import="4"] .card{height:100%;margin:0;padding:5px;display:grid;grid-template-columns:28% 1fr;gap:6px}
+body[data-import="4"] .choice-groups{grid-template-columns:1fr;gap:3px;min-height:0}
+body[data-import="4"] .choice-group{padding:3px}
+body[data-import="4"] .choice-group h3{font-size:10px;margin:0 0 2px}
+body[data-import="4"] .choice-group .bank{padding:1px;min-height:0}
+body[data-import="4"] .token{padding:3px;font-size:12px;margin:1px;min-height:0}
+body[data-import="4"] .tree-scroll{height:100%;overflow:hidden;padding:0}
+body[data-import="4"] .tree-diagram{min-width:0;width:100%;height:100%}
+body[data-import="4"] .tree-diagram svg{overflow:visible}
+body[data-import="4"] .tree-head{font-size:11px;top:3px}
+body[data-import="4"] .tree-node{width:18%;min-height:26px;padding:1px;border-width:2px;border-radius:7px}
+body[data-import="5"] main{gap:5px;padding:6px;grid-template-rows:auto 1fr auto auto}
+body[data-import="5"] .graph{padding:8px;gap:5px}body[data-import="5"] .graph h1{font-size:26px}
+body[data-import="5"] .game-card{width:35px;font-size:23px}
+body[data-import="5"] .half{width:17.5px}body[data-import="5"] .half .game-card{width:35px}
+body[data-import="5"] .label,body[data-import="5"] .legend{font-size:20px}
+body[data-import="5"] .question{font-size:14px;padding:5px}
+body[data-import="6"] .y-axis{position:relative;display:block}
+body[data-import="6"] main{grid-template-columns:30% minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:10px}
+body[data-import="6"] .prompt,body[data-import="6"] .footer{grid-column:1/-1}
+body[data-import="6"] .tally{align-self:center;font-size:15px}
+body[data-import="6"] .tally caption{font-size:20px}
+body[data-import="6"] .tally th,body[data-import="6"] .tally td{padding:5px}
+body[data-import="6"] .graph-card{padding:8px}
+body[data-import="6"] .graph-card h2{font-size:20px}
+body[data-import="6"] .plot{padding:0 20px;gap:18px}
+body[data-import="6"] .axis-label{font-size:14px;padding:3px}
+body[data-import="6"] .y-axis{height:calc(100% - 3px)}
+body[data-import="6"] .y-axis span{position:absolute;right:5px;transform:translateY(-50%)}
+body[data-import="6"] .bar{flex-shrink:0;box-sizing:border-box}
+body[data-import="6"] .bar[style*="height: 0%"]{border:0}
+
+[data-card]{touch-action:none;cursor:grab}
+</style><script src="import-bridge.js"></script><script defer src="../../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body data-import="1">
+  <div id="startScreen" class="start">
+    <div class="start-card">
+      <h1>CatMean</h1>
+      <label>Student Code <input id="studentCode" autocomplete="off" placeholder="Type student code"></label>
+      <label>Grade Level <select id="gradeSelect"><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option></select></label>
+      <button id="startBtn" type="button">Start</button>
+    </div>
+  </div>
+  <div class="shell">
+    <aside class="admin">
+      <div class="brand">CatMean<br><small>P26-CATMEAN</small></div>
+      <div class="status-row"><span>Student</span><span id="studentStatus">--</span></div>
+      <div class="status-row"><span>Grade</span><span id="gradeStatus">--</span></div>
+      <div class="status-row"><span>Total Time</span><span id="totalTimer" class="timer">00:00</span></div>
+      <div class="status-row"><span>Page Time</span><span id="pageTimer" class="timer">00:00</span></div>
+      <div class="status-row"><span>Page</span><span><span id="pageNow">1</span> / 10</span></div>
+      <div class="status-row"><span>Attempts</span><span id="attemptStatus">0</span></div>
+      <label>Teacher Support <select id="supportSelect"><option>Independent</option><option>Small Prompt</option><option>Some Help</option><option>Heavy Help</option></select></label>
+      <label>Assessment Type <select id="assessmentSelect"><option>Formative</option><option>Summative</option></select></label>
+      <button id="helpBtn" type="button">Log Help</button>
+      <button id="quickBtn" type="button">Quick Comments</button>
+      <div class="checkgrid">
+        <label><input class="quick" type="checkbox" value="Careful">Careful</label>
+        <label><input class="quick" type="checkbox" value="Prompt">Prompt</label>
+        <label><input class="quick" type="checkbox" value="Explain">Explain</label>
+        <label><input class="quick" type="checkbox" value="Retry">Retry</label>
+      </div>
+      <button id="strategyBtn" type="button">Strategy Data</button>
+      <div class="checkgrid">
+        <label><input class="strategy" type="checkbox" value="Added total">Add total</label>
+        <label><input class="strategy" type="checkbox" value="Divided by 8">Divide by 8</label>
+        <label><input class="strategy" type="checkbox" value="Equalized bars">Equalized</label>
+        <label><input class="strategy" type="checkbox" value="Checked mean">Checked</label>
+      </div>
+      <label>Teacher Comments <input id="teacherComments" placeholder="Hidden teacher note"></label>
+      <label>Student Reflection <textarea id="studentReflection" rows="2" placeholder="Student reflection"></textarea></label>
+      <button id="snapBtn" type="button">PDF Snaps</button>
+      <button id="pdpBtn" type="button">PDP Report</button>
+    </aside>
+    <main>
+      <div class="top">
+        <div id="prompt" class="prompt">Use the score bars to find the mean. Move the green bars to the mean, then choose the mean.</div>
+        <div class="controls">
+          <select id="pageJump" aria-label="Go to page"></select>
+          <button id="backBtn" type="button">Back</button>
+          <button id="nextBtn" type="button">Next</button>
+          <button id="resetBtn" type="button">Reset</button>
+          <button id="submitWork" class="submit" type="submit" form="netlifySubmissionForm">Submit</button><button id="fillAnswers" class="answer-dot" type="button" aria-label="Fill correct answers" title="Fill correct answers"></button>
+        </div>
+      </div>
+      <section class="work">
+        <div class="panel">
+          <div id="meanBoard" class="mean-board"></div>
+          <div class="question-strip">
+            <div class="question-card"><div class="question-title">Who is at the mean?</div><details id="atMeanAnswer" class="multi-pick"><summary>Select students</summary><div class="multi-list"></div></details></div>
+            <div class="question-card"><div class="question-title">Who is below?</div><details id="belowMeanAnswer" class="multi-pick"><summary>Select students</summary><div class="multi-list"></div></details></div>
+            <div class="question-card"><div class="question-title">Who is above?</div><details id="aboveMeanAnswer" class="multi-pick"><summary>Select students</summary><div class="multi-list"></div></details></div>
+            <div class="question-card"><label for="lowEffectAnswer">Low score brings mean...</label><select id="lowEffectAnswer"><option value="">Choose</option><option value="down">down</option><option value="up">up</option><option value="same">the same</option></select></div>
+            <div class="question-card"><label for="highEffectAnswer">High score brings mean...</label><select id="highEffectAnswer"><option value="">Choose</option><option value="up">up</option><option value="down">down</option><option value="same">the same</option></select></div>
+            <div class="question-card"><label for="noticeAnswer">What do you notice?</label><select id="noticeAnswer"><option value="">Choose</option><option value="allClose">All students are close to the mean</option><option value="mostClose">Most students are close to the mean</option><option value="spreadOut">There are some students well below and way above</option></select></div>
+          </div>
+        </div>
+        <div class="panel side-card">
+          <div class="calculator" aria-label="Calculator">
+            <div id="calcDisplay" class="calc-display">0</div>
+            <div class="calc-grid">
+              <button type="button" data-calc="7">7</button>
+              <button type="button" data-calc="8">8</button>
+              <button type="button" data-calc="9">9</button>
+              <button class="op" type="button" data-calc="/">&divide;</button>
+              <button type="button" data-calc="4">4</button>
+              <button type="button" data-calc="5">5</button>
+              <button type="button" data-calc="6">6</button>
+              <button class="op" type="button" data-calc="+">+</button>
+              <button type="button" data-calc="1">1</button>
+              <button type="button" data-calc="2">2</button>
+              <button type="button" data-calc="3">3</button>
+              <button class="op" type="button" data-calc="-">-</button>
+              <button type="button" data-calc="0">0</button>
+              <button type="button" data-calc=".">.</button>
+              <button class="op" type="button" data-calc="C">C</button>
+              <button class="op" type="button" data-calc="=">=</button>
+            </div>
+          </div>
+          <div class="math-box">
+            <div>Total: <span id="totalValue">0</span></div>
+            <small>Divide the total by 8 students.</small>
+          </div>
+          <div class="answer-box">
+            <label for="meanSlider">Move all green mean bars</label>
+            <input id="meanSlider" class="mean-slider" type="range" min="1" max="20" value="1">
+            <div class="slider-readout">Mean bar: <span id="meanSliderValue">1</span></div>
+            <label for="meanAnswer">Choose the mean</label>
+            <select id="meanAnswer"></select>
+            <label for="medianAnswer">Choose the median</label>
+            <select id="medianAnswer"></select>
+            <label for="modeAnswer">Choose the mode</label>
+            <select id="modeAnswer"></select>
+            
+          </div>
+          <div class="math-box">
+            <div>Green bars set to: <span id="studentValues">--</span></div>
+          </div>
+                  </div>
+        <div id="feedback" class="feedback">Move the green bars and choose the mean.</div>
+      </section>
+    </main>
+  </div>
+  <form id="netlifySubmissionForm" name="p26-catmean-submission" method="POST" data-netlify="true" netlify action="thanks.html" class="hidden">
+    <input type="hidden" name="form-name" value="p26-catmean-submission">
+    <input type="hidden" id="netlifyStudentId" name="student_id">
+    <input type="hidden" id="netlifyGrade" name="grade">
+    <input type="hidden" id="netlifySummary" name="summary_json">
+    <input type="hidden" id="netlifyPages" name="pages_json">
+    <input type="hidden" id="netlifyInteractions" name="interactions_json">
+    <input type="hidden" id="netlifyFinishedAt" name="finished_at">
+  </form>
+  <script>
+    const PROJECT_ID="CatMean", STORAGE_KEY="p26-catmean-v1", TEACHER_CODE="259";
+    const names=["Alison","Tony","Michael","Shelly","Ben","Alie","Julia","Vera"];
+    const faces=["catmean-alison.png","catmean-tony.png","catmean-michael.png","catmean-shelly.png","catmean-ben.png","catmean-alie.png","catmean-julia.png","catmean-vera.png"];
+    const scoreSets=[
+      [4,6,7,8,8,9,10,12],
+      [3,5,6,7,7,8,9,11],
+      [6,7,8,9,9,10,11,12],
+      [3,4,5,6,6,7,8,9],
+      [8,9,9,10,10,10,12,12],
+      [4,5,7,8,8,9,11,12],
+      [3,4,6,7,7,8,9,12],
+      [6,8,8,9,9,9,11,12],
+      [3,4,5,6,6,6,8,10],
+      [7,9,10,10,10,10,12,12]
+    ];
+    const el={startScreen:document.getElementById("startScreen"),studentCode:document.getElementById("studentCode"),gradeSelect:document.getElementById("gradeSelect"),startBtn:document.getElementById("startBtn"),prompt:document.getElementById("prompt"),pageNow:document.getElementById("pageNow"),pageJump:document.getElementById("pageJump"),backBtn:document.getElementById("backBtn"),nextBtn:document.getElementById("nextBtn"),checkBtn:document.getElementById("checkBtn"),resetBtn:document.getElementById("resetBtn"),submitWork:document.getElementById("submitWork"),fillAnswers:document.getElementById("fillAnswers"),totalTimer:document.getElementById("totalTimer"),pageTimer:document.getElementById("pageTimer"),studentStatus:document.getElementById("studentStatus"),gradeStatus:document.getElementById("gradeStatus"),attemptStatus:document.getElementById("attemptStatus"),supportSelect:document.getElementById("supportSelect"),assessmentSelect:document.getElementById("assessmentSelect"),helpBtn:document.getElementById("helpBtn"),snapBtn:document.getElementById("snapBtn"),pdpBtn:document.getElementById("pdpBtn"),teacherComments:document.getElementById("teacherComments"),studentReflection:document.getElementById("studentReflection"),meanBoard:document.getElementById("meanBoard"),meanSlider:document.getElementById("meanSlider"),meanSliderValue:document.getElementById("meanSliderValue"),meanAnswer:document.getElementById("meanAnswer"),medianAnswer:document.getElementById("medianAnswer"),modeAnswer:document.getElementById("modeAnswer"),atMeanAnswer:document.getElementById("atMeanAnswer"),belowMeanAnswer:document.getElementById("belowMeanAnswer"),aboveMeanAnswer:document.getElementById("aboveMeanAnswer"),lowEffectAnswer:document.getElementById("lowEffectAnswer"),highEffectAnswer:document.getElementById("highEffectAnswer"),noticeAnswer:document.getElementById("noticeAnswer"),totalValue:document.getElementById("totalValue"),studentValues:document.getElementById("studentValues"),calcDisplay:document.getElementById("calcDisplay"),feedback:document.getElementById("feedback"),netlifyForm:document.getElementById("netlifySubmissionForm"),netlifyStudentId:document.getElementById("netlifyStudentId"),netlifyGrade:document.getElementById("netlifyGrade"),netlifySummary:document.getElementById("netlifySummary"),netlifyPages:document.getElementById("netlifyPages"),netlifyInteractions:document.getElementById("netlifyInteractions"),netlifyFinishedAt:document.getElementById("netlifyFinishedAt")};
+    function mean(scores){return scores.reduce((a,b)=>a+b,0)/scores.length}
+    function median(scores){const s=[...scores].sort((a,b)=>a-b);return (s[3]+s[4])/2}
+    function mode(scores){const counts={};scores.forEach(v=>counts[v]=(counts[v]||0)+1);return Number(Object.keys(counts).sort((a,b)=>counts[b]-counts[a]||Number(a)-Number(b))[0])}
+    function namesBy(scores,test){return names.filter((_,i)=>test(scores[i]))}
+    function sameSet(a,b){const x=[...(a||[])].sort(),y=[...(b||[])].sort();return x.length===y.length&&x.every((v,i)=>v===y[i])}
+    function selectedValues(control){if(control.selectedOptions)return [...control.selectedOptions].map(o=>o.value);return [...control.querySelectorAll("input[type=checkbox]:checked")].map(x=>x.value)}
+    function freshPage(page,scores){const m=mean(scores),md=median(scores),mo=mode(scores);return{page,scores,targetMean:m,targetMedian:md,targetMode:mo,studentBars:Array(8).fill(1),meanAnswer:"",medianAnswer:"",modeAnswer:"",atMeanAnswer:[],belowMeanAnswer:[],aboveMeanAnswer:[],lowEffectAnswer:"",highEffectAnswer:"",noticeAnswer:"",answerRecord:"",correctAnswer:"mean "+m+", median "+md+", mode "+mo,isCorrect:false,pageScore:0,attempts:0,firstAttemptSeconds:null,timeToCorrect:null,timeAfterCorrect:0,lastAttemptSeconds:null,timeBetweenAttempts:[],pageSeconds:0,pageStartedAt:Date.now(),teacherSupport:"Independent",assessmentType:"Formative",helpCount:0,helpHistory:[],quickComments:[],strategyData:[],teacherComments:"",reflection:"",pageInteractions:[]}}
+    function freshState(){return{project:PROJECT_ID,studentId:"",grade:"1",startedAt:Date.now(),totalSeconds:0,finishedAt:"",pages:scoreSets.map((scores,i)=>freshPage(i+1,scores)),interactions:[]}}
+    let state=loadState(), pageIndex=0, startedAt=Date.now()-(state.totalSeconds||0)*1000, calcText="0";
+    function loadState(){try{const saved=JSON.parse(window.InspireMemory.getItem(STORAGE_KEY)||"null");if(saved&&Array.isArray(saved.pages))return saved}catch(e){}return freshState()}
+    function store(){window.InspireHost.emit();window.InspireMemory.setItem(STORAGE_KEY,JSON.stringify(state))}
+    function currentPage(){return state.pages[pageIndex]}
+    function formatTime(s){s=Math.max(0,Math.floor(s||0));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+    function livePageSeconds(p){return (p.pageSeconds||0)+Math.floor((Date.now()-(p.pageStartedAt||Date.now()))/1000)}
+    function recordInteraction(type,detail={}){const p=currentPage();const item={type,detail,page:p.page,at:new Date().toISOString(),pageSeconds:livePageSeconds(p),totalSeconds:Math.floor((Date.now()-startedAt)/1000)};state.interactions.push(item);p.pageInteractions.push(item)}
+    function saveCurrentPageTime(){const p=currentPage();p.pageSeconds=livePageSeconds(p);p.pageStartedAt=Date.now()}
+    function normalizePage(p){if(!Array.isArray(p.studentBars))p.studentBars=Array(8).fill(1);p.studentBars=p.studentBars.map(v=>Math.max(1,Math.min(20,Number(v)||1)));if(typeof p.meanAnswer!=="string")p.meanAnswer="";if(typeof p.medianAnswer!=="string")p.medianAnswer="";if(typeof p.modeAnswer!=="string")p.modeAnswer="";if(!Array.isArray(p.atMeanAnswer))p.atMeanAnswer=[];if(!Array.isArray(p.belowMeanAnswer))p.belowMeanAnswer=[];if(!Array.isArray(p.aboveMeanAnswer))p.aboveMeanAnswer=[];if(typeof p.lowEffectAnswer!=="string")p.lowEffectAnswer="";if(typeof p.highEffectAnswer!=="string")p.highEffectAnswer="";if(typeof p.noticeAnswer!=="string")p.noticeAnswer="";p.targetMean=mean(p.scores);p.targetMedian=median(p.scores);p.targetMode=mode(p.scores);p.correctAtMean=namesBy(p.scores,v=>v===p.targetMean);p.correctBelowMean=namesBy(p.scores,v=>v<p.targetMean);p.correctAboveMean=namesBy(p.scores,v=>v>p.targetMean);return p}
+    function noticeCategory(scores){const m=mean(scores),diffs=scores.map(v=>Math.abs(v-m)),min=Math.min(...scores),max=Math.max(...scores);if(diffs.every(d=>d<=1))return "allClose";if(min<=m-3&&max>=m+3)return "spreadOut";return "mostClose"}
+    function assessmentRows(p){normalizePage(p);const m=Number(p.targetMean),barsCorrect=p.studentBars.length===8&&p.studentBars.every(value=>Number(value)===m);const rows=[{item:"Mean",student:"Bars: "+p.studentBars.join(", ")+"; choice: "+(p.meanAnswer||"No answer"),expected:String(m),correct:barsCorrect&&Number(p.meanAnswer)===m}];rows.push({item:"Median dropdown",student:p.medianAnswer||"No answer",expected:String(p.targetMedian),correct:Number(p.medianAnswer)===Number(p.targetMedian)},{item:"Mode dropdown",student:p.modeAnswer||"No answer",expected:String(p.targetMode),correct:Number(p.modeAnswer)===Number(p.targetMode)},{item:"At the mean",student:(p.atMeanAnswer||[]).join(", ")||"No answer",expected:p.correctAtMean.join(", "),correct:sameSet(p.atMeanAnswer,p.correctAtMean)},{item:"Below the mean",student:(p.belowMeanAnswer||[]).join(", ")||"No answer",expected:p.correctBelowMean.join(", "),correct:sameSet(p.belowMeanAnswer,p.correctBelowMean)},{item:"Above the mean",student:(p.aboveMeanAnswer||[]).join(", ")||"No answer",expected:p.correctAboveMean.join(", "),correct:sameSet(p.aboveMeanAnswer,p.correctAboveMean)},{item:"Low score effect",student:p.lowEffectAnswer||"No answer",expected:"down",correct:p.lowEffectAnswer==="down"},{item:"High score effect",student:p.highEffectAnswer||"No answer",expected:"up",correct:p.highEffectAnswer==="up"},{item:"Notice about the scores",student:p.noticeAnswer||"No answer",expected:noticeCategory(p.scores),correct:p.noticeAnswer===noticeCategory(p.scores)});return rows}
+    function assessPage(p){const rows=assessmentRows(p);p.assessmentRows=rows;p.pageScore=rows.filter(row=>row.correct).length;p.pageAvailable=rows.length;p.isCorrect=p.pageScore===p.pageAvailable;return rows}
+    function answerIsCorrect(p){return assessPage(p).every(row=>row.correct)}
+    function sendAssessment(){const pages=state.pages.map(p=>{const rows=assessPage(p);return{page:p.page,rows,got:p.pageScore,available:p.pageAvailable}});window.parent.postMessage({type:"DREAME_CATMEAN",pages},"*")}
+    function render(){const p=normalizePage(currentPage());assessPage(p);el.pageNow.textContent=p.page;el.pageJump.value=pageIndex;el.studentStatus.textContent=state.studentId||"--";el.gradeStatus.textContent=state.grade||"--";el.attemptStatus.textContent=p.attempts;el.totalValue.textContent=p.scores.reduce((a,b)=>a+b,0);renderAnswerDropdowns(p);renderKids(p);loadAdminData();el.meanSlider.value=String(p.studentBars[0]||1);el.meanSliderValue.textContent=String(p.studentBars[0]||1);el.studentValues.textContent=p.studentBars.join(", ");el.feedback.textContent="Current score: "+p.pageScore+" / "+p.pageAvailable+" marks.";sendAssessment();store()}
+    function fillNumberSelect(select,value){select.innerHTML='<option value="">Choose</option>';for(let i=1;i<=20;i++){const o=document.createElement("option");o.value=String(i);o.textContent=String(i);select.appendChild(o)}select.value=value}
+    function fillNameMulti(control,values){const list=control.querySelector(".multi-list");list.innerHTML="";names.forEach(name=>{const label=document.createElement("label");const input=document.createElement("input");input.type="checkbox";input.value=name;input.checked=(values||[]).includes(name);input.addEventListener("change",()=>{answerChange(control.id,control);control.open=false});label.appendChild(input);label.appendChild(document.createTextNode(name));list.appendChild(label)});const count=(values||[]).length;control.querySelector("summary").textContent=count?count+" selected":"Select students"}
+    function renderAnswerDropdowns(p){fillNumberSelect(el.meanAnswer,p.meanAnswer);fillNumberSelect(el.medianAnswer,p.medianAnswer);fillNumberSelect(el.modeAnswer,p.modeAnswer);fillNameMulti(el.atMeanAnswer,p.atMeanAnswer);fillNameMulti(el.belowMeanAnswer,p.belowMeanAnswer);fillNameMulti(el.aboveMeanAnswer,p.aboveMeanAnswer);el.lowEffectAnswer.value=p.lowEffectAnswer||"";el.highEffectAnswer.value=p.highEffectAnswer||"";el.noticeAnswer.value=p.noticeAnswer||""}
+    function renderKids(p){el.meanBoard.innerHTML="";p.scores.forEach((score,i)=>{const chosen=Number(p.studentBars[i]);const kid=document.createElement("div");kid.className="kid";kid.innerHTML='<div class="bars"><div><div class="bar-wrap given"><div class="bar-fill" style="height:'+(score/20*100)+'%">'+score+'</div></div><div class="bar-caption">score</div></div><div><div class="bar-wrap student"><div class="bar-fill" style="height:'+(chosen/20*100)+'%">'+chosen+'</div></div><div class="bar-caption">mean</div></div></div><img class="face" src="'+faces[i]+'" alt="'+names[i]+'"><div class="kid-name">'+names[i]+'</div>';el.meanBoard.appendChild(kid)})}
+    function saveAdminData(){const p=currentPage();p.teacherSupport=el.supportSelect.value;p.assessmentType=el.assessmentSelect.value;p.teacherComments=el.teacherComments.value;p.reflection=el.studentReflection.value;p.quickComments=[...document.querySelectorAll(".quick:checked")].map(x=>x.value);p.strategyData=[...document.querySelectorAll(".strategy:checked")].map(x=>x.value);store()}
+    function loadAdminData(){const p=currentPage();el.supportSelect.value=p.teacherSupport||"Independent";el.assessmentSelect.value=p.assessmentType||"Formative";el.teacherComments.value=p.teacherComments||"";el.studentReflection.value=p.reflection||"";document.querySelectorAll(".quick").forEach(x=>x.checked=(p.quickComments||[]).includes(x.value));document.querySelectorAll(".strategy").forEach(x=>x.checked=(p.strategyData||[]).includes(x.value))}
+    function syncAnswers(){const p=currentPage();p.meanAnswer=el.meanAnswer.value;p.medianAnswer=el.medianAnswer.value;p.modeAnswer=el.modeAnswer.value;p.atMeanAnswer=selectedValues(el.atMeanAnswer);p.belowMeanAnswer=selectedValues(el.belowMeanAnswer);p.aboveMeanAnswer=selectedValues(el.aboveMeanAnswer);p.lowEffectAnswer=el.lowEffectAnswer.value;p.highEffectAnswer=el.highEffectAnswer.value;p.noticeAnswer=el.noticeAnswer.value;p.answerRecord="scores "+p.scores.join(", ")+"; studentBars "+p.studentBars.join(", ")+"; meanAnswer "+p.meanAnswer+"; medianAnswer "+p.medianAnswer+"; modeAnswer "+p.modeAnswer+"; atMean "+p.atMeanAnswer.join(",")+"; belowMean "+p.belowMeanAnswer.join(",")+"; aboveMean "+p.aboveMeanAnswer.join(",")+"; lowEffect "+p.lowEffectAnswer+"; highEffect "+p.highEffectAnswer+"; notice "+p.noticeAnswer;assessPage(p);sendAssessment()}
+    function fillCorrectAnswers(){if(prompt("")!==TEACHER_CODE)return;state.pages.forEach(p=>{normalizePage(p);p.studentBars=Array(8).fill(p.targetMean);p.meanAnswer=String(p.targetMean);p.medianAnswer=String(p.targetMedian);p.modeAnswer=String(p.targetMode);p.atMeanAnswer=[...p.correctAtMean];p.belowMeanAnswer=[...p.correctBelowMean];p.aboveMeanAnswer=[...p.correctAboveMean];p.lowEffectAnswer="down";p.highEffectAnswer="up";p.noticeAnswer=noticeCategory(p.scores);assessPage(p)});recordInteraction("fill-correct-answers");sendAssessment();store();render()}
+    function gotoPage(idx){if(idx<0||idx>=state.pages.length)return;saveAdminData();syncAnswers();saveCurrentPageTime();pageIndex=idx;currentPage().pageStartedAt=Date.now();render()}
+    function updateTimers(){state.totalSeconds=Math.floor((Date.now()-startedAt)/1000);el.totalTimer.textContent=formatTime(state.totalSeconds);el.pageTimer.textContent=formatTime(livePageSeconds(currentPage()))}
+    function clearPage(){const p=currentPage();p.studentBars=Array(8).fill(1);p.meanAnswer="";p.medianAnswer="";p.modeAnswer="";p.atMeanAnswer=[];p.belowMeanAnswer=[];p.aboveMeanAnswer=[];p.lowEffectAnswer="";p.highEffectAnswer="";p.noticeAnswer="";p.isCorrect=false;p.answerRecord="";recordInteraction("clear-page");render()}
+    function updateCalc(){el.calcDisplay.textContent=calcText}
+    function handleCalc(key){if(key==="C"){calcText="0"}else if(key==="="){try{const expr=calcText.replace(/[^0-9+\-*/.()]/g,"");const result=Function("return ("+expr+")")();calcText=Number.isFinite(result)?String(Math.round(result*100)/100):"0"}catch(e){calcText="0"}}else{if(calcText==="0"&&/[0-9.]/.test(key))calcText=key;else calcText+=key}recordInteraction("calculator-click",{key,display:calcText});updateCalc();store()}
+    function fillNetlifyFields(){saveAdminData();syncAnswers();saveCurrentPageTime();state.totalSeconds=Math.floor((Date.now()-startedAt)/1000);const pages=state.pages.map(p=>{normalizePage(p);assessPage(p);p.answerRecord="scores "+p.scores.join(", ")+"; studentBars "+p.studentBars.join(", ")+"; meanAnswer "+p.meanAnswer+"; medianAnswer "+p.medianAnswer+"; modeAnswer "+p.modeAnswer+"; atMean "+(p.atMeanAnswer||[]).join(",")+"; belowMean "+(p.belowMeanAnswer||[]).join(",")+"; aboveMean "+(p.aboveMeanAnswer||[]).join(",")+"; lowEffect "+p.lowEffectAnswer+"; highEffect "+p.highEffectAnswer+"; notice "+p.noticeAnswer;return{...p}});const completePages=pages.filter(p=>p.isCorrect).length,earnedMarks=pages.reduce((sum,p)=>sum+p.pageScore,0),availableMarks=pages.reduce((sum,p)=>sum+p.pageAvailable,0);const summary={project:PROJECT_ID,barcode:"P26-CATMEAN",studentId:state.studentId,grade:state.grade,totalSeconds:state.totalSeconds,completePages,totalPages:pages.length,earnedMarks,availableMarks,finishedAt:state.finishedAt,submittedComplete:completePages===pages.length};el.netlifyStudentId.value=state.studentId;el.netlifyGrade.value=state.grade;el.netlifySummary.value=JSON.stringify(summary);el.netlifyPages.value=JSON.stringify(pages);el.netlifyInteractions.value=JSON.stringify(state.interactions);el.netlifyFinishedAt.value=state.finishedAt||""}
+    function submitWork(event){saveAdminData();syncAnswers();const complete=state.pages.every(p=>answerIsCorrect(p));if(!complete){const code=prompt("Some pages are unfinished. Enter teacher code to submit.");if(code!==TEACHER_CODE){event.preventDefault();return}}state.finishedAt=new Date().toISOString();recordInteraction("submit",{complete});fillNetlifyFields();store()}
+    function reportHtml(kind){fillNetlifyFields();const allRows=state.pages.flatMap(p=>assessmentRows(p).map(row=>({page:p.page,...row}))),earned=allRows.filter(row=>row.correct).length;return '<!doctype html><title>'+PROJECT_ID+' '+kind+'</title><style>body{font-family:Century Gothic,Arial,sans-serif;padding:18px}table{border-collapse:collapse;width:100%;font-size:12px}td,th{border:1px solid #222;padding:6px;text-align:left;vertical-align:top}.yes{color:#126b35;font-weight:bold}.no{color:#a12020;font-weight:bold}</style><h1>'+PROJECT_ID+' '+kind+'</h1><p>Student: '+state.studentId+' | Grade: '+state.grade+' | Project Time: '+formatTime(state.totalSeconds)+' | <strong>Marks: '+earned+' / '+allRows.length+'</strong></p><table><thead><tr><th>Page</th><th>Assessed item</th><th>Student answer</th><th>Correct answer</th><th>Result</th></tr></thead><tbody>'+allRows.map(row=>'<tr><td>'+row.page+'</td><td>'+row.item+'</td><td>'+row.student+'</td><td>'+row.expected+'</td><td class="'+(row.correct?'yes':'no')+'">'+(row.correct?'Correct':'Incorrect')+'</td></tr>').join('')+'</tbody></table><p><strong>Interaction records saved:</strong> '+state.interactions.length+'</p>'}
+    function openReport(kind,needsCode){if(needsCode&&prompt("Teacher code")!==TEACHER_CODE)return;const w=window.open("","_blank");w.document.write(reportHtml(kind));w.document.close();w.focus();setTimeout(()=>w.print(),300)}
+    el.startBtn.addEventListener("click",()=>{state.studentId=el.studentCode.value.trim()||"student";state.grade=el.gradeSelect.value;el.startScreen.classList.add("hidden");recordInteraction("start",{studentId:state.studentId,grade:state.grade});render()});
+    el.fillAnswers.addEventListener("click",fillCorrectAnswers);el.backBtn.addEventListener("click",()=>gotoPage(pageIndex-1));el.nextBtn.addEventListener("click",()=>gotoPage(pageIndex+1));el.pageJump.addEventListener("change",()=>gotoPage(Number(el.pageJump.value)));el.meanSlider.addEventListener("input",()=>{const p=currentPage();const value=Number(el.meanSlider.value);p.studentBars=Array(8).fill(value);p.isCorrect=answerIsCorrect(p);recordInteraction("changed-value",{field:"allMeanBars",value});render();store()});function answerChange(field,element){const p=currentPage();p[field]=element.classList&&element.classList.contains("multi-pick")?selectedValues(element):element.value;recordInteraction("changed-value",{field,value:p[field]});syncAnswers();store();render()}el.meanAnswer.addEventListener("change",()=>answerChange("meanAnswer",el.meanAnswer));el.medianAnswer.addEventListener("change",()=>answerChange("medianAnswer",el.medianAnswer));el.modeAnswer.addEventListener("change",()=>answerChange("modeAnswer",el.modeAnswer));el.lowEffectAnswer.addEventListener("change",()=>answerChange("lowEffectAnswer",el.lowEffectAnswer));el.highEffectAnswer.addEventListener("change",()=>answerChange("highEffectAnswer",el.highEffectAnswer));el.noticeAnswer.addEventListener("change",()=>answerChange("noticeAnswer",el.noticeAnswer));el.clearPageBtn=null;el.resetBtn.addEventListener("click",()=>{if(confirm("Reset CatMean work?")){window.InspireMemory.removeItem(STORAGE_KEY);location.reload()}});el.helpBtn.addEventListener("click",()=>{const p=currentPage();p.helpCount++;p.helpHistory.push({at:new Date().toISOString(),pageSeconds:livePageSeconds(p)});recordInteraction("teacher-help",{helpCount:p.helpCount});store()});el.snapBtn.addEventListener("click",()=>openReport("PDF Snaps",true));el.pdpBtn.addEventListener("click",()=>openReport("PDP Report",true));el.netlifyForm.addEventListener("submit",submitWork);document.querySelectorAll("[data-calc]").forEach(b=>b.addEventListener("click",()=>handleCalc(b.dataset.calc)));document.querySelectorAll(".quick,.strategy").forEach(x=>x.addEventListener("change",()=>{saveAdminData();recordInteraction("admin-change",{value:x.value,checked:x.checked})}));[el.supportSelect,el.assessmentSelect,el.teacherComments,el.studentReflection].forEach(x=>x.addEventListener("change",()=>{saveAdminData();recordInteraction("admin-change",{id:x.id,value:x.value})}));
+    for(let i=0;i<10;i++){const o=document.createElement("option");o.value=i;o.textContent="Page "+(i+1);el.pageJump.appendChild(o)}
+    window.InspireHost.register(
+   ()=>({index:pageIndex,pages:state.pages.map(p=>Object.fromEntries(['studentBars','meanAnswer','medianAnswer','modeAnswer','atMeanAnswer','belowMeanAnswer','aboveMeanAnswer','lowEffectAnswer','highEffectAnswer','noticeAnswer'].map(k=>[k,p[k]])))}),
+   value=>{state=freshState();state.studentId=window.InspireHost.initial.student||'Student';state.grade='3';state.pages.forEach((p,i)=>Object.assign(p,value.pages?.[i]||{}));pageIndex=Math.max(0,Math.min(9,value.index||0));render()},()=>syncAnswers());
+   if(state.studentId)el.startScreen.classList.add("hidden");el.studentCode.value=state.studentId||"";el.gradeSelect.value=state.grade||"1";setInterval(updateTimers,1000);updateCalc();render();
+  </script>
+</body>
+</html>
