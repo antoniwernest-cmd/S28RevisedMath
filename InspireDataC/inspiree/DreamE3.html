@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>DreamE3 · Food Bank Can Collection</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior-y:none}body{font-family:Arial,sans-serif;color:#172536;background:#fff;padding:clamp(8px,2vw,22px);font-weight:700;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px}h1{font-size:clamp(24px,3vw,38px);margin:0}p{margin:0;font-size:clamp(15px,1.7vw,21px)}.meanGrid{min-height:0;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2vw,22px);align-items:end}.meanCol{text-align:center;min-width:0}.bar{height:min(30vh,220px);display:flex;align-items:flex-end;justify-content:center;position:relative}.stack,.trace{position:absolute;bottom:0;width:54px}.trace{left:calc(50% + 7px);transform:translateX(-50%);background:#b8bec5;border:2px solid #808890;opacity:.65}.stack{left:calc(50% - 7px);transform:translateX(-50%);background:#e58ab4;border:2px solid #bd4a83;border-radius:6px 6px 0 0;transition:height .1s}.starting-label{position:absolute;top:-27px;left:50%;transform:translateX(-50%);min-width:28px;padding:2px 5px;background:#eef1f4;border:2px solid #69737c;border-radius:7px;color:#26333b;font-size:15px;line-height:1}.score-kid{width:clamp(42px,6vw,58px);height:clamp(42px,6vw,58px);object-fit:contain;display:block;margin:0 auto 4px}.clipboard{display:flex;align-items:center;justify-content:center;gap:5px;min-height:34px;margin:3px auto 4px;padding:4px 7px;background:#fff8cf;border:2px solid #26333b;border-radius:8px;font-size:14px}.can-row{min-height:24px;margin:2px auto 5px;font-size:clamp(13px,2vw,18px);letter-spacing:-2px;line-height:1;overflow-wrap:anywhere}select{width:100%;margin-top:8px;padding:.35rem;border:3px solid #26333b;border-radius:8px;font:inherit}.reserve{padding:8px 12px;background:#fff0f0;border:2px solid #e4a0a0;border-radius:10px;text-align:center}#redBar{min-height:30px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2px;margin:4px 0;font-size:24px;line-height:1}.footer{display:flex;align-items:center;justify-content:center;gap:12px}.footer button{padding:8px 16px;border:3px solid #26333b;border-radius:10px;background:#fff8cf;font:inherit;font-weight:800;cursor:pointer}.answer-dot{width:22px;height:22px;padding:0!important;border:2px solid #7b1111!important;border-radius:50%!important;background:#e42a2a!important}.feedback{min-height:24px}.correct{color:#126b35}.wrong{color:#9d2020}@media(max-width:560px){body{gap:5px}.bar{height:22vh}.meanGrid{gap:5px}.can-row{font-size:12px}.clipboard{padding:2px;font-size:12px}.reserve{padding:5px}.footer button{padding:5px 9px}}
+  </style>
+<style data-inline-css="import-inner.css">html,body{overscroll-behavior:none}#fillAnswers,#feedback,#score,.topbar,.nav-link,#resetBtn,#submitWork{display:none!important}
+/* Keep source activities inside the available iframe, with host navigation outside. */
+body[data-import="1"] .shell{padding:3px;min-height:100vh;display:block}
+body[data-import="1"] .top{padding:3px;margin-bottom:4px;gap:3px;box-shadow:none;border-width:2px}
+body[data-import="1"] .prompt{font-size:13px;padding:3px;border-width:2px}
+body[data-import="1"] .controls button,body[data-import="1"] .controls select{font-size:12px;padding:3px}
+body[data-import="1"] .work{grid-template-columns:1fr 180px;gap:5px}
+body[data-import="1"] .panel{padding:4px;border-width:2px;box-shadow:none}
+body[data-import="1"] .mean-board{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+body[data-import="1"] .kid{min-height:0;padding:3px;border-width:2px;gap:2px}
+body[data-import="1"] .bars{height:clamp(100px,29vh,210px);grid-template-columns:24px 24px;gap:2px}
+body[data-import="1"] .bar-wrap{height:clamp(80px,25vh,180px);width:24px}
+body[data-import="1"] .face{width:38px;height:38px}body[data-import="1"] .kid-name{font-size:10px}
+body[data-import="1"] .question-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+body[data-import="1"] .question-card{padding:3px;border-width:2px;font-size:11px}
+body[data-import="1"] .question-card select,body[data-import="1"] .multi-pick summary{font-size:11px;padding:3px}
+body[data-import="1"] .multi-list{top:auto;bottom:100%}
+body[data-import="1"] .calculator{display:none}
+body[data-import="1"] .answer-box{padding:4px;gap:3px;border-width:2px;font-size:12px}
+body[data-import="1"] .answer-box select{padding:3px;font-size:15px;border-width:2px}
+body[data-import="1"] .math-box{font-size:12px;padding:3px;border-width:2px}
+body[data-import="1"] .math-box small{font-size:10px}
+body[data-import="3"] .bar{height:180px}
+body[data-import="4"] .hero,body[data-import="4"] .note,body[data-import="4"] h2{display:none}
+body[data-import="4"] .shell{padding:4px}
+body[data-import="4"] .shell{height:100vh;min-height:0!important;width:100%!important;transform:none}
+body[data-import="4"] .page{height:100%;padding:0;margin:0}
+body[data-import="4"] .card{height:100%;margin:0;padding:5px;display:grid;grid-template-columns:28% 1fr;gap:6px}
+body[data-import="4"] .choice-groups{grid-template-columns:1fr;gap:3px;min-height:0}
+body[data-import="4"] .choice-group{padding:3px}
+body[data-import="4"] .choice-group h3{font-size:10px;margin:0 0 2px}
+body[data-import="4"] .choice-group .bank{padding:1px;min-height:0}
+body[data-import="4"] .token{padding:3px;font-size:12px;margin:1px;min-height:0}
+body[data-import="4"] .tree-scroll{height:100%;overflow:hidden;padding:0}
+body[data-import="4"] .tree-diagram{min-width:0;width:100%;height:100%}
+body[data-import="4"] .tree-diagram svg{overflow:visible}
+body[data-import="4"] .tree-head{font-size:11px;top:3px}
+body[data-import="4"] .tree-node{width:18%;min-height:26px;padding:1px;border-width:2px;border-radius:7px}
+body[data-import="5"] main{gap:5px;padding:6px;grid-template-rows:auto 1fr auto auto}
+body[data-import="5"] .graph{padding:8px;gap:5px}body[data-import="5"] .graph h1{font-size:26px}
+body[data-import="5"] .game-card{width:35px;font-size:23px}
+body[data-import="5"] .half{width:17.5px}body[data-import="5"] .half .game-card{width:35px}
+body[data-import="5"] .label,body[data-import="5"] .legend{font-size:20px}
+body[data-import="5"] .question{font-size:14px;padding:5px}
+body[data-import="6"] .y-axis{position:relative;display:block}
+body[data-import="6"] main{grid-template-columns:30% minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:10px}
+body[data-import="6"] .prompt,body[data-import="6"] .footer{grid-column:1/-1}
+body[data-import="6"] .tally{align-self:center;font-size:15px}
+body[data-import="6"] .tally caption{font-size:20px}
+body[data-import="6"] .tally th,body[data-import="6"] .tally td{padding:5px}
+body[data-import="6"] .graph-card{padding:8px}
+body[data-import="6"] .graph-card h2{font-size:20px}
+body[data-import="6"] .plot{padding:0 20px;gap:18px}
+body[data-import="6"] .axis-label{font-size:14px;padding:3px}
+body[data-import="6"] .y-axis{height:calc(100% - 3px)}
+body[data-import="6"] .y-axis span{position:absolute;right:5px;transform:translateY(-50%)}
+body[data-import="6"] .bar{flex-shrink:0;box-sizing:border-box}
+body[data-import="6"] .bar[style*="height: 0%"]{border:0}
+
+[data-card]{touch-action:none;cursor:grab}
+</style><script src="import-bridge.js"></script><script defer src="../../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body data-import="3">
+  <h1>Food Bank Can Collection</h1>
+  <p>Each clipboard shows the cans a child started with. Move cans until every child has the same number.</p>
+  <section class="meanGrid" id="meanGrid" aria-label="Four can groups"></section>
+  <section class="reserve"><b>🥫 Food-bank can reserve</b><div id="redBar"></div><span id="redValue">0</span></section>
+  <footer class="footer"><button type="button" id="reset">Reset bars</button><span id="feedback" class="feedback" role="status"></span><button id="fillAnswers" class="answer-dot" type="button" aria-label="Fill correct answers" title="Fill correct answers"></button></footer>
+  <script>
+    (()=>{"use strict";
+      const kids=[{name:"Alison",image:"catmean-alison.png"},{name:"Tony",image:"catmean-tony.png"},{name:"Michael",image:"catmean-michael.png"},{name:"Shelly",image:"catmean-shelly.png"}],initial=[4,6,8,6],student=new URLSearchParams(location.search).get("student")||"student",storageKey="inspiree-cans-"+student,saved=JSON.parse(window.InspireMemory.getItem(storageKey)||"null");
+      let values=Array.isArray(saved&&saved.values)&&saved.values.length===4?saved.values.map(Number):initial.slice(),reserve=Number.isFinite(saved&&saved.reserve)?Number(saved.reserve):0;
+      let touched=false;const grid=document.getElementById("meanGrid"),redBar=document.getElementById("redBar"),redValue=document.getElementById("redValue"),feedback=document.getElementById("feedback");
+      function assess(){const groupsCorrect=values.every(value=>value===6);return[{item:"Mean / equal group amount",student:values.join(", "),expected:"6, 6, 6, 6",correct:groupsCorrect},{item:"Food-bank can reserve",student:String(reserve),expected:"0",correct:reserve===0}]}
+      function save(){window.InspireMemory.setItem(storageKey,JSON.stringify({values:[...values],reserve}))}
+      function send(){window.InspireHost.emit();const rows=assess(),got=rows.filter(row=>row.correct).length;parent.postMessage({type:"DREAME_CANS",rows,values:[...values],reserve,got,available:rows.length},"*")}
+      function draw(){grid.innerHTML=values.map((value,i)=>`<div class="meanCol"><img class="score-kid" src="${kids[i].image}" alt="${kids[i].name}"><div class="clipboard" aria-label="${kids[i].name} started with ${initial[i]} cans">📋 <b>${initial[i]}</b></div><div class="can-row" aria-label="${kids[i].name} started with ${initial[i]} cans">${"🥫".repeat(initial[i])}</div><div class="bar"><div class="trace" style="height:${initial[i]*16}px"><span class="starting-label">${initial[i]}</span></div><div class="stack" style="height:${value*16}px"></div></div><select aria-label="${kids[i].name} can group" data-dropdown="${i}">${Array.from({length:11},(_,n)=>`<option value="${n}" ${n===value?"selected":""}>${n}</option>`).join("")}</select></div>`).join("");grid.querySelectorAll("[data-dropdown]").forEach(select=>select.addEventListener("change",change));redBar.textContent="🥫".repeat(reserve);redValue.textContent=reserve}
+      function change(event){const i=Number(event.currentTarget.dataset.dropdown),next=Number(event.currentTarget.value),previous=values[i],delta=next-previous;if(delta>0&&delta>reserve){event.currentTarget.value=String(previous);return}values[i]=next;reserve-=delta;touched=true;save();draw();send()}
+      document.getElementById("reset").onclick=()=>{values=initial.slice();reserve=0;touched=false;feedback.textContent="";feedback.className="feedback";save();draw();send()};
+      document.getElementById("fillAnswers").onclick=()=>{if(prompt("")!=="259")return;values=[6,6,6,6];reserve=0;save();draw();send()};
+      window.InspireHost.register(()=>({values:[...values],reserve,touched}),v=>{values=v.values||initial.slice();reserve=v.reserve||0;touched=!!v.touched;draw()});draw();send();
+    })();
+  </script>
+</body>
+</html>

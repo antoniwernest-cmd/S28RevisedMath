@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dream E4 | Card Classification Tree</title><style data-inline-css="dreamh.css">:root{--ink:#182c49;--blue:#2f78bd;--sky:#eaf6ff;--cream:#fffaf0;--yellow:#fff1a6;--green:#e4f6e7;--line:#9cb9d4}*{box-sizing:border-box}html,body{overscroll-behavior-y:none}body{margin:0;background:linear-gradient(135deg,#effaff,#fff9e8);color:var(--ink);font-family:Arial,sans-serif}.landing{min-height:100vh;display:grid;place-items:center;padding:20px}.launch{width:min(820px,100%);border:4px solid var(--ink);border-radius:28px;padding:clamp(28px,6vw,68px);background:#fffdf8;box-shadow:10px 10px 0 #b6d8ef}.eyebrow{margin:0;font-weight:900;letter-spacing:1px;color:var(--blue)}h1{margin:10px 0;font-size:clamp(44px,8vw,78px);line-height:.92}.launch h1 span{color:var(--blue)}.launch p{font-size:21px;line-height:1.4}.launch label{display:block;max-width:360px;font-weight:900}.launch input{display:block;width:100%;margin-top:7px;padding:11px;border:3px solid var(--ink);border-radius:10px;background:white}.primary,.nav-link{display:inline-block;margin-top:18px;padding:12px 18px;border:3px solid var(--ink);border-radius:12px;background:var(--yellow);box-shadow:0 4px 0 #74a7d3;color:var(--ink);font-weight:900;text-decoration:none}.shell{min-height:100vh;padding:88px 18px 104px}.topbar{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 20px;border-bottom:4px solid var(--ink);background:#fffdf8}.brand{font-size:22px;font-weight:900}.brand small{display:block;color:var(--blue);font-size:11px;letter-spacing:1px}.tools{display:flex;gap:7px;align-items:center}.pill,.tools button{border:3px solid var(--ink);border-radius:10px;padding:8px 10px;background:white;font-weight:900}.tools button{background:var(--yellow);cursor:pointer}.page{width:min(1350px,100%);margin:auto}.hero{display:flex;gap:16px;align-items:center;margin-bottom:13px;padding:15px 20px;border:4px solid var(--ink);border-radius:18px;background:var(--yellow)}.hero h1{margin:0;font-size:clamp(24px,4vw,40px)}.tag{border:3px solid var(--ink);border-radius:999px;padding:7px 12px;background:#fff;font-weight:900}.card{border:3px solid var(--ink);border-radius:16px;padding:14px;background:#fffdf8;box-shadow:4px 4px 0 #c5ddeb}.note{margin-bottom:12px;padding:10px 12px;border-radius:10px;background:var(--sky);font-weight:700}.bank{min-height:80px;padding:9px;border:3px dashed var(--blue);border-radius:12px;background:#f5fbff}.token{display:inline-flex;gap:6px;align-items:center;justify-content:center;min-width:104px;margin:4px;padding:9px 10px;border:3px solid var(--ink);border-radius:10px;background:white;box-shadow:0 3px 0 #a6cbe5;font-weight:900;cursor:grab}.token:active{cursor:grabbing}.tree{display:grid;grid-template-columns:150px 1fr;gap:14px;margin-top:14px}.tree-root{display:grid;place-items:center;gap:12px;padding:14px;border:3px solid var(--ink);border-radius:14px;background:var(--sky);font-weight:900;text-align:center}.tree-root div{width:100%;padding:12px 7px;border:3px solid var(--ink);border-radius:10px;background:white}.branches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.fur-branch{border:3px solid var(--ink);border-radius:14px;padding:12px;background:#fff}.fur-branch>h2{margin:0 0 10px;padding-bottom:8px;border-bottom:3px solid var(--line);font-size:22px}.types{display:grid;gap:10px}.type-row{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:stretch}.type-name{display:grid;place-items:center;padding:8px;border:3px solid var(--ink);border-radius:10px;background:var(--cream);font-weight:900;text-align:center}.leaves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.leaf{min-height:76px;padding:7px;border:3px dashed #4e90c2;border-radius:10px;background:#f4faff}.leaf strong{display:block;color:#35699a;font-size:13px}.leaf .token{min-width:0;margin:5px 0 0;width:100%}.score{margin-top:13px;padding:11px;border:3px solid var(--ink);border-radius:10px;background:var(--green);font-weight:900}.bottom{position:fixed;z-index:20;right:18px;bottom:70px}.modal{position:fixed;z-index:30;inset:0;display:grid;place-items:center;padding:18px;background:#0009}.modal[hidden]{display:none}.modal section{width:min(700px,100%);max-height:82vh;overflow:auto;border:4px solid var(--ink);border-radius:18px;padding:20px;background:#fffdf8}.modal button{float:right;border:2px solid var(--ink);border-radius:8px;padding:6px 10px;background:var(--yellow);font-weight:900}@media(max-width:900px){.tree{grid-template-columns:1fr}.tree-root{grid-template-columns:1fr 1fr}.branches{grid-template-columns:1fr}.shell{padding-top:108px}.topbar{align-items:flex-start}.brand{font-size:17px}.tools{gap:3px}.tools button,.pill{padding:6px;font-size:11px}}@media(max-width:540px){.type-row{grid-template-columns:1fr}.leaves{grid-template-columns:1fr}.bottom{right:10px;bottom:60px}}@media print{.topbar,.bottom{display:none!important}.shell{padding:0}}
+</style><style data-inline-css="dreamh-tree.css">.tree-scroll{overflow-x:auto;padding:6px 2px}.tree-diagram{position:relative;min-width:1050px;height:650px;border:3px solid #182c49;border-radius:16px;background:linear-gradient(90deg,#f8fcff,#fffdf7)}.tree-diagram svg{position:absolute;inset:0;width:100%;height:100%}.tree-diagram line{stroke:#527fa8;stroke-width:4}.tree-diagram circle{fill:#fff;stroke:#182c49;stroke-width:3}.tree-diagram text{fill:#182c49;font:700 19px Arial,sans-serif}.tree-diagram .small-text{font-size:16px}.tree-head{position:absolute;top:14px;color:#c12d3b;font-weight:900;text-decoration:underline;font-size:18px}.tree-head.one{left:18%}.tree-head.two{left:39%}.tree-head.three{left:68%}.tree-node{position:absolute;left:var(--left);top:var(--top);z-index:1;display:flex;align-items:center;justify-content:center;width:128px;min-height:52px;padding:5px;transform:translate(-50%,-50%);border:3px dashed #4e90c2;border-radius:12px;background:#f4faff}.tree-node .token{width:100%;min-width:0;margin:0;text-align:center}.tree-node[data-pad="sports-cards"],.tree-node[data-pad="game-character-cards"]{width:150px;min-height:64px}.tree-node[data-pad="team-sport"],.tree-node[data-pad="individual-sport"],.tree-node[data-pad="human"],.tree-node[data-pad="creature"]{width:135px;min-height:56px}.tree-node[data-pad^="team-"],.tree-node[data-pad^="individual-"],.tree-node[data-pad^="human-"],.tree-node[data-pad^="creature-"]{width:160px;min-height:43px}@media(max-width:700px){.tree-scroll{margin:0 -8px}.tree-diagram{min-width:900px;height:610px}.tree-diagram text{font-size:17px}.tree-head{font-size:16px}.tree-node{width:110px}.tree-node[data-pad^="team-"],.tree-node[data-pad^="individual-"],.tree-node[data-pad^="human-"],.tree-node[data-pad^="creature-"]{width:145px}}
+</style><style data-inline-css="dreamh-choices.css">.choice-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.choice-group{padding:9px;border:2px solid #9cb9d4;border-radius:12px;background:#f8fcff}.choice-group h3{margin:0 0 6px;font-size:15px}.choice-group .bank{min-height:58px;padding:5px}.choice-group .token{min-width:0;margin:2px;padding:7px 8px;font-size:14px}@media(max-width:700px){.choice-groups{grid-template-columns:1fr}}
+</style><style data-inline-css="dreamh-controls.css">.curriculum-button{display:inline-flex;align-items:center;gap:6px}.trillium{display:inline-grid;place-items:center;width:22px;height:22px;border:2px solid #376a34;border-radius:50%;background:#fff;color:#376a34;font-size:17px;line-height:1}.student-id{background:#eaf6ff}.modal .expectation{padding:10px;border-left:5px solid #376a34;border-radius:8px;background:#f3fbf0}.modal .expectation h3{margin:0 0 5px}.answer-dot{width:18px;height:18px;min-width:18px;padding:0;border:2px solid #7b1010!important;border-radius:50%!important;background:#e12d2d!important;box-shadow:0 2px 0 #7b1010;cursor:pointer}
+</style><style data-inline-css="dreame4-fit.css">html,body{overflow:hidden}.shell{transform:scale(var(--dreame4-scale,1));transform-origin:top left}
+</style><style data-inline-css="import-inner.css">html,body{overscroll-behavior:none}#fillAnswers,#feedback,#score,.topbar,.nav-link,#resetBtn,#submitWork{display:none!important}
+/* Keep source activities inside the available iframe, with host navigation outside. */
+body[data-import="1"] .shell{padding:3px;min-height:100vh;display:block}
+body[data-import="1"] .top{padding:3px;margin-bottom:4px;gap:3px;box-shadow:none;border-width:2px}
+body[data-import="1"] .prompt{font-size:13px;padding:3px;border-width:2px}
+body[data-import="1"] .controls button,body[data-import="1"] .controls select{font-size:12px;padding:3px}
+body[data-import="1"] .work{grid-template-columns:1fr 180px;gap:5px}
+body[data-import="1"] .panel{padding:4px;border-width:2px;box-shadow:none}
+body[data-import="1"] .mean-board{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+body[data-import="1"] .kid{min-height:0;padding:3px;border-width:2px;gap:2px}
+body[data-import="1"] .bars{height:clamp(100px,29vh,210px);grid-template-columns:24px 24px;gap:2px}
+body[data-import="1"] .bar-wrap{height:clamp(80px,25vh,180px);width:24px}
+body[data-import="1"] .face{width:38px;height:38px}body[data-import="1"] .kid-name{font-size:10px}
+body[data-import="1"] .question-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+body[data-import="1"] .question-card{padding:3px;border-width:2px;font-size:11px}
+body[data-import="1"] .question-card select,body[data-import="1"] .multi-pick summary{font-size:11px;padding:3px}
+body[data-import="1"] .multi-list{top:auto;bottom:100%}
+body[data-import="1"] .calculator{display:none}
+body[data-import="1"] .answer-box{padding:4px;gap:3px;border-width:2px;font-size:12px}
+body[data-import="1"] .answer-box select{padding:3px;font-size:15px;border-width:2px}
+body[data-import="1"] .math-box{font-size:12px;padding:3px;border-width:2px}
+body[data-import="1"] .math-box small{font-size:10px}
+body[data-import="3"] .bar{height:180px}
+body[data-import="4"] .hero,body[data-import="4"] .note,body[data-import="4"] h2{display:none}
+body[data-import="4"] .shell{padding:4px}
+body[data-import="4"] .shell{height:100vh;min-height:0!important;width:100%!important;transform:none}
+body[data-import="4"] .page{height:100%;padding:0;margin:0}
+body[data-import="4"] .card{height:100%;margin:0;padding:5px;display:grid;grid-template-columns:28% 1fr;gap:6px}
+body[data-import="4"] .choice-groups{grid-template-columns:1fr;gap:3px;min-height:0}
+body[data-import="4"] .choice-group{padding:3px}
+body[data-import="4"] .choice-group h3{font-size:10px;margin:0 0 2px}
+body[data-import="4"] .choice-group .bank{padding:1px;min-height:0}
+body[data-import="4"] .token{padding:3px;font-size:12px;margin:1px;min-height:0}
+body[data-import="4"] .tree-scroll{height:100%;overflow:hidden;padding:0}
+body[data-import="4"] .tree-diagram{min-width:0;width:100%;height:100%}
+body[data-import="4"] .tree-diagram svg{overflow:visible}
+body[data-import="4"] .tree-head{font-size:11px;top:3px}
+body[data-import="4"] .tree-node{width:18%;min-height:26px;padding:1px;border-width:2px;border-radius:7px}
+body[data-import="5"] main{gap:5px;padding:6px;grid-template-rows:auto 1fr auto auto}
+body[data-import="5"] .graph{padding:8px;gap:5px}body[data-import="5"] .graph h1{font-size:26px}
+body[data-import="5"] .game-card{width:35px;font-size:23px}
+body[data-import="5"] .half{width:17.5px}body[data-import="5"] .half .game-card{width:35px}
+body[data-import="5"] .label,body[data-import="5"] .legend{font-size:20px}
+body[data-import="5"] .question{font-size:14px;padding:5px}
+body[data-import="6"] .y-axis{position:relative;display:block}
+body[data-import="6"] main{grid-template-columns:30% minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:10px}
+body[data-import="6"] .prompt,body[data-import="6"] .footer{grid-column:1/-1}
+body[data-import="6"] .tally{align-self:center;font-size:15px}
+body[data-import="6"] .tally caption{font-size:20px}
+body[data-import="6"] .tally th,body[data-import="6"] .tally td{padding:5px}
+body[data-import="6"] .graph-card{padding:8px}
+body[data-import="6"] .graph-card h2{font-size:20px}
+body[data-import="6"] .plot{padding:0 20px;gap:18px}
+body[data-import="6"] .axis-label{font-size:14px;padding:3px}
+body[data-import="6"] .y-axis{height:calc(100% - 3px)}
+body[data-import="6"] .y-axis span{position:absolute;right:5px;transform:translateY(-50%)}
+body[data-import="6"] .bar{flex-shrink:0;box-sizing:border-box}
+body[data-import="6"] .bar[style*="height: 0%"]{border:0}
+
+[data-card]{touch-action:none;cursor:grab}
+</style><script src="import-bridge.js"></script><script defer src="../../tablet-drag-guard.js?v=20260928-2"></script></head><body data-import="4"><script src="dreame4.js"></script></body></html>

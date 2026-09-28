@@ -1,0 +1,18 @@
+.collection-group + .collection-group { margin-top: 26px; }
+.group-heading { font-size: 24px; margin: 0 0 12px; }
+.collection { padding: 24px; }
+.collection h3 { font-size: 30px; margin: 10px 0 4px; }
+.collection .icon { font-size: 38px; }
+.collection p { margin-bottom: 18px; }
+.excite { --accent: #2b5693; --soft: #e6efff; border-color: #c9d9f2; }
+@media (max-width: 650px) {
+  .collection { padding: 16px; }
+  .collection h3 { font-size: 24px; }
+  .group-heading { font-size: 21px; }
+  .collection .icon { font-size: 30px; }
+}
+@media (max-height: 580px) and (min-width: 651px) {
+  .collection { padding: 16px; }
+  .collection p { margin-bottom: 12px; }
+  .collection-group + .collection-group { margin-top: 16px; }
+}
