@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ExciteBFirsthalf · Grade 2</title>
+  <link rel="stylesheet" href="exciteb.css">
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body class="landing-page">
+  <main class="landing-card">
+    <header class="landing-head">
+      <h1>🚀 ExciteBFirsthalf</h1>
+      <p>Ontario Grade 2 mathematics · 21 activities</p>
+    </header>
+    <p class="landing-instruction">Choose your emoji-number to begin.</p>
+    <div id="studentCodes" class="student-codes" aria-label="Student emoji-number choices"></div>
+    <button id="enterProject" class="enter-project" type="button">Choose an emoji-number first</button>
+    <p id="landingMessage" class="landing-message">Your work starts fresh when you enter. Next Page will save it.</p>
+  </main>
+  <script>
+    (() => {
+      const choices = [['1847','🐝'],['7128','🍯'],['4561','🌻'],['1472','🌈'],['8392','⭐'],['2956','🍎'],['6384','🦋'],['9025','🐞'],['5173','🌱'],['3608','☀️'],['7419','📚'],['2865','✏️'],['4937','🎒'],['8206','🧩'],['1594','🎨'],['6742','⚽'],['3087','🌙'],['9251','🍓']];
+      const codes = document.getElementById('studentCodes');
+      const enter = document.getElementById('enterProject');
+      const message = document.getElementById('landingMessage');
+      let selected = '';
+      codes.innerHTML = choices.map(([number, emoji]) => `<button type="button" class="student-code" data-code="${number}">${number}<span aria-hidden="true">${emoji}</span></button>`).join('');
+      codes.addEventListener('click', event => {
+        const button = event.target.closest('.student-code');
+        if (!button) return;
+        selected = button.dataset.code;
+        codes.querySelectorAll('.student-code').forEach(item => item.classList.toggle('selected', item === button));
+        enter.textContent = 'Enter Grade 2 activities →';
+      });
+      enter.addEventListener('click', () => {
+        if (!selected) { message.textContent = 'Please choose your emoji-number first.'; return; }
+        try { localStorage.removeItem('exciteb-firsthalf-' + selected); } catch (_) {}
+        location.href = 'Dream1.html?student=' + encodeURIComponent(selected);
+      });
+    })();
+  </script>
+</body>
+</html>
