@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>DreamE5 · Game Card Collection</title>
+  <style>
+    :root{--ink:#203238;--line:#26333b;--cream:#fff8c8;--sky:#eef8ff;--purple:#6d5bb7;--pink:#efb0cf}*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior-y:none;font-family:Georgia,"Times New Roman",serif;color:#171c22;background:#fffdf5;font-weight:700}button,select{font:inherit}main{height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:clamp(10px,2vw,22px);gap:12px}.prompt{border:3px solid var(--line);border-radius:14px;background:var(--cream);padding:10px 16px;text-align:center;font-family:Arial,sans-serif;font-size:clamp(18px,2.6vw,29px)}.graph{min-height:0;border:4px solid var(--line);border-radius:18px;background:#fff;padding:clamp(12px,2.5vw,30px);display:grid;grid-template-rows:auto 1fr auto;gap:12px}.graph h1{margin:0;text-align:center;text-decoration:underline;font-size:clamp(28px,4.5vw,52px)}.rows{display:grid;align-content:center;gap:clamp(9px,2vw,18px)}.data-row{display:grid;grid-template-columns:clamp(95px,18vw,180px) 1fr;gap:10px;align-items:center}.label{font-size:clamp(22px,3vw,35px);text-align:right}.cards{display:flex;align-items:center;gap:clamp(6px,1.2vw,12px);flex-wrap:wrap}.game-card{width:clamp(42px,5.5vw,68px);aspect-ratio:3/4;border:3px solid #31285a;border-radius:7px;background:linear-gradient(135deg,#9e92e9,#6152aa);box-shadow:3px 3px 0 #d9d1ff;display:grid;place-items:center;font-size:clamp(21px,3vw,37px);color:#fff;text-shadow:1px 1px #302760}.half{width:calc(clamp(42px,5.5vw,68px)/2);overflow:hidden;border-radius:7px 0 0 7px}.half .game-card{width:clamp(42px,5.5vw,68px)}.legend{justify-self:end;display:flex;align-items:center;gap:10px;font-size:clamp(19px,2.5vw,30px)}.legend .game-card{width:clamp(34px,4.5vw,52px)}.questions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.question{border:3px dashed #4d85b2;border-radius:12px;background:var(--sky);padding:10px;font-family:Arial,sans-serif;display:grid;gap:7px;font-size:clamp(15px,1.8vw,20px)}select{border:3px solid var(--line);border-radius:8px;background:#fff;padding:6px;font-size:20px;font-weight:800}.footer{display:flex;align-items:center;justify-content:center;gap:12px}.footer button{border:3px solid var(--line);border-radius:10px;background:var(--cream);padding:8px 17px;cursor:pointer;font-family:Arial,sans-serif;font-weight:800}.answer-dot{width:22px;height:22px;padding:0!important;border:2px solid #7b1111!important;border-radius:50%!important;background:#e42a2a!important}.feedback{font-family:Arial,sans-serif;min-height:24px}@media(max-width:640px){.questions{grid-template-columns:1fr}.graph{overflow:auto}.legend{justify-self:center}.data-row{grid-template-columns:88px 1fr}.label{font-size:20px}.game-card{width:39px}.half{width:19.5px}.half .game-card{width:39px}}
+  </style>
+<style data-inline-css="import-inner.css">html,body{overscroll-behavior:none}#fillAnswers,#feedback,#score,.topbar,.nav-link,#resetBtn,#submitWork{display:none!important}
+/* Keep source activities inside the available iframe, with host navigation outside. */
+body[data-import="1"] .shell{padding:3px;min-height:100vh;display:block}
+body[data-import="1"] .top{padding:3px;margin-bottom:4px;gap:3px;box-shadow:none;border-width:2px}
+body[data-import="1"] .prompt{font-size:13px;padding:3px;border-width:2px}
+body[data-import="1"] .controls button,body[data-import="1"] .controls select{font-size:12px;padding:3px}
+body[data-import="1"] .work{grid-template-columns:1fr 180px;gap:5px}
+body[data-import="1"] .panel{padding:4px;border-width:2px;box-shadow:none}
+body[data-import="1"] .mean-board{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+body[data-import="1"] .kid{min-height:0;padding:3px;border-width:2px;gap:2px}
+body[data-import="1"] .bars{height:clamp(100px,29vh,210px);grid-template-columns:24px 24px;gap:2px}
+body[data-import="1"] .bar-wrap{height:clamp(80px,25vh,180px);width:24px}
+body[data-import="1"] .face{width:38px;height:38px}body[data-import="1"] .kid-name{font-size:10px}
+body[data-import="1"] .question-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+body[data-import="1"] .question-card{padding:3px;border-width:2px;font-size:11px}
+body[data-import="1"] .question-card select,body[data-import="1"] .multi-pick summary{font-size:11px;padding:3px}
+body[data-import="1"] .multi-list{top:auto;bottom:100%}
+body[data-import="1"] .calculator{display:none}
+body[data-import="1"] .answer-box{padding:4px;gap:3px;border-width:2px;font-size:12px}
+body[data-import="1"] .answer-box select{padding:3px;font-size:15px;border-width:2px}
+body[data-import="1"] .math-box{font-size:12px;padding:3px;border-width:2px}
+body[data-import="1"] .math-box small{font-size:10px}
+body[data-import="3"] .bar{height:180px}
+body[data-import="4"] .hero,body[data-import="4"] .note,body[data-import="4"] h2{display:none}
+body[data-import="4"] .shell{padding:4px}
+body[data-import="4"] .shell{height:100vh;min-height:0!important;width:100%!important;transform:none}
+body[data-import="4"] .page{height:100%;padding:0;margin:0}
+body[data-import="4"] .card{height:100%;margin:0;padding:5px;display:grid;grid-template-columns:28% 1fr;gap:6px}
+body[data-import="4"] .choice-groups{grid-template-columns:1fr;gap:3px;min-height:0}
+body[data-import="4"] .choice-group{padding:3px}
+body[data-import="4"] .choice-group h3{font-size:10px;margin:0 0 2px}
+body[data-import="4"] .choice-group .bank{padding:1px;min-height:0}
+body[data-import="4"] .token{padding:3px;font-size:12px;margin:1px;min-height:0}
+body[data-import="4"] .tree-scroll{height:100%;overflow:hidden;padding:0}
+body[data-import="4"] .tree-diagram{min-width:0;width:100%;height:100%}
+body[data-import="4"] .tree-diagram svg{overflow:visible}
+body[data-import="4"] .tree-head{font-size:11px;top:3px}
+body[data-import="4"] .tree-node{width:18%;min-height:26px;padding:1px;border-width:2px;border-radius:7px}
+body[data-import="5"] main{gap:5px;padding:6px;grid-template-rows:auto 1fr auto auto}
+body[data-import="5"] .graph{padding:8px;gap:5px}body[data-import="5"] .graph h1{font-size:26px}
+body[data-import="5"] .game-card{width:35px;font-size:23px}
+body[data-import="5"] .half{width:17.5px}body[data-import="5"] .half .game-card{width:35px}
+body[data-import="5"] .label,body[data-import="5"] .legend{font-size:20px}
+body[data-import="5"] .question{font-size:14px;padding:5px}
+body[data-import="6"] .y-axis{position:relative;display:block}
+body[data-import="6"] main{grid-template-columns:30% minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:10px}
+body[data-import="6"] .prompt,body[data-import="6"] .footer{grid-column:1/-1}
+body[data-import="6"] .tally{align-self:center;font-size:15px}
+body[data-import="6"] .tally caption{font-size:20px}
+body[data-import="6"] .tally th,body[data-import="6"] .tally td{padding:5px}
+body[data-import="6"] .graph-card{padding:8px}
+body[data-import="6"] .graph-card h2{font-size:20px}
+body[data-import="6"] .plot{padding:0 20px;gap:18px}
+body[data-import="6"] .axis-label{font-size:14px;padding:3px}
+body[data-import="6"] .y-axis{height:calc(100% - 3px)}
+body[data-import="6"] .y-axis span{position:absolute;right:5px;transform:translateY(-50%)}
+body[data-import="6"] .bar{flex-shrink:0;box-sizing:border-box}
+body[data-import="6"] .bar[style*="height: 0%"]{border:0}
+
+[data-card]{touch-action:none;cursor:grab}
+</style><script src="import-bridge.js"></script><script defer src="../../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body data-import="5">
+  <main>
+    <div class="prompt">Read the pictograph. Each game card picture means 2 game cards.</div>
+    <section class="graph" aria-label="Game Card Collection pictograph"><h1>Game Card Collection</h1><div class="rows"><div class="data-row"><div class="label">Adventure</div><div class="cards" aria-label="Adventure: 10 cards"><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span></div></div><div class="data-row"><div class="label">Sports</div><div class="cards" aria-label="Sports: 6 cards"><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span></div></div><div class="data-row"><div class="label">Fantasy</div><div class="cards" aria-label="Fantasy: 11 cards"><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="game-card">🎮</span><span class="half"><span class="game-card">🎮</span></span></div></div></div><div class="legend"><span>Each</span><span class="game-card">🎮</span><span>means 2 game cards.</span></div></section>
+    <section class="questions"><label class="question">How many Adventure game cards?<select id="adventure"></select></label><label class="question">How many Sports game cards?<select id="sports"></select></label><label class="question">How many more Fantasy than Sports game cards?<select id="difference"></select></label></section>
+    <footer class="footer"><span id="feedback" class="feedback" role="status"></span><button id="fillAnswers" class="answer-dot" type="button" aria-label="Fill correct answers" title="Fill correct answers"></button></footer>
+  </main>
+  <script>
+    (()=>{"use strict";const $=id=>document.getElementById(id),student=new URLSearchParams(location.search).get("student")||"student",storageKey="inspiree-game-cards-"+student,saved=JSON.parse(window.InspireMemory.getItem(storageKey)||"null"),answers={adventure:saved&&saved.adventure||"",sports:saved&&saved.sports||"",difference:saved&&saved.difference||""},expected={adventure:"10",sports:"6",difference:"5"};function assess(){return[{item:"Adventure game cards",student:answers.adventure||"No answer",expected:expected.adventure,correct:answers.adventure===expected.adventure},{item:"Sports game cards",student:answers.sports||"No answer",expected:expected.sports,correct:answers.sports===expected.sports},{item:"Fantasy compared with Sports",student:answers.difference||"No answer",expected:expected.difference,correct:answers.difference===expected.difference}]}function save(){window.InspireMemory.setItem(storageKey,JSON.stringify(answers))}function send(){window.InspireHost.emit();const rows=assess(),got=rows.filter(row=>row.correct).length;parent.postMessage({type:"DREAME_GAME_CARDS",rows,got,available:rows.length},"*")}function fill(select,value){select.innerHTML='<option value="">Choose</option>';for(let number=0;number<=20;number++){const option=document.createElement("option");option.value=String(number);option.textContent=number;if(option.value===value)option.selected=true;select.appendChild(option)}}["adventure","sports","difference"].forEach(id=>{const select=$(id);fill(select,answers[id]);select.onchange=()=>{answers[id]=select.value;save();send()}});$("fillAnswers").onclick=()=>{if(prompt("")!=="259")return;Object.assign(answers,expected);["adventure","sports","difference"].forEach(id=>$(id).value=answers[id]);save();send()};window.InspireHost.register(()=>Object.fromEntries(['adventure','sports','difference'].map(id=>[id,$(id).value])),v=>{Object.assign(answers,v);['adventure','sports','difference'].forEach(id=>$(id).value=answers[id])});send()})();
+  </script>
+</body>
+</html>

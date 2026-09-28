@@ -1,0 +1,20 @@
+.number-bank-activity{max-width:980px;margin:0 auto;color:#172b48}
+.number-bank-directions{margin:0 0 8px;padding:7px 12px;border:3px solid #292929;border-radius:12px;background:#fff8c9;text-align:center;font-size:clamp(17px,2.3vw,24px);font-weight:800}
+.number-bank{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;min-height:66px;margin-bottom:9px;padding:8px;border:3px solid #292929;border-radius:12px;background:#fff8c9}
+.number-bank-title{width:100%;text-align:center;font-size:17px;font-weight:800}
+.number-bank-card{min-width:64px;min-height:42px;padding:5px 12px;border:3px solid #17386b;border-radius:10px;background:#fff;color:#17386b;box-shadow:0 3px 0 #8fb6e8;font:800 22px Arial,sans-serif;cursor:grab;touch-action:none}
+.number-bank-card.selected{background:#fff07a;outline:4px solid #37a765}
+.number-bank-card:active{cursor:grabbing}
+.number-bank-card.drag-ghost{position:fixed;z-index:2147483646;pointer-events:none;opacity:.88;box-shadow:0 8px 18px #17386b66;transform:translate(-50%,-50%) scale(1.06)}
+.number-bank-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.number-bank-row{display:grid;grid-template-columns:minmax(105px,1fr) 100px minmax(92px,1fr);align-items:center;gap:8px;min-width:0;padding:8px;border:3px solid #292929;border-radius:12px;background:#f7fcff}
+.number-bank-operation{text-align:center;font-size:clamp(16px,1.9vw,21px);font-weight:800}
+.number-bank-source{display:grid;place-items:center;min-height:50px;border:3px solid #292929;border-radius:10px;background:#fff8c9;font-size:27px;font-weight:800}
+.bank-pad{display:grid;place-items:center;min-width:0;min-height:54px;border:3px dashed #327bb2;border-radius:10px;background:#edf7ff;color:#21445e;cursor:pointer;text-align:center;font-size:19px;font-weight:800}
+.bank-pad.filled{border-style:solid;background:#fff}
+.bank-pad.over,.number-bank.over{background:#d6edff;border-color:#15588e}
+.bank-pad .number-bank-card{margin:3px}
+.number-bank-activity.before-after .number-bank-rows{grid-template-columns:1fr}
+.number-bank-activity.before-after .number-bank-row{grid-template-columns:minmax(100px,1fr) 110px minmax(100px,1fr);max-width:720px;width:100%;margin:0 auto}
+.number-bank-activity.before-after .bank-pad::before{content:attr(data-label);display:block;font-size:13px}
+@media(max-width:760px){.number-bank-rows{grid-template-columns:1fr}.number-bank-row{grid-template-columns:minmax(82px,1fr) 80px minmax(78px,1fr);gap:5px;padding:5px}.number-bank-operation{font-size:15px}.number-bank-source{min-height:45px;font-size:24px}.number-bank-card{min-width:53px;min-height:38px;padding:4px 7px;font-size:18px}.number-bank-activity.before-after .number-bank-row{grid-template-columns:minmax(76px,1fr) 75px minmax(76px,1fr)}}

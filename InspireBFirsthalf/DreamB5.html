@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team Balance</title>
+  <style>
+    :root {
+      --ink: #222;
+      --blue: #2f7dff;
+      --blue2: #7ec4ff;
+      --paper: #fbfdff;
+      --cream: #fff6bd;
+      --line: #cfcfcf;
+      --dark-blue: #123f68;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Century Gothic", "Trebuchet MS", Arial, sans-serif;
+      color: var(--ink);
+      background: #eef8fc;
+    }
+    button, select, input, textarea { font: inherit; }
+    .hidden { display: none !important; }
+    .start {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: linear-gradient(180deg, #f7fcff, #dff4ff);
+    }
+    .start-card {
+      width: min(1080px, 96vw);
+      border: 4px solid var(--ink);
+      background: white;
+      padding: 20px;
+      box-shadow: 8px 8px 0 #a7d5ef;
+    }
+    .start-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 3px solid #d8e7f0;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .start-title img { width: 84px; height: 84px; object-fit: contain; }
+    h1 { margin: 0; font-size: clamp(34px, 5vw, 58px); color: var(--dark-blue); }
+    .start label { font-weight: 900; display: grid; gap: 6px; }
+    .start input, .start select {
+      border: 3px solid var(--ink);
+      padding: 10px;
+      font-size: 24px;
+      font-weight: 900;
+      background: white;
+    }
+    .start-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 340px) minmax(180px, 260px) auto;
+      gap: 14px;
+      align-items: end;
+      margin: 12px 0;
+    }
+    .code-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 28px;
+      margin-top: 16px;
+    }
+    .code-choice {
+      position: relative;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      min-height: 226px;
+    }
+    .code-choice img {
+      width: 100%;
+      height: 226px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 1px #777);
+    }
+    .code-choice span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 68%;
+      height: 54%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      font-size: clamp(34px, 3.8vw, 48px);
+      line-height: 1;
+      white-space: nowrap;
+      font-weight: 900;
+      color: #102432;
+    }
+    .code-choice.selected span { color: #0d67b2; }
+    .primary {
+      border: 3px solid var(--ink);
+      background: #c9f7c9;
+      padding: 12px 22px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 #8ab88a;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: 288px minmax(0, 1fr);
+      min-height: 100vh;
+      gap: 10px;
+      padding: 10px;
+    }
+    .admin, .main-panel {
+      background: white;
+      border: 4px solid var(--ink);
+      box-shadow: 6px 6px 0 #a7d5ef;
+    }
+    .admin {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(100vh - 20px);
+      overflow: auto;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--dark-blue);
+      border-bottom: 2px solid #c8d8e8;
+      padding-bottom: 8px;
+    }
+    .brand img { width: 58px; height: 58px; object-fit: contain; }
+    .brand small { display: block; color: #333; font-size: 12px; }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #c8d8e8;
+      padding-bottom: 5px;
+      font-weight: 800;
+    }
+    .timer {
+      font-variant-numeric: tabular-nums;
+      min-width: 74px;
+      text-align: right;
+      display: inline-block;
+    }
+    .admin label { display: grid; gap: 5px; font-weight: 900; }
+    .admin select, .admin textarea, .admin input {
+      border: 3px solid var(--ink);
+      padding: 8px;
+      background: white;
+      font-weight: 800;
+      width: 100%;
+    }
+    .admin textarea { min-height: 58px; resize: vertical; }
+    .checkgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .checkgrid label {
+      border: 1px solid #8aa7c4;
+      background: #f8fcff;
+      padding: 7px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      text-align: center;
+      font-size: 14px;
+    }
+    .admin button, .top button {
+      border: 3px solid var(--ink);
+      background: #e6f5ff;
+      padding: 9px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .main-panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .top {
+      border-bottom: 4px solid var(--ink);
+      padding: 10px;
+      background: #fff;
+    }
+    .prompt-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .prompt-line img { width: 48px; height: 48px; object-fit: contain; }
+    .prompt {
+      flex: 1 1 520px;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 900;
+      background: #fff;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .controls select {
+      border: 3px solid var(--ink);
+      padding: 8px;
+      font-weight: 900;
+      background: white;
+    }
+    .submit { background: #bdf7bf !important; }
+    .workspace {
+      padding: 14px;
+      overflow: auto;
+      display: grid;
+      gap: 14px;
+    }
+    .model-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+    .number-card {
+      position: relative;
+      min-height: 270px;
+      border: 4px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 36px 18px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .number-badge {
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 78px;
+      border: 4px solid var(--line);
+      border-radius: 10px;
+      padding: 3px 10px;
+      background: #f7fbff;
+      text-align: center;
+      font-size: clamp(36px, 5vw, 50px);
+      line-height: 1;
+      font-weight: 900;
+      color: #26343d;
+    }
+    .blocks {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .tens, .ones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+    }
+    .tens { max-width: 250px; }
+    .ones { max-width: 180px; display: grid; grid-template-columns: repeat(2, 34px); }
+    .ten-rod {
+      width: 34px;
+      height: 178px;
+      border: 2px solid #2d69e8;
+      border-radius: 9px;
+      display: grid;
+      grid-template-rows: repeat(10, 1fr);
+      overflow: hidden;
+      background: linear-gradient(90deg, #377dff, #7ec4ff);
+      box-shadow: 4px 4px 0 #1c62df;
+    }
+    .ten-rod span { border-bottom: 2px solid #5aafff; }
+    .ten-rod span:last-child { border-bottom: 0; }
+    .one-cube {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #2d69e8;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #377dff, #89d1ff);
+      box-shadow: 4px 4px 0 #1c62df;
+    }
+    .one-cube.moved {
+      border-color: #b45b00;
+      background: linear-gradient(135deg, #ffb13b, #ffe17a);
+      box-shadow: 4px 4px 0 #d87900;
+    }
+    .original-equation {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      border: 3px solid #b9cce0;
+      background: #f7fbff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 900;
+      color: #123f68;
+    }
+    .equation-card {
+      width: min(760px, 100%);
+      margin: 16px auto 0;
+      border: 4px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      padding: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: clamp(38px, 6vw, 58px);
+      font-weight: 900;
+    }
+    .answer-select {
+      border: 4px solid var(--line);
+      background: #fff7b5;
+      min-width: 126px;
+      padding: 10px;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      text-align: center;
+    }
+    .balance-board {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      border: 4px solid #9aa4aa;
+      border-radius: 10px;
+      background: #fff;
+      padding: clamp(14px, 2vw, 24px);
+      display: grid;
+      gap: 14px;
+    }
+    .balance-question {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 900;
+      color: #243946;
+    }
+    .balance-equation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: clamp(34px, 5vw, 54px);
+      font-weight: 900;
+    }
+    .side-labels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      text-align: center;
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 900;
+    }
+    .side-labels .missing-part { color: #e0003d; }
+    .scale-wrap {
+      position: relative;
+      min-height: 470px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+      align-items: end;
+      padding-bottom: 86px;
+    }
+    .pan {
+      position: relative;
+      min-height: 330px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 30px;
+    }
+    .pan::after {
+      content: "";
+      position: absolute;
+      bottom: 16px;
+      width: min(90%, 270px);
+      height: 28px;
+      border: 10px solid #efc300;
+      border-top: 0;
+      border-radius: 0 0 90px 90px;
+      transform: perspective(180px) rotateX(50deg);
+      background: #fff7bd;
+    }
+    .count-stack {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 42px);
+      grid-auto-rows: 42px;
+      gap: 6px;
+      justify-content: center;
+      align-content: end;
+      max-width: 220px;
+    }
+    .unit-counter {
+      width: 42px;
+      height: 42px;
+      border: 3px solid #777;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #ddd;
+      color: #111;
+      font-size: 28px;
+      font-weight: 900;
+    }
+    .unit-counter.missing { background: #ffe0e7; border-color: #e0003d; color: #e0003d; }
+    .scale-base {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 230px;
+      height: 180px;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .scale-base::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 40px;
+      width: 36px;
+      height: 140px;
+      background: #efc300;
+      transform: translateX(-50%);
+    }
+    .scale-base::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 0;
+      height: 0;
+      border-left: 95px solid transparent;
+      border-right: 95px solid transparent;
+      border-bottom: 36px solid #efc300;
+    }
+    .beam {
+      position: absolute;
+      left: 50%;
+      bottom: 115px;
+      width: min(74vw, 660px);
+      height: 18px;
+      background: #efc300;
+      transform: translateX(-50%) rotate(-4deg);
+      border-radius: 99px;
+      z-index: 0;
+    }
+    .feedback {
+      border: 3px solid var(--ink);
+      background: #fff7c9;
+      padding: 10px;
+      font-weight: 900;
+      text-align: center;
+      font-size: 20px;
+    }
+    .mini-status {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-weight: 900;
+      color: #243946;
+    }
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .admin { max-height: none; order: 2; }
+      .model-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .start-row { grid-template-columns: 1fr; }
+      .workspace { padding: 10px; }
+      .number-card { min-height: 230px; }
+      .blocks { gap: 12px; }
+      .ten-rod { width: 26px; height: 136px; }
+      .ones { grid-template-columns: repeat(3, 28px); }
+      .one-cube { width: 23px; height: 23px; }
+      .equation-card { font-size: 34px; }
+      .answer-select { min-width: 102px; }
+    }
+  </style>
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script>
+  <div id="startScreen" class="start">
+    <form id="startForm" class="start-card">
+      <div class="start-title">
+        <img src="big-bear-math-logo.png" alt="Big Bear Math logo">
+        <div>
+          <h1>CatBalance</h1>
+          <strong>Choose your button code, then find the missing number.</strong>
+        </div>
+      </div>
+      <div class="start-row">
+        <label>Student Code
+          <input id="studentCode" placeholder="Choose a button below" readonly autocomplete="off">
+        </label>
+        <label>Grade Level
+          <select id="gradeLevel">
+            <option value="1">Grade 1</option>
+            <option value="2">Grade 2</option>
+            <option value="3">Grade 3</option>
+          </select>
+        </label>
+        <button class="primary" type="submit">Start</button>
+      </div>
+      <div id="codeGrid" class="code-grid" aria-label="Student code buttons"></div>
+    </form>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="admin">
+      <div class="brand"><img src="big-bear-math-logo.png" alt="Big Bear Math logo"><div>CatBalance<small>P26-CATBALANCE</small></div></div>
+      <div class="status-row"><span>Student</span><span id="studentStatus">--</span></div>
+      <div class="status-row"><span>Grade</span><span id="gradeStatus">--</span></div>
+      <div class="status-row"><span>Total Timer</span><span id="totalTimer" class="timer">00:00</span></div>
+      <div class="status-row"><span>Page Timer</span><span id="pageTimer" class="timer">00:00</span></div>
+      <div class="status-row"><span>Page</span><span id="pageStatus">1 / 20</span></div>
+      <div class="status-row"><span>Attempts</span><span id="attemptStatus">0</span></div>
+      <label>Teacher Support
+        <select id="teacherSupport"><option>Independent</option><option>Small Prompt</option><option>Some Help</option><option>Heavy Help</option></select>
+      </label>
+      <label>Assessment Type
+        <select id="assessmentType"><option>Formative</option><option>Summative</option></select>
+      </label>
+      <button id="logHelp" type="button">Log Help</button>
+      <div class="checkgrid">
+        <label><input type="checkbox" data-quick="Careful"> Careful</label>
+        <label><input type="checkbox" data-quick="Prompt"> Prompt</label>
+        <label><input type="checkbox" data-quick="Explain"> Explain</label>
+        <label><input type="checkbox" data-quick="Retry"> Retry</label>
+      </div>
+      <div class="checkgrid">
+        <label><input type="checkbox" data-strategy="Counted tens"> Counted tens</label>
+        <label><input type="checkbox" data-strategy="Counted ones"> Counted ones</label>
+        <label><input type="checkbox" data-strategy="Regrouped"> Regrouped</label>
+        <label><input type="checkbox" data-strategy="Checked sum"> Checked sum</label>
+      </div>
+      <label>Teacher Comments
+        <textarea id="teacherComments" placeholder="Hidden teacher note"></textarea>
+      </label>
+      <label>Student Reflection
+        <input id="studentReflection" placeholder="Student reflection">
+      </label>
+      <button id="pdpReport" type="button">PDP Report</button>
+      <button id="pdfSnaps" type="button">PDF Snaps</button>
+      <button id="resetBtn" type="button">Reset</button>
+    </aside>
+
+    <main class="main-panel">
+      <header class="top">
+        <div class="prompt-line">
+          <img src="big-bear-math-logo.png" alt="Big Bear Math logo">
+        <div id="promptText" class="prompt">Find the missing number that makes both sides balance.</div>
+        </div>
+        <div class="controls">
+          <button id="backBtn" type="button">Back</button>
+          <button id="nextBtn" type="button">Next</button>
+          <select id="pageSelect" aria-label="Go to page"></select>
+          <button id="checkPage" type="button">Check Page</button>
+          <button id="submitWork" class="submit" type="submit" form="netlifySubmissionForm">Submit</button>
+        </div>
+      </header>
+      <section class="workspace">
+        <div class="mini-status">
+          <span id="projectId">Project ID: P26-CATBALANCE</span>
+          <span id="barcode">Barcode: CATBALANCE-20</span>
+        </div>
+        <div class="balance-board">
+          <div class="balance-question">What is the missing number in this equation?</div>
+          <div id="balanceEquation" class="balance-equation">
+            <span id="equationText">4 + 5 = 3 +</span>
+            <select id="answerSelect" class="answer-select" aria-label="Choose missing number"></select>
+          </div>
+          <div class="side-labels">
+            <div id="leftLabel">4 + 5</div>
+            <div id="rightLabel">3 + <span class="missing-part">?</span></div>
+          </div>
+          <div class="scale-wrap">
+            <div class="beam"></div>
+            <div class="pan"><div id="leftCounters" class="count-stack"></div></div>
+            <div class="pan"><div id="rightCounters" class="count-stack"></div></div>
+            <div class="scale-base"></div>
+          </div>
+        </div>
+        <div id="feedback" class="feedback">Choose an answer, then check the page.</div>
+      </section>
+    </main>
+  </div>
+
+  <form id="netlifySubmissionForm" name="inspireb-firsthalf-p26-catbalance-submission" method="POST" data-netlify="true" netlify action="thanks.html" class="hidden">
+    <input type="hidden" name="form-name" value="inspireb-firsthalf-p26-catbalance-submission">
+    <input type="hidden" name="project_id" value="P26-CATBALANCE">
+    <input type="hidden" name="student_id" id="netlifyStudentId">
+    <input type="hidden" name="grade" id="netlifyGrade">
+    <input type="hidden" name="finished_at" id="netlifyFinishedAt">
+    <input type="hidden" name="teacher_submission_comment" id="netlifyTeacherSubmissionComment">
+    <input type="hidden" name="summary_json" id="netlifySummary">
+    <input type="hidden" name="pages_json" id="netlifyPages">
+    <input type="hidden" name="interactions_json" id="netlifyInteractions">
+  </form>
+
+  <script>
+    const PROJECT_ID = "Team Balance";
+    const PROJECT_CODE = "P26-TEAM-BALANCE";
+    const STORAGE_KEY = "inspireb-firsthalf-p26-team-balance-v1";
+    const TEACHER_CODE = "259";
+    const codeButtons = ["3186","4279","5602","7394","8417","2950","6048","7521","1937","4806","9261","3705","8142","2059","6470","5318","9720","4861","7039","2584","6193","8405","3279","9516"];
+    const problems = [
+      { leftA:4, leftB:5, rightKnown:3 }, { leftA:6, leftB:4, rightKnown:7 }, { leftA:8, leftB:3, rightKnown:5 }, { leftA:9, leftB:2, rightKnown:6 }, { leftA:7, leftB:6, rightKnown:8 },
+      { leftA:5, leftB:9, rightKnown:10 }, { leftA:8, leftB:8, rightKnown:7 }, { leftA:12, leftB:4, rightKnown:9 }, { leftA:11, leftB:6, rightKnown:8 }, { leftA:13, leftB:5, rightKnown:11 },
+      { leftA:14, leftB:3, rightKnown:6 }, { leftA:10, leftB:9, rightKnown:12 }, { leftA:15, leftB:4, rightKnown:10 }, { leftA:16, leftB:3, rightKnown:9 }, { leftA:12, leftB:7, rightKnown:14 },
+      { leftA:9, leftB:9, rightKnown:5 }, { leftA:17, leftB:2, rightKnown:13 }, { leftA:11, leftB:8, rightKnown:7 }, { leftA:18, leftB:1, rightKnown:12 }, { leftA:13, leftB:6, rightKnown:15 }
+    ].map(problem => ({ ...problem, missing: problem.leftA + problem.leftB - problem.rightKnown }));
+    const id = value => document.getElementById(value);
+    const el = {
+      startScreen: id("startScreen"), app: id("app"), startForm: id("startForm"), studentCode: id("studentCode"),
+      gradeLevel: id("gradeLevel"), codeGrid: id("codeGrid"), studentStatus: id("studentStatus"), gradeStatus: id("gradeStatus"),
+      totalTimer: id("totalTimer"), pageTimer: id("pageTimer"), pageStatus: id("pageStatus"), attemptStatus: id("attemptStatus"),
+      teacherSupport: id("teacherSupport"), assessmentType: id("assessmentType"), teacherComments: id("teacherComments"),
+      studentReflection: id("studentReflection"), logHelp: id("logHelp"), pdpReport: id("pdpReport"), pdfSnaps: id("pdfSnaps"),
+      resetBtn: id("resetBtn"), promptText: id("promptText"), backBtn: id("backBtn"), nextBtn: id("nextBtn"),
+      pageSelect: id("pageSelect"), checkPage: id("checkPage"),
+      balanceEquation: id("balanceEquation"), equationText: id("equationText"), leftLabel: id("leftLabel"), rightLabel: id("rightLabel"), leftCounters: id("leftCounters"), rightCounters: id("rightCounters"), answerSelect: id("answerSelect"),
+      feedback: id("feedback"), netlifyForm: id("netlifySubmissionForm")
+    };
+    let pageIndex = 0;
+    let pageStartedAt = Date.now();
+    let submitReady = false;
+    function makePage(problem, index) {
+      const answer = problem.missing;
+      return {
+        page: index + 1, ...problem, answer, selected: "", choices: answerChoices(answer, index),
+        isCorrect: false, attempts: 0, firstAttemptSeconds: null, timeToCorrectSeconds: null,
+        timeAfterCorrectSeconds: 0, timeBetweenAttempts: [], lastAttemptSeconds: null, pageSeconds: 0,
+        teacherSupport: "Independent", assessmentType: "Formative", teacherComments: "",
+        quickComments: [], strategyData: [], reflection: "", helpCount: 0, helpHistory: [],
+        answerRecord: "", correctAnswer: String(answer)
+      };
+    }
+    function freshState() {
+      return {
+        studentId: "", grade: "1", startedAt: Date.now(), finishedAt: "", totalSeconds: 0,
+        teacherSubmissionComment: "", pages: problems.map(makePage), interactions: []
+      };
+    }
+    let state = loadState() || freshState();
+    const leagueStudent = new URLSearchParams(location.search).get("student") || "";
+    if (new URLSearchParams(location.search).get("fresh") === "1") state = freshState();
+    if (leagueStudent) state.studentId = leagueStudent;
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (error) { return null; }
+    }
+    function store() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function currentPage() { return state.pages[pageIndex]; }
+    function formatTime(seconds) {
+      seconds = Math.max(0, Math.floor(seconds || 0));
+      return String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+    }
+    function totalSeconds() { return Math.floor((Date.now() - state.startedAt) / 1000); }
+    function recordInteraction(type, detail) {
+      state.interactions.push({ at: new Date().toISOString(), page: pageIndex + 1, type, detail });
+    }
+    function answerChoices(answer, seed) {
+      const values = new Set([answer]);
+      const offsets = [-20,-11,-10,-5,5,9,10,12,20,25];
+      let i = seed % offsets.length;
+      while (values.size < 6) {
+        const next = Math.max(0, Math.min(140, answer + offsets[i % offsets.length]));
+        if (next !== answer) values.add(next);
+        i++;
+      }
+      return shuffle([...values], seed + answer);
+    }
+    function shuffle(items, seed) {
+      const copy = items.slice();
+      let s = seed * 9301 + 49297;
+      for (let i = copy.length - 1; i > 0; i--) {
+        s = (s * 9301 + 49297) % 233280;
+        const j = s % (i + 1);
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+    function renderCodes() {
+      el.codeGrid.innerHTML = codeButtons.map(code =>
+        `<button type="button" class="code-choice ${el.studentCode.value === code ? "selected" : ""}" data-code="${code}" aria-label="Choose code ${code}"><img src="student-code-round-button.png" alt="Round student code button"><span>${code}</span></button>`
+      ).join("");
+      el.codeGrid.querySelectorAll("[data-code]").forEach(button => {
+        button.addEventListener("click", () => {
+          el.studentCode.value = button.dataset.code;
+          recordInteraction("student-code-button", { code: button.dataset.code });
+          renderCodes();
+        });
+      });
+    }
+    function renderPageOptions() {
+      el.pageSelect.innerHTML = "";
+      state.pages.forEach((page, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `Page ${index + 1}`;
+        el.pageSelect.appendChild(option);
+      });
+    }
+    function digits(n) { return { tens: Math.floor(n / 10), ones: n % 10 }; }
+    function tenRod() {
+      const node = document.createElement("span");
+      node.className = "ten-rod";
+      for (let i = 0; i < 10; i++) node.appendChild(document.createElement("span"));
+      return node;
+    }
+    function oneCube(group, moved) {
+      const node = document.createElement("span");
+      node.className = `one-cube${moved ? " moved" : ""}`;
+      node.draggable = true;
+      node.dataset.group = group;
+      node.dataset.moved = moved ? "true" : "false";
+      node.title = moved ? "Double-click to send this one back" : "Drag this one to the other group";
+      node.addEventListener("dragstart", event => {
+        event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "one", source: group }));
+        event.dataTransfer.effectAllowed = "move";
+        recordInteraction("drag-start", { kind: "one", source: group });
+      });
+      node.addEventListener("dblclick", event => {
+        event.preventDefault();
+        if (node.dataset.moved === "true") moveOne(group, group === "left" ? "right" : "left", true);
+      });
+      return node;
+    }
+    function ensureModel(page) {}
+    function movedOnGroup(page, group) {
+      ensureModel(page);
+      const shiftToLeft = page.modelA - page.a;
+      if (group === "left") return Math.max(0, shiftToLeft);
+      return Math.max(0, -shiftToLeft);
+    }
+    function renderBlocks(container, number, group) {
+      const page = currentPage();
+      const d = digits(number);
+      const movedCount = Math.min(d.ones, movedOnGroup(page, group));
+      container.innerHTML = "";
+      const tens = document.createElement("div");
+      tens.className = "tens";
+      const ones = document.createElement("div");
+      ones.className = "ones";
+      for (let i = 0; i < d.tens; i++) tens.appendChild(tenRod());
+      for (let i = 0; i < d.ones; i++) ones.appendChild(oneCube(group, i >= d.ones - movedCount));
+      container.append(tens, ones);
+    }
+    function renderAnswerChoices(page) {
+      el.answerSelect.innerHTML = `<option value="">?</option>` + page.choices.map(choice => `<option value="${choice}">${choice}</option>`).join("");
+      el.answerSelect.value = page.selected || "";
+    }
+    function unitNode(missing) {
+      const node = document.createElement("span");
+      node.className = `unit-counter${missing ? " missing" : ""}`;
+      node.textContent = "1";
+      return node;
+    }
+    function renderCounters(container, total, missingCount = 0) {
+      container.innerHTML = "";
+      const normal = Math.max(0, total - missingCount);
+      for (let i = 0; i < normal; i++) container.appendChild(unitNode(false));
+      for (let i = 0; i < missingCount; i++) container.appendChild(unitNode(true));
+    }
+    function render() {
+      const page = currentPage();
+      el.startScreen.classList.toggle("hidden", !!state.studentId);
+      el.app.classList.toggle("hidden", !state.studentId);
+      el.studentStatus.textContent = state.studentId || "--";
+      el.gradeStatus.textContent = state.grade ? `Grade ${state.grade}` : "--";
+      el.pageStatus.textContent = `${pageIndex + 1} / ${state.pages.length}`;
+      el.attemptStatus.textContent = String(page.attempts);
+      el.pageSelect.value = String(pageIndex);
+      const selectedText = page.selected || "?";
+      const selectedNumber = Number(page.selected) || 0;
+      const rightTotal = page.rightKnown + selectedNumber;
+      el.promptText.textContent = `Find the missing number so ${page.leftA} + ${page.leftB} balances with ${page.rightKnown} + __.`;
+      el.equationText.textContent = `${page.leftA} + ${page.leftB} = ${page.rightKnown} +`;
+      el.leftLabel.textContent = `${page.leftA} + ${page.leftB}`;
+      el.rightLabel.innerHTML = `${page.rightKnown} + <span class="missing-part">${selectedText}</span>`;
+      renderCounters(el.leftCounters, page.leftA + page.leftB, 0);
+      renderCounters(el.rightCounters, rightTotal, selectedNumber);
+      renderAnswerChoices(page);
+      hydrateAdmin();
+      el.feedback.textContent = page.isCorrect ? "This page is complete." : "Choose an answer, then check the page.";
+    }
+    function savePageTime() {
+      const page = currentPage();
+      page.pageSeconds += Math.floor((Date.now() - pageStartedAt) / 1000);
+      pageStartedAt = Date.now();
+    }
+    function goToPage(index) {
+      if (index < 0 || index >= state.pages.length) return;
+      saveAdminInput();
+      savePageTime();
+      pageIndex = index;
+      pageStartedAt = Date.now();
+      recordInteraction("page-nav", { page: pageIndex + 1 });
+      render();
+      store();
+    }
+    function saveAdminInput() {
+      const page = currentPage();
+      page.teacherSupport = el.teacherSupport.value;
+      page.assessmentType = el.assessmentType.value;
+      page.teacherComments = el.teacherComments.value;
+      page.reflection = el.studentReflection.value;
+      page.quickComments = [...document.querySelectorAll("[data-quick]:checked")].map(input => input.dataset.quick);
+      page.strategyData = [...document.querySelectorAll("[data-strategy]:checked")].map(input => input.dataset.strategy);
+    }
+    function hydrateAdmin() {
+      const page = currentPage();
+      el.teacherSupport.value = page.teacherSupport;
+      el.assessmentType.value = page.assessmentType;
+      el.teacherComments.value = page.teacherComments;
+      el.studentReflection.value = page.reflection;
+      document.querySelectorAll("[data-quick]").forEach(input => input.checked = page.quickComments.includes(input.dataset.quick));
+      document.querySelectorAll("[data-strategy]").forEach(input => input.checked = page.strategyData.includes(input.dataset.strategy));
+    }
+    function answerRecord(page) {
+      return page.selected ? `${page.leftA} + ${page.leftB} = ${page.rightKnown} + ${page.selected}` : `${page.leftA} + ${page.leftB} = ${page.rightKnown} + ?`;
+    }
+    function pageIsCorrect(page) {
+      return Number(page.selected) === Number(page.answer);
+    }
+    function checkPage() {
+      const page = currentPage();
+      const now = totalSeconds();
+      page.attempts += 1;
+      if (page.firstAttemptSeconds === null) page.firstAttemptSeconds = now;
+      if (page.lastAttemptSeconds !== null) page.timeBetweenAttempts.push(now - page.lastAttemptSeconds);
+      page.lastAttemptSeconds = now;
+      page.answerRecord = answerRecord(page);
+      page.correctAnswer = String(page.answer);
+      page.isCorrect = pageIsCorrect(page);
+      if (page.isCorrect && page.timeToCorrectSeconds === null) page.timeToCorrectSeconds = now;
+      recordInteraction("check-page", { correct: page.isCorrect, answer: page.answerRecord, correctAnswer: page.correctAnswer });
+      saveAdminInput();
+      render();
+      store();
+    }
+    function moveOne(source, target, returning = false) {
+      return;
+    }
+    function setupModelDrops() {}
+    function updateTimers() {
+      state.totalSeconds = totalSeconds();
+      const livePage = currentPage().pageSeconds + Math.floor((Date.now() - pageStartedAt) / 1000);
+      el.totalTimer.textContent = formatTime(state.totalSeconds);
+      el.pageTimer.textContent = formatTime(livePage);
+    }
+    function logHelp() {
+      const page = currentPage();
+      page.helpCount += 1;
+      page.helpHistory.push({ at: new Date().toISOString(), support: el.teacherSupport.value });
+      recordInteraction("teacher-help", { count: page.helpCount, support: el.teacherSupport.value });
+      store();
+      render();
+    }
+    function fillNetlifyFields() {
+      saveAdminInput();
+      savePageTime();
+      state.totalSeconds = totalSeconds();
+      id("netlifyStudentId").value = state.studentId;
+      id("netlifyGrade").value = state.grade;
+      id("netlifyFinishedAt").value = state.finishedAt || "";
+      id("netlifyTeacherSubmissionComment").value = state.teacherSubmissionComment || "";
+      id("netlifySummary").value = JSON.stringify({
+        project: PROJECT_ID, projectId: PROJECT_CODE, studentId: state.studentId, grade: state.grade,
+        totalSeconds: state.totalSeconds, totalTime: formatTime(state.totalSeconds),
+        pageCount: state.pages.length, pagesCorrect: state.pages.filter(page => pageIsCorrect(page)).length,
+        finishedAt: state.finishedAt || "", teacherSubmissionComment: state.teacherSubmissionComment || ""
+      });
+      id("netlifyPages").value = JSON.stringify(state.pages.map(page => {
+        ensureModel(page);
+        page.answerRecord = answerRecord(page);
+        page.correctAnswer = String(page.answer);
+        page.isCorrect = pageIsCorrect(page);
+        return ({
+        page: page.page, question: `${page.leftA} + ${page.leftB} = ${page.rightKnown} + __`, answer: page.answerRecord,
+        leftTotal: page.leftA + page.leftB, rightKnown: page.rightKnown, selectedMissing: page.selected || "",
+        correctAnswer: page.correctAnswer, correct: page.isCorrect ? "Yes" : "No",
+        attempts: page.attempts, firstAttemptSeconds: page.firstAttemptSeconds, timeToCorrectSeconds: page.timeToCorrectSeconds,
+        timeBetweenAttempts: page.timeBetweenAttempts, timeOnPageSeconds: page.pageSeconds,
+        teacherSupport: page.teacherSupport, assessmentType: page.assessmentType, teacherComments: page.teacherComments,
+        quickComments: page.quickComments, strategyData: page.strategyData, reflection: page.reflection, helpCount: page.helpCount,
+        helpHistory: page.helpHistory
+      });
+      }));
+      id("netlifyInteractions").value = JSON.stringify(state.interactions);
+      store();
+    }
+    function submitWork(event) {
+      if (submitReady) {
+        submitReady = false;
+        return;
+      }
+      event.preventDefault();
+      const code = prompt("Teacher override code required to submit:");
+      if (code !== TEACHER_CODE) {
+        recordInteraction("submit-blocked", { reason: "teacher-code-required" });
+        store();
+        return;
+      }
+      const comment = prompt("Teacher comment before submitting? Leave blank if none.") || "";
+      state.teacherSubmissionComment = comment;
+      state.finishedAt = new Date().toISOString();
+      recordInteraction("submit", { complete: state.pages.every(page => pageIsCorrect(page)), teacherComment: comment });
+      fillNetlifyFields();
+      submitReady = true;
+      el.netlifyForm.requestSubmit();
+    }
+    function reportHtml(kind) {
+      fillNetlifyFields();
+      const rows = state.pages.map(page => {
+        ensureModel(page);
+        const correct = pageIsCorrect(page);
+        return `
+        <section class="chapter">
+          <h2>Question ${page.page}</h2>
+          <p><strong>Problem:</strong> ${page.leftA} + ${page.leftB} = ${page.rightKnown} + __</p>
+          <p><strong>Balance model:</strong> Left side ${page.leftA + page.leftB}; right side ${page.rightKnown} + ${page.selected || "?"}</p>
+          <p><strong>Student answer:</strong> ${answerRecord(page)}</p>
+          <p><strong>Correct answer:</strong> ${page.answer}</p>
+          <p><strong>Correct:</strong> ${correct ? "Yes" : "No"}</p>
+          <p><strong>Time on page:</strong> ${formatTime(page.pageSeconds)}</p>
+          <p><strong>Attempts:</strong> ${page.attempts}</p>
+          <p><strong>Teacher support:</strong> ${page.teacherSupport}</p>
+          <p><strong>Assessment type:</strong> ${page.assessmentType}</p>
+          <p><strong>Teacher comments:</strong> ${page.teacherComments || ""}</p>
+          <p><strong>Student reflection:</strong> ${page.reflection || ""}</p>
+        </section>`;
+      }).join("");
+      return `<!doctype html><html><head><title>${PROJECT_ID} ${kind}</title><style>
+        body{font-family:Arial,sans-serif;color:#222;font-size:16px;line-height:1.35}
+        h1{color:#123f68;font-size:32px;border-bottom:4px solid #123f68;padding-bottom:8px}
+        h2{color:#123f68;font-size:26px;margin:0 0 8px}
+        .chapter{break-inside:avoid;border:2px solid #b9cce0;margin:12px 0;padding:12px;border-radius:8px}
+        .summary{background:#fff6bd;border:2px solid #222;padding:10px;margin-bottom:12px}
+      </style></head><body>
+        <h1>${PROJECT_ID} ${kind}</h1>
+        <div class="summary"><strong>Student:</strong> ${state.studentId} &nbsp; <strong>Grade:</strong> ${state.grade} &nbsp; <strong>Total Time:</strong> ${formatTime(state.totalSeconds)} &nbsp; <strong>Finished:</strong> ${state.finishedAt || "Not submitted"}</div>
+        ${rows}
+        </body></html>`;
+    }
+    function openReport(kind, needsCode) {
+      if (needsCode && prompt("Teacher code required to view report:") !== TEACHER_CODE) return;
+      const win = window.open("", "_blank");
+      win.document.write(reportHtml(kind));
+      win.document.close();
+      recordInteraction("pdf-report", { kind });
+      store();
+    }
+    function resetWork() {
+      if (!confirm("Reset CatBalance work?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      state = freshState();
+      pageIndex = 0;
+      pageStartedAt = Date.now();
+      el.studentCode.value = "";
+      renderCodes();
+      render();
+    }
+    el.startForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const chosen = el.studentCode.value.trim();
+      if (!chosen) {
+        alert("Choose one button code first.");
+        return;
+      }
+      state.studentId = chosen;
+      state.grade = el.gradeLevel.value;
+      state.startedAt = Date.now();
+      recordInteraction("student-start", { studentId: state.studentId, grade: state.grade });
+      render();
+      store();
+    });
+    el.answerSelect.addEventListener("change", () => {
+      const page = currentPage();
+      page.selected = el.answerSelect.value;
+      page.isCorrect = pageIsCorrect(page);
+      page.answerRecord = answerRecord(page);
+      recordInteraction("selection", { field: "answer", value: page.selected, answer: page.answerRecord });
+      render();
+      store();
+    });
+    el.backBtn.addEventListener("click", () => goToPage(pageIndex - 1));
+    el.nextBtn.addEventListener("click", () => goToPage(pageIndex + 1));
+    el.pageSelect.addEventListener("change", event => goToPage(Number(event.target.value)));
+    el.checkPage.addEventListener("click", checkPage);
+    el.logHelp.addEventListener("click", logHelp);
+    el.resetBtn.addEventListener("click", resetWork);
+    el.pdpReport.addEventListener("click", () => openReport("PDP Report", true));
+    el.pdfSnaps.addEventListener("click", () => openReport("PDF Snaps", true));
+    el.netlifyForm.addEventListener("submit", submitWork);
+    setupModelDrops();
+    [el.teacherSupport, el.assessmentType].forEach(input => input.addEventListener("change", () => { saveAdminInput(); recordInteraction("changed-value", { field: input.id, value: input.value }); store(); }));
+    [el.teacherComments, el.studentReflection].forEach(input => input.addEventListener("input", () => { saveAdminInput(); recordInteraction("changed-value", { field: input.id, value: input.value }); store(); }));
+    document.querySelectorAll("[data-quick], [data-strategy]").forEach(input => input.addEventListener("change", () => { saveAdminInput(); recordInteraction("changed-value", { field: input.dataset.quick || input.dataset.strategy, checked: input.checked }); store(); }));
+    renderPageOptions();
+    if (state.studentId) {
+      el.studentCode.value = state.studentId;
+      el.gradeLevel.value = state.grade || "1";
+    }
+    renderCodes();
+    render();
+    setInterval(updateTimers, 1000);
+  </script>
+  <script id="league-bridge">(() => {
+    "use strict";
+    const key = "inspireb-firsthalf-p26-team-balance-v1";
+    function send() {
+      let raw = "null";
+      try { raw = localStorage.getItem(key) || "null"; } catch (error) {}
+      try { parent.postMessage({ type: "LEAGUE_STATE", letter: "Balance", raw }, "*"); } catch (error) {}
+    }
+    ["change", "click", "drop", "pointerup"].forEach(name => document.addEventListener(name, () => setTimeout(send, 80), true));
+    window.addEventListener("load", () => setTimeout(send, 120));
+    window.addEventListener("message", event => { if (event.data && event.data.type === "LEAGUE_SNAPSHOT_REQUEST") send(); });
+    setInterval(send, 1000);
+  })();</script>
+</body>
+</html>

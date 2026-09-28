@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TeamPaddle7</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Century Gothic", "Trebuchet MS", Arial, sans-serif; background: #f2fbff; color: #050505; }
+    button, input, select, textarea { font: inherit; }
+    .hidden { display: none !important; }
+    .start { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: linear-gradient(180deg,#e7f8ff,#fff5c9); }
+    .start-card { width: min(520px, 100%); border: 4px solid #222; background: #fff; padding: 22px; box-shadow: 8px 8px 0 #9fd0f0; }
+    .start-card h1 { margin: 0 0 10px; font-size: clamp(34px,7vw,56px); }
+    .start-card label, .admin label { display: grid; gap: 5px; font-weight: 800; }
+    .start-card input, .start-card select, .admin input, .admin select, .admin textarea {
+      width: 100%; border: 3px solid #222; background: #fff; padding: 10px; min-height: 44px; font-weight: 700;
+    }
+    .start-card button, .topbar button, .admin button {
+      border: 3px solid #222; background: #e5f4ff; min-height: 44px; padding: 8px 14px; font-weight: 900; cursor: pointer;
+    }
+    .start-card button { width: 100%; background: #c8f7c8; margin-top: 12px; }
+    .app { display: none; min-height: 100vh; }
+    .app.ready { display: block; }
+    .topbar { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 8px; border-bottom: 4px solid #222; background: #fff; }
+    .prompt { width: 100%; border: 3px solid #222; border-radius: 10px; padding: 10px 14px; font-size: clamp(18px,2.3vw,26px); font-weight: 900; line-height: 1.25; box-shadow: 3px 3px 0 #b7e3ff; }
+    .page-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .page-controls select { border: 3px solid #222; background: #fff; padding: 8px; min-height: 44px; min-width: 120px; }
+    .timer { font-variant-numeric: tabular-nums; min-width: 86px; display: inline-block; text-align: center; border: 2px solid #222; padding: 7px 10px; background: #fff7c9; font-weight: 900; }
+    .shell { display: grid; grid-template-columns: 290px 1fr; gap: 10px; padding: 10px; align-items: start; }
+    .admin, .work-card { border: 4px solid #222; background: #fff; box-shadow: 5px 5px 0 #a5d2f3; }
+    .admin { padding: 12px; display: grid; gap: 10px; position: sticky; top: 8px; }
+    .admin h2 { margin: 0; font-size: 22px; }
+    .status-grid { display: grid; gap: 6px; font-size: 14px; }
+    .status-grid div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #c8d8e8; padding-bottom: 4px; }
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .check { display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #8aa7c4; background: #f8fcff; padding: 8px; font-weight: 800; }
+    .main-grid { display: grid; gap: 10px; align-items: start; }
+    .work-card { padding: 12px; background: #ffffff; overflow-x: auto; }
+    .addition-board { min-width: 720px; display: grid; gap: 8px; align-items: start; }
+    .problem {
+      border: 4px solid #222;
+      background: #dfeafa;
+      display: grid;
+      grid-template-columns: minmax(170px,1fr) 88px 88px minmax(170px,1fr);
+      align-items: stretch;
+    }
+    .problem-head { background: #c7ad75; color: #fff; text-align: center; font-weight: 900; padding: 8px; border-bottom: 2px solid #fff; }
+    .side-head { background: #c7ad75; color: #fff; text-align: center; font-weight: 900; padding: 8px; border-bottom: 2px solid #fff; }
+    .digit { min-height: 82px; display: grid; place-items: center; font-size: clamp(38px,6vw,58px); font-weight: 900; border-bottom: 2px solid #fff; }
+    .answer-cell { min-height: 94px; display: grid; place-items: center; gap: 4px; border-top: 5px solid #f59b22; padding: 8px; font-weight: 900; }
+    .answer-cell select, .carry-control select { width: 80px; height: 54px; border: 3px solid #222; background: #fff; font-size: 26px; font-weight: 900; text-align: center; }
+    .row-blocks {
+      min-height: 82px;
+      border-bottom: 2px solid #fff;
+      background: #f8fcff;
+      padding: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+    .left-blocks { justify-content: flex-end; }
+    .right-blocks { justify-content: flex-start; }
+    .answer-blocks { min-height: 94px; border-top: 5px solid #f59b22; }
+    .carry-row {
+      border: 4px solid #222;
+      background: #fff7c9;
+      display: grid;
+      grid-template-columns: minmax(170px,1fr) 176px minmax(170px,1fr);
+      align-items: stretch;
+    }
+    .plus { position: relative; }
+    .plus::before { content: "+"; position: absolute; left: 10px; top: 18px; font-size: 34px; font-weight: 900; }
+    .carry-control { padding: 8px; display: grid; place-items: center; gap: 4px; font-weight: 900; }
+    .block-ten { width: 26px; height: 84px; border: 2px solid #111; background: #ffcf5b; display: grid; grid-template-rows: repeat(10,1fr); box-shadow: 1px 1px 0 #777; }
+    .block-ten span { border-bottom: 1px solid #777; }
+    .block-ten span:last-child { border-bottom: 0; }
+    .block-one { width: 24px; height: 24px; border: 2px solid #111; background: #7fd3ff; box-shadow: 3px -3px 0 #d9f4ff, 5px -5px 0 #111; transform: skewY(-10deg); display: inline-grid; place-items: center; font-size: 11px; font-weight: 900; }
+    .block-one.extra-one { background: #76e37f; box-shadow: 3px -3px 0 #d9ffd9, 5px -5px 0 #111; }
+    .summary { border: 3px solid #222; background: #fff7c9; padding: 10px; text-align: center; font-weight: 900; font-size: 19px; }
+    .feedback { border: 3px solid #222; background: #fff; padding: 8px; font-weight: 900; text-align: center; min-height: 42px; margin-top: 8px; }
+    @media (max-width: 1100px) { .shell, .main-grid { grid-template-columns: 1fr; } .admin { position: static; } }
+    @media (max-width: 760px) { .page-controls button, .page-controls select { flex: 1 1 130px; } .addition-board { min-width: 640px; } .problem { grid-template-columns: minmax(130px,1fr) 76px 76px minmax(130px,1fr); } .carry-row { grid-template-columns: minmax(130px,1fr) 152px minmax(130px,1fr); } .block-ten { width: 22px; height: 72px; } .block-one { width: 21px; height: 21px; } }
+    .curriculum-button { position: fixed; right: 14px; bottom: 14px; z-index: 30; width: 58px; height: 58px; padding: 0; border: 3px solid #17352a; border-radius: 50%; overflow: hidden; background: #08713a; box-shadow: 0 5px 0 #034b25; cursor: pointer; }
+    .curriculum-button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .curriculum-overlay { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 18px; background: rgba(10,25,30,.68); }
+    .curriculum-card { width: min(760px,100%); max-height: 90vh; overflow: auto; border: 4px solid #222; background: #fffef8; padding: 18px; }
+    .curriculum-card h2 { margin-top: 0; }
+    .curriculum-expectation { border-left: 8px solid #08713a; background: #eef9f0; padding: 10px; margin: 10px 0; line-height: 1.4; }
+    .curriculum-close { border: 3px solid #222; background: #c8f7c8; min-height: 44px; padding: 8px 18px; font-weight: 900; }
+    body.league-embedded .page-controls #pageSelect, body.league-embedded .page-controls #backBtn, body.league-embedded .page-controls #nextBtn, body.league-embedded .page-controls #submitWork, body.league-embedded .page-controls #pdpReport, body.league-embedded .page-controls #pdfSnaps { display: none; }
+    body.league-embedded .shell { grid-template-columns: 260px minmax(0,1fr); padding: 6px; }
+    body.league-embedded .topbar { padding: 5px; }
+    body.league-embedded .work-card { overflow: hidden; }
+    body.league-embedded .addition-board { min-width: 0; }
+  </style>
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script><script src="dreamb-paddle-random.js?v=20260927-01"></script>
+  <main id="app" class="app ready">
+    <header class="topbar">
+      <div class="prompt" id="promptText">Use the visual blocks to solve the vertical addition. Choose each place value.</div>
+      <div class="page-controls">
+        <strong id="pageLabel">Page 1 of 1</strong>
+        <select id="pageSelect" aria-label="Go to page"></select>
+        <span class="timer">Total <span id="totalTimer">00:00</span></span>
+        <span class="timer">Page <span id="pageTimer">00:00</span></span>
+        <button type="button" id="backBtn">Back</button>
+        <button type="button" id="nextBtn">Next</button>
+        <button type="button" id="checkPage">Check Page</button>
+        <button type="submit" id="submitWork" form="netlifySubmissionForm">Submit</button>
+        <button type="button" id="resetBtn">Reset</button>
+        <button type="button" id="pdpReport">PDP Report</button>
+        <button type="button" id="pdfSnaps">PDF Snaps</button>
+      </div>
+    </header>
+
+    <div class="shell">
+      <aside class="admin">
+        <h2>Admin</h2>
+        <div class="status-grid">
+          <div><span>Student</span><strong id="studentStatus">--</strong></div>
+          <div><span>Grade</span><strong id="gradeStatus">--</strong></div>
+          <div><span>Project</span><strong>TeamPaddle7</strong></div>
+          <div><span>Barcode</span><strong>P26-TEAMPADDLE-7</strong></div>
+          <div><span>Attempts</span><strong id="attemptStatus">0</strong></div>
+        </div>
+        <label>Teacher Support <select id="teacherSupport"><option>Independent</option><option>Small Prompt</option><option>Moderate Help</option><option>Full Support</option></select></label>
+        <label>Assessment Type <select id="assessmentType"><option>Formative</option><option>Summative</option></select></label>
+        <button type="button" id="logHelp">Log Help</button>
+        <strong>Quick Comments</strong>
+        <div class="checks">
+          <label class="check"><input type="checkbox" data-quick="Careful"> Careful</label>
+          <label class="check"><input type="checkbox" data-quick="Prompt"> Prompt</label>
+          <label class="check"><input type="checkbox" data-quick="Explain"> Explain</label>
+          <label class="check"><input type="checkbox" data-quick="Retry"> Retry</label>
+        </div>
+        <strong>Strategy Data</strong>
+        <div class="checks">
+          <label class="check"><input type="checkbox" data-strategy="Used ones"> Used ones</label>
+          <label class="check"><input type="checkbox" data-strategy="Used tens"> Used tens</label>
+          <label class="check"><input type="checkbox" data-strategy="Carried"> Carried</label>
+          <label class="check"><input type="checkbox" data-strategy="Corrected"> Corrected</label>
+        </div>
+        <label>Teacher Comments <input id="teacherComments" type="password" placeholder="Hidden teacher note"></label>
+        <label>Student Reflection <textarea id="studentReflection" placeholder="Student reflection"></textarea></label>
+      </aside>
+
+      <section class="main-grid">
+        <div class="work-card">
+          <div class="addition-board">
+            <div class="problem">
+              <div class="side-head">Tens Blocks</div><div class="problem-head">Tens</div><div class="problem-head">Ones</div><div class="side-head">Ones Blocks</div>
+              <div class="row-blocks left-blocks" id="carryBlocks"></div>
+              <div class="carry-control">Carry ten<select id="carryAnswer"></select></div>
+              <div></div>
+              <div></div>
+              <div class="row-blocks left-blocks" id="topTensBlocks"></div>
+              <div class="digit" id="topTens">6</div><div class="digit" id="topOnes">3</div>
+              <div class="row-blocks right-blocks" id="topOnesBlocks"></div>
+              <div class="row-blocks left-blocks" id="bottomTensBlocks"></div>
+              <div class="digit plus" id="bottomTens">2</div><div class="digit" id="bottomOnes">4</div>
+              <div class="row-blocks right-blocks" id="bottomOnesBlocks"></div>
+              <div class="row-blocks left-blocks answer-blocks" id="answerTensBlocks"></div>
+              <div class="answer-cell"><label>Tens<select id="tensAnswer"></select></label></div>
+              <div class="answer-cell"><label>Ones<select id="onesAnswer"></select></label></div>
+              <div class="row-blocks right-blocks answer-blocks" id="answerOnesBlocks"></div>
+            </div>
+            <div class="feedback" id="feedback">Choose values in the dropdowns.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <button id="curriculumButton" class="curriculum-button" type="button" title="Grade 3 Ontario math expectations" aria-label="Show Grade 3 Ontario math expectations"><img src="ontario-grade2-expectations.png" alt=""></button>
+  <div id="curriculumOverlay" class="curriculum-overlay hidden"><div class="curriculum-card"><h2>Ontario Grade 3 Mathematics</h2><div class="curriculum-expectation"><b>B2.4 - Properties and Relationships</b><p>Demonstrate an understanding of the properties of operations, and use them to solve problems and check calculations.</p><p><b>How this question addresses it:</b> The student uses place-value blocks to add two two-digit numbers and checks the carry, tens, and ones in the sum.</p></div><div class="curriculum-expectation"><b>B2.5 - Math Facts</b><p>Use mental math strategies to add and subtract whole numbers, including strategies that involve decomposing and composing numbers.</p><p><b>How this question addresses it:</b> The student combines the ones and decides whether to exchange ten ones for one ten.</p></div><div class="curriculum-expectation"><b>B2.6 - Operations</b><p>Represent and solve problems involving the addition and subtraction of whole numbers that add up to no more than 1000, using various tools and algorithms.</p><p><b>How this question addresses it:</b> The student represents and solves the current addition problem with proportional tens and ones blocks.</p></div><button id="curriculumClose" class="curriculum-close" type="button">Close</button></div></div>
+
+  <form id="netlifySubmissionForm" name="inspireb-firsthalf-p26-teampaddle-7-submission" method="POST" data-netlify="true" netlify action="thanks.html" class="hidden">
+    <input type="hidden" name="form-name" value="inspireb-firsthalf-p26-teampaddle-7-submission">
+    <input type="hidden" id="netlifyStudentId" name="student_id">
+    <input type="hidden" id="netlifyGrade" name="grade">
+    <input type="hidden" id="netlifyProject" name="project" value="TeamPaddle7">
+    <input type="hidden" id="netlifySummary" name="summary_json">
+    <input type="hidden" id="netlifyPages" name="pages_json">
+    <input type="hidden" id="netlifyInteractions" name="interactions_json">
+    <input type="hidden" id="netlifyCurriculum" name="curriculum_expectations_json">
+  </form>
+
+  <script>
+    const PROJECT_ID = "TeamPaddle7";
+    const STORAGE_KEY = "inspireb-firsthalf-p26-teampaddle-7-v1";
+    const TEACHER_CODE = "259";
+    const problems = [window.DreamBRandomPaddle ? window.DreamBRandomPaddle(28) : [63,24]];
+    const CURRICULUM_EXPECTATIONS = [
+      { code: "B2.4 - Properties and Relationships", wording: "Demonstrate an understanding of the properties of operations, and use them to solve problems and check calculations.", how: "The student uses place-value blocks to add two two-digit numbers and checks the carry, tens, and ones in the sum." },
+      { code: "B2.5 - Math Facts", wording: "Use mental math strategies to add and subtract whole numbers, including strategies that involve decomposing and composing numbers.", how: "The student combines the ones and decides whether to exchange ten ones for one ten." },
+      { code: "B2.6 - Operations", wording: "Represent and solve problems involving the addition and subtraction of whole numbers that add up to no more than 1000, using various tools and algorithms.", how: "The student represents and solves the current addition problem with proportional tens and ones blocks." }
+    ];
+    const startedAt = Date.now();
+    let pageIndex = 0;
+    let totalTimerId = null;
+    let state = loadState() || freshState();
+    const el = {
+      app: document.getElementById("app"),
+      promptText: document.getElementById("promptText"), pageLabel: document.getElementById("pageLabel"), pageSelect: document.getElementById("pageSelect"), totalTimer: document.getElementById("totalTimer"), pageTimer: document.getElementById("pageTimer"),
+      backBtn: document.getElementById("backBtn"), nextBtn: document.getElementById("nextBtn"), checkPage: document.getElementById("checkPage"), resetBtn: document.getElementById("resetBtn"), pdpReport: document.getElementById("pdpReport"), pdfSnaps: document.getElementById("pdfSnaps"),
+      studentStatus: document.getElementById("studentStatus"), gradeStatus: document.getElementById("gradeStatus"), attemptStatus: document.getElementById("attemptStatus"), teacherSupport: document.getElementById("teacherSupport"), assessmentType: document.getElementById("assessmentType"),
+      logHelp: document.getElementById("logHelp"), teacherComments: document.getElementById("teacherComments"), studentReflection: document.getElementById("studentReflection"), topTens: document.getElementById("topTens"), topOnes: document.getElementById("topOnes"),
+      bottomTens: document.getElementById("bottomTens"), bottomOnes: document.getElementById("bottomOnes"), carryAnswer: document.getElementById("carryAnswer"), tensAnswer: document.getElementById("tensAnswer"), onesAnswer: document.getElementById("onesAnswer"),
+      topTensBlocks: document.getElementById("topTensBlocks"), bottomTensBlocks: document.getElementById("bottomTensBlocks"), carryBlocks: document.getElementById("carryBlocks"), answerTensBlocks: document.getElementById("answerTensBlocks"),
+      topOnesBlocks: document.getElementById("topOnesBlocks"), bottomOnesBlocks: document.getElementById("bottomOnesBlocks"), answerOnesBlocks: document.getElementById("answerOnesBlocks"),
+      feedback: document.getElementById("feedback"), netlifyForm: document.getElementById("netlifySubmissionForm"), netlifyStudentId: document.getElementById("netlifyStudentId"),
+      netlifyGrade: document.getElementById("netlifyGrade"), netlifySummary: document.getElementById("netlifySummary"), netlifyPages: document.getElementById("netlifyPages"), netlifyInteractions: document.getElementById("netlifyInteractions"), netlifyCurriculum: document.getElementById("netlifyCurriculum")
+    };
+
+    function freshState() {
+      return { studentId: "", grade: "", totalSeconds: 0, finishedAt: "", interactions: [], pages: problems.map(([a,b], index) => ({
+        page: index + 1, a, b, sum: a + b, carryAnswer: "", tensAnswer: "", onesAnswer: "",
+        attempts: 0, firstAttemptTime: null, timeToCorrect: null, timeAfterCorrect: 0, timeBetweenAttempts: [], lastAttemptAt: null, pageSeconds: 0, pageStartedAt: Date.now(),
+        teacherSupport: "Independent", helpCount: 0, helpHistory: [], assessmentType: "Formative", teacherComments: "", quickComments: [], strategyData: [], reflection: "",
+        answerRecord: "", correctAnswer: "", isCorrect: false, pageScore: null
+      })) };
+    }
+    function loadState(){ try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch(error){ return null; } }
+    function store(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); if (window.parent !== window) window.parent.postMessage({ type: "LEAGUE_STATE", letter: "Paddle", raw: JSON.stringify(state) }, "*"); }
+    function currentPage(){ return state.pages[pageIndex]; }
+    function pad(num){ return String(num).padStart(2,"0"); }
+    function formatTime(seconds){ return `${pad(Math.floor(seconds / 60))}:${pad(seconds % 60)}`; }
+    function updateTimers(){ state.totalSeconds = Math.floor((Date.now() - startedAt) / 1000); const page = currentPage(); el.totalTimer.textContent = formatTime(state.totalSeconds); el.pageTimer.textContent = formatTime(page.pageSeconds + Math.floor((Date.now() - page.pageStartedAt) / 1000)); }
+    function saveCurrentPageTime(){ const page = currentPage(); const now = Date.now(); page.pageSeconds += Math.floor((now - page.pageStartedAt) / 1000); if (page.isCorrect) page.timeAfterCorrect += Math.floor((now - (page.correctMarkedAt || now)) / 1000); page.pageStartedAt = now; }
+    function recordInteraction(type, details = {}){ state.interactions.push({ type, project: PROJECT_ID, page: pageIndex + 1, at: new Date().toISOString(), totalSeconds: state.totalSeconds, pageSeconds: currentPage().pageSeconds + Math.floor((Date.now() - currentPage().pageStartedAt) / 1000), details }); }
+    function digits(n){ return { tens: Math.floor(n / 10), ones: n % 10 }; }
+    function makeOptions(select, max = 19){ select.innerHTML = "<option value=''>?</option>"; for (let i = 0; i <= max; i++) { const option = document.createElement("option"); option.value = String(i); option.textContent = String(i); select.appendChild(option); } }
+    function renderPageOptions(){ el.pageSelect.innerHTML = ""; state.pages.forEach((page,index) => { const option = document.createElement("option"); option.value = String(index); option.textContent = `Page ${index + 1}`; el.pageSelect.appendChild(option); }); }
+    function tenBlock(){ const block = document.createElement("span"); block.className = "block-ten"; for (let i = 0; i < 10; i++) block.appendChild(document.createElement("span")); return block; }
+    function oneBlock(){ const block = document.createElement("span"); block.className = "block-one"; block.textContent = "1"; return block; }
+    function fillBlocks(target, count, kind, markExtraOnes = false){ target.innerHTML = ""; const safeCount = Math.max(0, Math.min(19, Number(count) || 0)); for (let i = 0; i < safeCount; i++) { const block = kind === "ten" ? tenBlock() : oneBlock(); if (markExtraOnes && kind === "one" && i >= 10) block.classList.add("extra-one"); target.appendChild(block); } }
+    function answerRecord(page){ return `carry ${page.carryAnswer === "" ? "?" : page.carryAnswer}; answer ${page.tensAnswer === "" ? "?" : page.tensAnswer} tens and ${page.onesAnswer === "" ? "?" : page.onesAnswer} ones`; }
+    function assessPage(page){
+      const a = digits(page.a); const b = digits(page.b); const onesSum = a.ones + b.ones; const carry = Math.floor(onesSum / 10); const onesDigit = onesSum % 10; const tensSum = a.tens + b.tens + carry;
+      const answered = page.carryAnswer !== "" && page.tensAnswer !== "" && page.onesAnswer !== "";
+      page.answerRecord = answerRecord(page);
+      page.correctAnswer = `carry ${carry}; answer ${tensSum} tens and ${onesDigit} ones`;
+      page.isCorrect = answered && Number(page.carryAnswer) === carry && Number(page.tensAnswer) === tensSum && Number(page.onesAnswer) === onesDigit;
+      page.pageScore = answered ? (page.isCorrect ? 1 : 0) : null;
+      return page.isCorrect;
+    }
+    function setAdminValues(page){ el.teacherSupport.value = page.teacherSupport; el.assessmentType.value = page.assessmentType; el.teacherComments.value = page.teacherComments; el.studentReflection.value = page.reflection; document.querySelectorAll("[data-quick]").forEach(box => box.checked = page.quickComments.includes(box.dataset.quick)); document.querySelectorAll("[data-strategy]").forEach(box => box.checked = page.strategyData.includes(box.dataset.strategy)); }
+    function render(){
+      const page = currentPage(); const a = digits(page.a); const b = digits(page.b); const onesSum = a.ones + b.ones; const carry = Math.floor(onesSum / 10); const onesDigit = onesSum % 10; const tensSum = a.tens + b.tens + carry;
+      el.promptText.textContent = `Add ${page.a} + ${page.b}. Use the blocks to see the tens, ones, and carry.`;
+      el.pageLabel.textContent = `Page ${pageIndex + 1} of ${state.pages.length}`; el.pageSelect.value = String(pageIndex); el.studentStatus.textContent = state.studentId || "--"; el.gradeStatus.textContent = state.grade || "--"; el.attemptStatus.textContent = String(page.attempts);
+      el.topTens.textContent = a.tens; el.topOnes.textContent = a.ones; el.bottomTens.textContent = b.tens; el.bottomOnes.textContent = b.ones;
+      el.carryAnswer.value = page.carryAnswer; el.tensAnswer.value = page.tensAnswer; el.onesAnswer.value = page.onesAnswer;
+      fillBlocks(el.topTensBlocks, a.tens, "ten"); fillBlocks(el.bottomTensBlocks, b.tens, "ten"); fillBlocks(el.carryBlocks, page.carryAnswer, "ten"); fillBlocks(el.answerTensBlocks, page.tensAnswer, "ten");
+      fillBlocks(el.topOnesBlocks, a.ones, "one"); fillBlocks(el.bottomOnesBlocks, b.ones, "one"); fillBlocks(el.answerOnesBlocks, page.onesAnswer, "one", Number(page.onesAnswer) > 10);
+      el.feedback.textContent = page.isCorrect ? "This page is complete." : "Choose values in the dropdowns.";
+      setAdminValues(page); updateTimers();
+    }
+    function saveSelection(event){
+      const page = currentPage(); const target = event.target;
+      if (target === el.carryAnswer) page.carryAnswer = target.value;
+      if (target === el.tensAnswer) page.tensAnswer = target.value;
+      if (target === el.onesAnswer) page.onesAnswer = target.value;
+      if (target === el.teacherSupport) page.teacherSupport = target.value;
+      if (target === el.assessmentType) page.assessmentType = target.value;
+      if (target === el.teacherComments) page.teacherComments = target.value;
+      if (target === el.studentReflection) page.reflection = target.value;
+      if (target.matches("[data-quick]")) page.quickComments = Array.from(document.querySelectorAll("[data-quick]:checked")).map(box => box.dataset.quick);
+      if (target.matches("[data-strategy]")) page.strategyData = Array.from(document.querySelectorAll("[data-strategy]:checked")).map(box => box.dataset.strategy);
+      assessPage(page);
+      recordInteraction(target === el.carryAnswer || target === el.tensAnswer || target === el.onesAnswer ? "selection" : "changed-value", { id: target.id || target.dataset.quick || target.dataset.strategy, value: target.type === "checkbox" ? target.checked : target.value, answer: page.answerRecord });
+      render(); store();
+    }
+    function checkPage(){
+      const page = currentPage(); const a = digits(page.a); const b = digits(page.b); const onesSum = a.ones + b.ones; const carry = Math.floor(onesSum / 10); const onesDigit = onesSum % 10; const tensSum = a.tens + b.tens + carry; const now = Date.now();
+      page.attempts += 1; if (!page.firstAttemptTime) page.firstAttemptTime = new Date().toISOString(); if (page.lastAttemptAt) page.timeBetweenAttempts.push(Math.floor((now - page.lastAttemptAt) / 1000)); page.lastAttemptAt = now;
+      const correct = assessPage(page);
+      if (correct && !page.timeToCorrect) { page.timeToCorrect = page.pageSeconds + Math.floor((now - page.pageStartedAt) / 1000); page.correctMarkedAt = now; }
+      el.feedback.textContent = correct ? "This page is complete." : "Check the carry, tens, and ones answer."; recordInteraction("check-page", { correct, answer: page.answerRecord, correctAnswer: page.correctAnswer }); render(); store();
+    }
+    function goToPage(index){ saveCurrentPageTime(); pageIndex = Math.max(0, Math.min(state.pages.length - 1, index)); currentPage().pageStartedAt = Date.now(); recordInteraction("page-navigation", { page: pageIndex + 1 }); render(); store(); }
+    function logHelp(){ const page = currentPage(); page.helpCount += 1; page.helpHistory.push({ at: new Date().toISOString(), support: page.teacherSupport }); recordInteraction("teacher-help", { helpCount: page.helpCount, support: page.teacherSupport }); store(); }
+    function fillNetlifyFields(){ saveCurrentPageTime(); state.pages.forEach(assessPage); const pages = state.pages.map(page => ({ ...page, pageSeconds: page.pageSeconds + Math.floor((Date.now() - page.pageStartedAt) / 1000), curriculumExpectations: CURRICULUM_EXPECTATIONS })); const completePages = pages.filter(page => page.isCorrect).length; const summary = { project: PROJECT_ID, barcode: "P26-TEAMPADDLE-7", studentId: state.studentId, grade: state.grade, totalSeconds: state.totalSeconds, completePages, totalPages: pages.length, finishedAt: state.finishedAt, submittedComplete: completePages === pages.length }; el.netlifyStudentId.value = state.studentId; el.netlifyGrade.value = state.grade; el.netlifySummary.value = JSON.stringify(summary); el.netlifyPages.value = JSON.stringify(pages); el.netlifyInteractions.value = JSON.stringify(state.interactions); el.netlifyCurriculum.value = JSON.stringify(CURRICULUM_EXPECTATIONS); }
+    function submitWork(event){ const unfinished = state.pages.some(page => !page.isCorrect); if (unfinished) { const code = prompt("Teacher override required to submit unfinished work:"); if (code !== TEACHER_CODE) { event.preventDefault(); recordInteraction("submit-blocked", { reason: "unfinished-without-code" }); store(); return; } } state.finishedAt = new Date().toISOString(); recordInteraction("submit", { unfinished }); fillNetlifyFields(); store(); }
+    function reportHtml(kind){ fillNetlifyFields(); return `<!doctype html><title>${PROJECT_ID} ${kind}</title><style>body{font-family:Century Gothic,Arial,sans-serif;padding:18px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #222;padding:6px;text-align:left}pre{white-space:pre-wrap}</style><h1>${PROJECT_ID} ${kind}</h1><p>Student: ${state.studentId} | Grade: ${state.grade}</p><table><thead><tr><th>Page</th><th>Page Time</th><th>Project Time</th><th>Problem</th><th>Answer</th><th>Correct</th><th>Attempts</th><th>Comments</th></tr></thead><tbody>${state.pages.map(page => `<tr><td>${page.page}</td><td>${formatTime(page.pageSeconds || 0)}</td><td>${formatTime((state.totalSeconds !== undefined ? state.totalSeconds : state.totalElapsed) || 0)}</td><td>${page.a} + ${page.b}</td><td>${page.answerRecord || ""}</td><td>${page.isCorrect ? "Yes" : "No"}</td><td>${page.attempts}</td><td>${page.teacherComments || ""}</td></tr>`).join("")}</tbody></table><h2>Interactions</h2><pre>${JSON.stringify(state.interactions, null, 2)}</pre>`; }
+    function openReport(kind){ const win = window.open("", "_blank"); if (!win) return; win.document.write(reportHtml(kind)); win.document.close(); }
+    function resetWork(){ if (!confirm("Reset all TeamPaddle7 work?")) return; localStorage.removeItem(STORAGE_KEY); state = freshState(); pageIndex = 0; startApp("No entry", "3"); }
+    function startApp(studentId, grade){ state.studentId = studentId || "No entry"; state.grade = grade || ""; el.app.classList.add("ready"); renderPageOptions(); render(); clearInterval(totalTimerId); totalTimerId = setInterval(() => { updateTimers(); store(); }, 1000); store(); }
+    [el.carryAnswer, el.tensAnswer, el.onesAnswer].forEach(select => makeOptions(select, 19));
+    el.backBtn.addEventListener("click", () => goToPage(pageIndex - 1)); el.nextBtn.addEventListener("click", () => goToPage(pageIndex + 1)); el.pageSelect.addEventListener("change", event => goToPage(Number(event.target.value))); el.checkPage.addEventListener("click", checkPage); el.resetBtn.addEventListener("click", resetWork); el.logHelp.addEventListener("click", logHelp);
+    [el.carryAnswer, el.tensAnswer, el.onesAnswer, el.teacherSupport, el.assessmentType].forEach(input => input.addEventListener("change", saveSelection));
+    [el.teacherComments, el.studentReflection].forEach(input => input.addEventListener("input", saveSelection)); document.querySelectorAll("[data-quick], [data-strategy]").forEach(box => box.addEventListener("change", saveSelection));
+    el.pdpReport.addEventListener("click", () => { const code = prompt("Teacher code required to view PDP Report:"); if (code === TEACHER_CODE) openReport("PDP Report"); });
+    el.pdfSnaps.addEventListener("click", () => { const code = prompt("Teacher override code required for PDF Snaps:"); if (code === TEACHER_CODE) { openReport("PDF Snaps"); setTimeout(() => window.print(), 100); } });
+    el.netlifyForm.addEventListener("submit", submitWork);
+    document.getElementById("curriculumButton").addEventListener("click", () => document.getElementById("curriculumOverlay").classList.remove("hidden"));
+    document.getElementById("curriculumClose").addEventListener("click", () => document.getElementById("curriculumOverlay").classList.add("hidden"));
+    const query = new URLSearchParams(location.search); if (query.get("league") === "1") { document.body.classList.add("league-embedded"); if (query.get("fresh") === "1") { localStorage.removeItem(STORAGE_KEY); state = freshState(); } }
+    startApp(query.get("student") || state.studentId || "No entry", "3");
+  </script>
+<script id="league-snapshot-request">if(new URLSearchParams(location.search).get("league")==="1")window.addEventListener("message",e=>{if(e.data&&e.data.type==="LEAGUE_SNAPSHOT_REQUEST")try{store()}catch(_e){}});</script>
+</body>
+</html>

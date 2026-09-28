@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>DreamB · What Number Is This?</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;overflow:hidden;overscroll-behavior:none}body{margin:0;background:#eff7ff;color:#111;font-family:"Century Gothic",Arial,sans-serif}button,select,input{font:inherit}.page{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:7px;padding:7px}.top{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}.top h1{font-size:23px;margin:0}.admin{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end}.admin label,.pill{background:#fff;border:2px solid #222;border-radius:9px;padding:4px 7px;font-size:12px;font-weight:bold}.admin input{width:95px;border:0;outline:0;font-weight:bold}.admin button,.actions button{border:2px solid #222;border-radius:9px;background:#fff;padding:5px 9px;font-weight:bold;cursor:pointer}.admin button.sel{background:#bdf5bd}.prompt{border:3px solid #222;background:#fff;padding:8px 11px;font-size:20px;font-weight:bold}.activity{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:8px}.model,.answerPanel{border:3px solid #222;background:#fff;padding:9px;min-height:0}.model{display:grid;grid-template-columns:1.5fr .8fr .8fr;gap:10px;background:#fffdf5}.place{border:3px solid #222;border-radius:10px;padding:8px;display:flex;flex-direction:column;min-height:0}.place h2{font-size:17px;margin:0 0 5px;text-align:center}.blocks{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}.hundreds{background:#e9f4ff}.tens{background:#edfff0}.ones{background:#fffbe1}.hundred{width:clamp(125px,15vw,180px);aspect-ratio:1;border:4px solid #073a75;background-color:#65aaf2;background-image:linear-gradient(#1f6ebd 2px,transparent 2px),linear-gradient(90deg,#1f6ebd 2px,transparent 2px);background-size:10% 10%;box-shadow:4px 4px 0 #073a75}.ten{width:34px;height:clamp(170px,31vh,260px);border:4px solid #146328;background-color:#65ca79;background-image:linear-gradient(#28933f 2px,transparent 2px);background-size:100% 10%;box-shadow:4px 4px 0 #146328}.one{width:clamp(44px,5vw,64px);aspect-ratio:1;border:4px solid #7a5a00;background:linear-gradient(135deg,#ffe86b,#efb91f);box-shadow:4px 4px 0 #7a5a00}.answerPanel{display:flex;flex-direction:column;gap:12px;background:#f8fbff}.answerPanel h2{font-size:19px;margin:0}.answerPanel select{width:100%;border:4px solid #082f69;border-radius:10px;background:#fff;padding:11px;font-size:23px;font-weight:bold}.answerPanel p{font-size:13px;line-height:1.35}.actions{display:flex;justify-content:center;gap:8px}.actions button{font-size:14px}.status{position:fixed;left:8px;bottom:8px;font-size:12px;font-weight:bold}.report{display:none}.hiddenForm{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}@media(max-width:900px){.top h1{font-size:18px}.prompt{font-size:17px}.activity{grid-template-columns:minmax(0,1fr) 205px}.model{gap:5px}.place{padding:5px}.hundred{width:clamp(90px,13vw,125px)}.ten{width:27px;height:clamp(135px,26vh,190px)}.one{width:clamp(34px,4vw,48px)}.blocks{gap:5px}.answerPanel select{font-size:19px}}@media print{html,body{height:auto;overflow:visible;background:#fff}.page{display:none}.report{display:block;padding:20px;font-family:Arial,sans-serif}.report h1{font-size:24px}.report table{border-collapse:collapse;width:100%}.report th,.report td{border:1px solid #000;padding:8px;text-align:left}}
+</style>
+<style id="proportional-base-ten-blocks">
+.model{--base-unit:clamp(14px,1.35vw,20px)}
+.model .hundred{box-sizing:content-box;width:calc(var(--base-unit) * 10);height:calc(var(--base-unit) * 10);aspect-ratio:auto;border-width:2px;background-size:var(--base-unit) var(--base-unit)}
+.model .ten{box-sizing:content-box;width:var(--base-unit);height:calc(var(--base-unit) * 10);border-width:2px;background-size:100% var(--base-unit)}
+.model .one{box-sizing:content-box;width:var(--base-unit);height:var(--base-unit);aspect-ratio:auto;border-width:2px}
+@media(max-width:900px){.model{--base-unit:clamp(11px,1.25vw,15px)}}
+</style>
+<style id="dreamb-embedded-layout">
+/* The DreamB frame provides the shared timer, curriculum/report, and Last/Next buttons. */
+body.dreamb-navigation{overflow:hidden}
+body.dreamb-navigation .page{height:100dvh;padding:72px 14px 82px;grid-template-rows:auto minmax(0,1fr);gap:9px}
+body.dreamb-navigation .top,body.dreamb-navigation .actions,body.dreamb-navigation .status{display:none!important}
+body.dreamb-navigation .prompt{font-size:clamp(18px,2.15vw,26px);padding:8px 12px}
+body.dreamb-navigation .activity{min-height:0}
+body.dreamb-navigation .answerPanel p{display:none}
+@media(max-width:720px){body.dreamb-navigation{overflow:auto}body.dreamb-navigation .page{height:auto;min-height:100dvh;padding-top:70px}.activity{grid-template-columns:1fr}.model{min-height:420px}.answerPanel{min-height:150px}}
+</style>
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script>
+<main class="page">
+  <header class="top"><h1>What Number Is This?</h1><div class="admin"><label>Student Code <input id="student" maxlength="8" autocomplete="off"></label><span class="pill" id="date"></span><span class="pill" id="timer">00:00</span><button type="button" data-assessment="Formative">F</button><button type="button" data-assessment="Summative">S</button></div></header>
+  <div class="prompt">What number is shown by these base-ten blocks?</div>
+  <section class="activity">
+    <section class="model" aria-label="Base-ten block model"><div class="place hundreds"><h2>Hundreds</h2><div class="blocks" id="hundreds"></div></div><div class="place tens"><h2>Tens</h2><div class="blocks" id="tens"></div></div><div class="place ones"><h2>Ones</h2><div class="blocks" id="ones"></div></div></section>
+    <aside class="answerPanel"><h2>Choose the number</h2><select id="answer"><option value="">Select answer</option></select><p>The answer choices are randomized. Correctness appears only in the teacher PDF report.</p></aside>
+  </section>
+  <div class="actions"><button type="button" id="pdf">PDF / Print</button><button type="button" id="submit">Submit Results</button></div>
+  <div class="status" id="status"></div>
+</main>
+<section class="report"><h1>What Number Is This? Report</h1><p><b>Student:</b> <span id="rStudent"></span></p><p><b>Date:</b> <span id="rDate"></span></p><p><b>Time:</b> <span id="rTime"></span></p><table><tr><th>Representation</th><td>4 hundreds, 3 tens, and 7 ones</td></tr><tr><th>Student answer</th><td id="rAnswer"></td></tr><tr><th>Correct answer</th><td>437</td></tr><tr><th>Assessment type</th><td id="rAssessment"></td></tr><tr><th>Dropdown assessment</th><td id="rResult"></td></tr></table></section>
+<form class="hiddenForm" id="netlifyForm" name="inspireb-firsthalf-p26-panther-what-number-is-this" method="POST" data-netlify="true" netlify-honeypot="bot-field"><input type="hidden" name="form-name" value="inspireb-firsthalf-p26-panther-what-number-is-this"><input name="bot-field"><input id="fStudent" name="student_id"><input id="fDate" name="date"><input id="fSeconds" name="timer_seconds"><input id="fAssessment" name="assessment_type"><input id="fHundreds" name="hundreds_shown" value="4"><input id="fTens" name="tens_shown" value="3"><input id="fOnes" name="ones_shown" value="7"><input id="fAnswer" name="selected_answer"><input id="fResult" name="dropdown_assessment"><input id="fHistory" name="interaction_history"></form>
+<script>
+(function(){
+const answer=document.getElementById('answer'),started=Date.now();let assessment='',history=[];
+function blocks(id,count,className,label){const box=document.getElementById(id);for(let i=0;i<count;i++){const block=document.createElement('span');block.className=className;block.setAttribute('aria-label',label+' '+(i+1));box.appendChild(block)}}
+blocks('hundreds',4,'hundred','Hundred block');blocks('tens',3,'ten','Ten rod');blocks('ones',7,'one','One cube');
+function shuffled(list){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)),t=list[i];list[i]=list[j];list[j]=t}return list}
+shuffled([437,473,347,407,434]).forEach(n=>{const option=document.createElement('option');option.value=option.textContent=n;answer.appendChild(option)});
+function seconds(){return Math.max(0,Math.floor((Date.now()-started)/1000))}
+function save(){const selected=answer.value,result=!selected?'Not Answered':selected==='437'?'Correct':'Incorrect',stamp=new Date().toISOString();document.getElementById('fStudent').value=document.getElementById('student').value;document.getElementById('fDate').value=stamp;document.getElementById('fSeconds').value=seconds();document.getElementById('fAssessment').value=assessment;document.getElementById('fAnswer').value=selected;document.getElementById('fResult').value=result;document.getElementById('fHistory').value=JSON.stringify(history);document.getElementById('rStudent').textContent=document.getElementById('student').value;document.getElementById('rDate').textContent=new Date().toLocaleDateString('en-CA');document.getElementById('rTime').textContent=document.getElementById('timer').textContent;document.getElementById('rAnswer').textContent=selected||'Not selected';document.getElementById('rAssessment').textContent=assessment||'Not selected';document.getElementById('rResult').textContent=result;try{localStorage.setItem('inspireb-firsthalf-pantherwhatnumberisthis',JSON.stringify({student:document.getElementById('student').value,answer:selected,assessment,history,timer_seconds:seconds()}))}catch(_){}return result}
+answer.addEventListener('change',()=>{history.push({field:'answer',value:answer.value,time:new Date().toISOString()});save()});document.getElementById('student').addEventListener('input',save);document.querySelectorAll('[data-assessment]').forEach(b=>b.addEventListener('click',()=>{assessment=b.dataset.assessment;document.querySelectorAll('[data-assessment]').forEach(x=>x.classList.toggle('sel',x===b));save()}));document.getElementById('pdf').addEventListener('click',()=>{if(prompt('Teacher password')!=='259')return;save();window.print()});document.getElementById('submit').addEventListener('click',()=>{save();if(!document.getElementById('student').value.trim()){document.getElementById('status').textContent='Enter the student code before submitting.';return}document.getElementById('netlifyForm').requestSubmit()});document.getElementById('date').textContent=new Date().toLocaleDateString('en-CA');setInterval(()=>{const s=seconds();document.getElementById('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');document.getElementById('fSeconds').value=s},1000);save();
+})();
+</script>
+<script>
+  (() => {
+    const answer = document.getElementById('answer');
+    if (!answer) return;
+    const saveDreamBResult = () => {
+      try {
+        const student = new URLSearchParams(location.search).get('student') || 'Student';
+        const key = 'inspireb-firsthalf-assessment-' + student;
+        const record = JSON.parse(localStorage.getItem(key) || '{}');
+        record.pages = record.pages || {};
+        const selected = answer.value;
+        record.pages[13] = {...(record.pages[13] || {}), page:13, title:'What Number Is This?', completed:selected ? selected === '437' : false, score:selected === '437' ? '1/1' : '0/1', answer:selected, questionResults:[{label:'Q1',result:!selected?'Not answered':selected==='437'?'Correct':'Incorrect'}], updatedAt:new Date().toISOString()};
+        localStorage.setItem(key, JSON.stringify(record));
+      } catch (_) {}
+    };
+    answer.addEventListener('change', saveDreamBResult);
+    saveDreamBResult();
+  })();
+</script>
+</body>
+</html>

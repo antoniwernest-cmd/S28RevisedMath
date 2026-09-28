@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panther F 1 More 10 More 100 More</title>
+<style id="panther-curriculum-style">
+#pdfReport{display:block!important;width:100%;margin-top:6px}
+.curriculum-btn{flex:0 0 50px!important;width:50px!important;height:50px!important;padding:2px!important;border:3px solid #2a2a2a!important;border-radius:50%!important;background:#e9f8e5!important;display:grid!important;place-items:center!important;cursor:pointer}
+.curriculum-btn img{display:block;width:42px;height:42px;object-fit:contain}
+.curr-overlay[hidden]{display:none!important}.curr-overlay{position:fixed;inset:0;z-index:9999;background:rgba(12,28,36,.72);display:grid;place-items:center;padding:16px}
+.curr-dialog{width:min(760px,96vw);max-height:92vh;overflow:auto;background:#fff;border:4px solid #2a2a2a;border-radius:18px;box-shadow:10px 10px 0 #9ed0ee}
+.curr-head{position:sticky;top:0;display:grid;grid-template-columns:64px 1fr 48px;gap:10px;align-items:center;padding:11px 14px;background:#e9f8e5;border-bottom:3px solid #2a2a2a}
+.curr-head img{width:60px;height:60px;object-fit:contain}.curr-head h2{margin:0;color:#1f4f7f;font-size:25px}.curr-head p{margin:3px 0 0;font-size:14px}.curr-head button{width:44px;height:44px;border:3px solid #2a2a2a;border-radius:50%;background:#fff;font-size:29px;line-height:1}
+.curr-body{padding:13px}.curr-body>h3{margin:0 0 9px;padding:8px 11px;border:3px solid #2a2a2a;border-radius:10px;background:#fff7c7;color:#1f4f7f}
+.curr-card{margin:0 0 11px;padding:11px;border:3px solid #2a2a2a;border-radius:12px;background:#f5fbff}.curr-code{font-weight:900;color:#1f4f7f}.curr-card p{margin:7px 0;line-height:1.4}.curr-description{padding-top:8px;border-top:2px solid #bad1df}.curr-source{margin:0;padding:0 14px 13px;font-size:12px}
+@media(max-width:650px){.curr-head{grid-template-columns:52px 1fr 42px}.curr-head img{width:48px;height:48px}.curr-head h2{font-size:19px}}
+.moreless-title{padding:8px 12px;border:3px solid var(--line);border-radius:12px;background:var(--cream);font-size:25px;text-align:center;margin-bottom:9px}.moreless-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-width:900px;margin:auto}.moreless-row{display:grid;grid-template-columns:1fr 110px 1fr;align-items:center;gap:8px;padding:10px;border:3px solid var(--line);border-radius:12px;background:#f7fcff}.operation{font-size:22px;color:var(--blue);text-align:center}.starting-number{min-height:58px;display:grid;place-items:center;border:3px solid var(--line);border-radius:10px;background:var(--cream);font-size:31px}.moreless-row .answer-select{width:100%;min-width:0}@media(max-width:760px){.moreless-list{grid-template-columns:1fr}}
+</style>
+<style>
+:root{--ink:#202020;--blue:#1f4f7f;--soft:#eef8ff;--cream:#fff7c7;--line:#2a2a2a;--shadow:#9ed0ee}
+*{box-sizing:border-box}
+html,body{overscroll-behavior-y:none}
+body{margin:0;background:#eef8ff;color:var(--ink);font-family:"Century Gothic","Trebuchet MS",Arial,sans-serif;font-weight:700}
+button,select,input,textarea{font:inherit}
+.hidden{display:none!important}
+.screen{min-height:100vh;padding:12px;overflow:hidden;overscroll-behavior:none}
+.entry-card,.app{max-width:1260px;margin:0 auto;background:white;border:4px solid var(--line);box-shadow:10px 10px 0 var(--shadow);border-radius:12px}
+.entry-card{padding:14px;height:calc(100vh - 24px);display:flex;flex-direction:column;overflow:hidden}
+.entry-top{display:flex;align-items:center;gap:14px;border-bottom:4px solid var(--line);padding-bottom:8px;flex:0 0 auto}
+.logo{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,#dff0ff,#ffffff);border:3px solid var(--line);display:grid;place-items:center;font-size:28px}
+h1{font-size:clamp(30px,4.2vw,58px);margin:0}
+.entry-body{display:grid;grid-template-columns:minmax(230px,300px) 1fr;gap:14px;margin-top:10px;min-height:0;flex:1}
+.entry-body label{font-size:24px}
+#studentCode{width:100%;height:58px;border:4px solid var(--line);font-size:36px;text-align:center;background:white}
+.code-grid{display:grid;grid-template-columns:repeat(6,minmax(82px,1fr));gap:8px;align-content:start;min-height:0}
+.code-btn{min-height:88px;border:4px solid var(--line);border-radius:18px;background:#fffdf1;font-size:36px;box-shadow:0 6px 0 #b8d9ea;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;padding:7px}
+.code-emoji{font-size:32px;line-height:1;margin-top:7px}
+.code-btn.selected{background:#d9ffd7;border-color:#1f8a3b}
+.enter-btn{margin-top:12px;width:100%;height:62px;border:4px solid var(--line);border-radius:14px;background:#caffc8;font-size:30px;cursor:pointer;touch-action:manipulation}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:96vh}
+.side{border-right:4px solid var(--line);padding:12px;background:#f8fcff}
+.side h2{font-size:24px;margin:0 0 8px}
+.stat{display:flex;justify-content:space-between;border-bottom:1px solid #b7c9d8;padding:7px 0;font-size:16px}
+.timer{font-variant-numeric:tabular-nums}
+.side select,.side textarea{width:100%;border:3px solid var(--line);padding:8px;background:white;margin:5px 0 10px}
+.side textarea{height:62px;resize:none}
+.check-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.check-list label{border:1px solid #9bb8d2;background:#f6fbff;padding:7px;font-size:14px;text-align:center}
+.main{padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.top-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:4px solid var(--line);border-radius:12px;padding:8px;background:white;position:sticky;top:0;z-index:20}
+.prompt{flex:1;min-width:360px;font-size:24px;line-height:1.25}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.controls button,.controls select,.submit-btn{border:3px solid var(--line);background:#fff7c7;padding:9px 12px;border-radius:8px;cursor:pointer}
+.submit-btn{background:#cbffd0}
+.work{border:4px solid var(--line);background:white;min-height:570px;padding:12px;overflow:auto}
+.feedback{border:3px solid var(--line);background:#fff7c7;padding:9px;font-size:20px}
+.ok{background:#d7ffd9}.bad{background:#ffe0e0}
+.row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.bank{border:4px solid var(--line);background:var(--cream);padding:10px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.bank-title{width:100%;text-align:center;font-size:24px}
+.pad-grid{display:grid;grid-template-columns:1fr 74px 1fr;gap:8px;align-items:stretch}
+.pv-row{display:contents}
+.pv-head{background:#c6b078;color:white;text-align:center;padding:7px;font-size:18px}
+.drop{border:3px dashed var(--blue);background:#edf7ff;min-height:118px;padding:8px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.number-mid{background:#dbe7f7;display:grid;place-items:center;font-size:52px;min-height:118px}
+.answer-panel{border:3px solid var(--line);background:var(--cream);padding:10px;text-align:center;font-size:25px}
+.answer-select{border:3px solid var(--line);background:white;padding:8px;min-width:92px;font-size:28px;text-align:center}
+.answer-select.answered{background:#d7ffd9;border-color:#22913a}
+.apple-equation{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.apple-group{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;max-width:300px;padding:10px 14px;border:3px solid var(--line);border-radius:14px;background:#fff}
+.apple-symbol{font-size:44px;line-height:1.15}
+.apple-plus{font-size:50px;font-weight:900;line-height:1}
+.word-list{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:8px;max-width:920px;margin:0 auto}
+.word-row{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center;border:3px solid var(--line);background:#f8fcff;padding:8px}
+.word-number{font-size:36px;font-weight:900;text-align:center;color:#203040}
+.equiv-list{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:8px;max-width:940px;margin:0 auto}
+.equiv-row{display:grid;grid-template-columns:.85fr 1fr;gap:10px;align-items:center;border:3px solid var(--line);background:#f8fcff;padding:8px}
+.equiv-equation{font-size:32px;font-weight:900;text-align:center}
+.ten{width:34px;height:110px;border:3px solid #3467ed;border-radius:0;background:repeating-linear-gradient(to bottom,#5da4ff 0 10px,#4086ef 10px 12px)}
+.one{width:34px;height:34px;border:3px solid #3467ed;border-radius:10px;background:#62adff}
+.ten.small{width:24px;height:82px}.one.small{width:26px;height:26px}
+.tile{border:3px solid var(--line);border-radius:8px;background:#fff7c7;padding:12px 18px;font-size:34px;cursor:pointer;min-width:74px}
+.tile.placed.v10{background:#ffcccc;border-color:#c81e1e;color:#8b0000}
+.tile.placed.v1{background:#d8ffd5;border-color:#22913a;color:#0d5c20}
+.slot{border:3px solid var(--line);background:#fff;min-width:88px;min-height:68px;display:grid;place-items:center;font-size:34px}
+.hundred{display:grid;grid-template-columns:repeat(10,48px);gap:3px;justify-content:center}
+.cell{height:42px;border:1px solid #777;background:white;border-radius:10px;font-size:18px;cursor:pointer}
+.cell.marked{background:#bff4c8}.cell.red{background:#ffc7c7}
+.line{display:flex;align-items:end;justify-content:center;gap:0;margin:28px auto;max-width:920px;border-bottom:4px solid var(--line)}
+.tick{width:72px;min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:end;font-size:24px}
+.bar{height:20px;border-left:3px solid var(--line)}
+.numberline-title{border:4px solid var(--line);background:var(--cream);padding:12px;text-align:center;font-size:34px;margin-bottom:18px}
+.clear-numberline{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:0;max-width:920px;margin:40px auto 10px;padding-top:20px}
+.clear-numberline:before{content:"";position:absolute;left:6%;right:6%;top:82px;border-top:6px solid var(--line)}
+.nl-point{position:relative;display:grid;justify-items:center;gap:10px;min-height:145px;z-index:1}
+.nl-tick{width:0;height:42px;border-left:5px solid var(--line);margin-top:42px;background:white}
+.nl-label{min-width:84px;min-height:62px;border:4px solid var(--line);background:white;display:grid;place-items:center;font-size:34px}
+.nl-missing{background:#fff7c7}
+.nl-select{font-size:30px;min-width:96px}
+.nl-hint{text-align:center;font-size:20px;color:#23486f}
+.nl-questions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:980px;margin:0 auto}
+.nl-row{border:3px solid var(--line);background:#f8fcff;padding:6px}
+.mini-numberline{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding-top:6px}
+.mini-numberline:before{content:"";position:absolute;left:8%;right:8%;top:35px;border-top:4px solid var(--line)}
+.mini-point{position:relative;display:grid;justify-items:center;gap:3px;min-height:70px;z-index:1}
+.mini-tick{width:0;height:24px;border-left:3px solid var(--line);margin-top:18px;background:white}
+.mini-label{min-width:48px;min-height:34px;border:2px solid var(--line);background:white;display:grid;place-items:center;font-size:21px}
+.mini-select{font-size:20px;min-width:60px;padding:3px}
+.tensones-title{border:4px solid var(--line);background:var(--cream);padding:12px;text-align:center;font-size:38px;margin-bottom:14px}
+.tensones-layout{display:grid;grid-template-columns:1fr 330px;gap:18px;align-items:stretch}
+.model-panel{border:4px dashed var(--blue);background:#f8fcff;min-height:330px;padding:18px;text-align:center}
+.model-panel h3{font-size:28px;margin:0 0 18px}
+.model-blocks{display:flex;gap:10px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+.answer-box{border:4px solid var(--line);background:white;padding:18px}
+.answer-box label{display:block;font-size:28px;margin:8px 0}
+.answer-box .answer-select{width:100%;height:74px;font-size:34px}
+.live-total{border:4px solid var(--line);background:var(--cream);margin-top:18px;min-height:78px;display:grid;place-items:center;font-size:46px}
+.blocks{display:flex;gap:7px;flex-wrap:wrap;align-items:end;justify-content:center}
+.colbox{border:3px solid var(--line);background:#f8fbff;padding:10px;min-width:220px;text-align:center}
+.bt-title{border:3px solid var(--line);background:var(--cream);padding:10px;text-align:center;font-size:34px;margin-bottom:12px}
+.bt-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:12px}
+.bt-panel{border:3px dashed var(--blue);background:#f8fcff;min-height:220px;padding:14px;text-align:center}
+.bt-panel h3{margin:0 0 12px;font-size:22px}
+.hundreds-area{display:grid;grid-template-columns:repeat(3,82px);gap:8px;justify-content:center}
+.hundred-block{width:82px;height:82px;border:2px solid var(--line);background-image:linear-gradient(#999 1px,transparent 1px),linear-gradient(90deg,#999 1px,transparent 1px);background-size:8px 8px;background-color:white;cursor:pointer}
+.ten-rods-area{display:flex;gap:5px;justify-content:center;align-items:flex-start}
+.bt-ten{width:22px;height:100px;border:2px solid var(--line);background:repeating-linear-gradient(to bottom,#fff 0 9px,#bbb 9px 10px);cursor:pointer}
+.ones-area{display:grid;grid-template-columns:repeat(3,40px);gap:8px;justify-content:center}
+.bt-one{width:34px;height:34px;border:2px solid var(--line);background:white;box-shadow:5px -5px 0 #f4f4f4;cursor:pointer}
+.bt-selected{background:#ffd05a!important}
+.bt-counters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.bt-counter{border:3px solid var(--line);background:white;padding:8px;text-align:center;font-size:17px}
+.bt-note{border:3px solid var(--line);background:white;padding:8px;margin-top:10px;text-align:center;font-size:18px}
+.compare-grid{display:grid;grid-template-columns:90px 90px 90px 90px 90px 90px;gap:12px;align-items:center;justify-content:center;font-size:34px}
+.eq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.eq-card{border:4px solid var(--line);border-radius:10px;background:#f6fbff;padding:18px;text-align:center;font-size:34px;min-height:150px}
+.doubles-wrap{display:grid;grid-template-columns:1fr 260px;gap:12px}
+.doubles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doubles-card{border:3px dashed var(--blue);background:#eef8ff;padding:10px;text-align:center;min-height:154px}
+.doubles-card h3{margin:0 0 8px;font-size:28px}
+.strategy-drop{border:3px solid #8aa9c8;background:white;min-height:50px;display:grid;place-items:center;margin:8px 0;font-size:22px}
+.strategy-drop.filled{background:#d8ffd5;border-color:#22913a}
+.strategy-bank{border:4px solid var(--line);background:#f8fbff;padding:10px}
+.strategy-bank h3{margin:0 0 8px;text-align:center;color:#23486f}
+.remove-bank{border:3px dashed var(--blue);background:white;padding:10px;margin-bottom:8px;text-align:center;font-size:16px}
+.strategy-card{border:3px solid #cfcfcf;background:#fffdf1;margin:7px 0;padding:10px;text-align:center;font-size:22px;cursor:grab}
+.strategy-card.used{opacity:.35}
+.drag-card{border:4px solid var(--line);background:#fff7c7;border-radius:12px;padding:12px 18px;font-size:28px;cursor:grab;min-width:150px;text-align:center}
+.drag-card.used{opacity:.35}
+.order-title{font-size:42px;text-align:center;margin:0 0 4px;font-weight:400}
+.order-bank{border:0;background:white;border-bottom:6px solid #8aa9c8;padding:2px 8px 14px;gap:14px}
+.order-bank .drag-card{font-size:50px;min-width:126px;min-height:92px;display:grid;place-items:center;border-radius:12px;box-shadow:0 6px 0 #d4c98f;padding:6px 14px}
+.landing-title{font-size:42px;text-align:center;margin:14px 0 10px;font-weight:400;border-top:5px solid var(--line);padding-top:10px}
+.order-pad-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.order-pad{min-height:118px;font-size:32px;color:#43617c;border:4px dashed var(--blue);border-radius:12px;background:#edf7ff}
+.order-pad.filled{background:#e8f6ff}
+.order-pad .drag-card{font-size:44px;min-width:96px;min-height:66px;padding:6px 12px;box-shadow:0 4px 0 #d4c98f}
+.order-remove{border:4px dashed var(--blue);background:#fffdf1;color:#203040;min-height:48px;margin:6px auto 0;max-width:500px;font-size:18px}
+.round-title{border:4px solid var(--line);background:var(--cream);padding:14px;text-align:center;font-size:36px;margin-bottom:16px}
+.round-layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
+.round-bank{border:4px solid var(--line);background:#f8fbff;padding:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.round-pad{min-height:120px;font-size:34px}
+.round-pad.filled{background:#d8ffd5;border-color:#22913a}
+.round-number{font-size:84px;border:4px solid var(--line);background:white;min-width:180px;min-height:120px;display:grid;place-items:center}
+.round-list{display:grid;gap:14px;max-width:880px;margin:0 auto}
+.round-row{display:grid;grid-template-columns:1fr 120px 1fr;gap:16px;align-items:center;border:4px solid var(--line);background:#f8fcff;padding:12px}
+.round-row label{display:block;font-size:16px;font-weight:900;margin-bottom:4px}
+.round-question-number{font-size:46px;font-weight:900;text-align:center;color:#203040}
+.tf-title{border:4px solid var(--line);border-radius:12px;background:white;padding:18px;text-align:center;font-size:38px;margin:8px auto 26px;max-width:900px}
+.tf-model{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:960px;margin:0 auto 20px;align-items:end}
+.leaf-stack{display:grid;grid-template-columns:repeat(2,34px);gap:8px 4px;justify-content:center;align-content:end;min-height:178px}
+.leaf{font-size:28px;line-height:1}
+.tf-equation{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:28px;max-width:920px;margin:0 auto;font-size:92px;font-weight:400;text-align:center}
+.tf-choice-row{display:grid;grid-template-columns:1fr 1fr;gap:220px;max-width:820px;margin:42px auto 26px;font-size:86px;font-weight:400;text-align:center}
+.tf-answer{max-width:390px;margin:0 auto}
+.tf-answer .answer-select{width:100%;font-size:34px}
+.before-after-title{border:4px solid var(--line);background:var(--cream);padding:12px;text-align:center;font-size:34px;margin-bottom:14px}
+.before-after-list{display:grid;gap:12px;max-width:560px;margin:0 auto}
+.before-after-row{display:grid;grid-template-columns:130px 110px 130px;gap:10px;align-items:center;justify-content:center;border:3px solid var(--line);background:#f8fcff;padding:10px}
+.before-after-row>div:first-child{text-align:right}
+.before-after-row>div:last-child{text-align:left}
+.center-number{border:4px solid var(--line);background:white;min-height:76px;display:grid;place-items:center;font-size:44px}
+.ba-label{display:block;font-size:18px;margin-bottom:4px;color:#23486f}
+.shape-row{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.shape{width:110px;height:110px;border:5px solid var(--line);background:#e8f6ff}
+.circle{border-radius:50%}.square{}.rect{width:150px}.tri{width:0;height:0;border-left:65px solid transparent;border-right:65px solid transparent;border-bottom:115px solid #e8f6ff;background:none}
+.pyramid{clip-path:polygon(50% 0,100% 100%,0 100%);background:#e8f6ff}
+.report-table{width:100%;border-collapse:collapse}.report-table th,.report-table td{border:1px solid #333;padding:8px}.report-table th{background:#dbe8fa;color:#17386b}
+@media(max-width:850px){.entry-card{padding:10px}.entry-body{grid-template-columns:minmax(190px,240px) 1fr;gap:10px}.entry-top{gap:10px}.logo{width:50px;height:50px;font-size:24px}h1{font-size:clamp(26px,5vw,42px)}#studentCode{height:50px;font-size:30px}.enter-btn{height:54px;font-size:26px}.code-grid{grid-template-columns:repeat(4,minmax(84px,1fr));gap:8px}.code-btn{min-height:76px;font-size:31px}.code-emoji{font-size:28px;margin-top:5px}.app{grid-template-columns:1fr}.side{border-right:0;border-bottom:4px solid var(--line)}.work{min-height:520px}.pad-grid{grid-template-columns:1fr}.number-mid{min-height:60px}.compare-grid{grid-template-columns:70px 80px 70px}.eq-grid{grid-template-columns:1fr}.hundred{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:620px){.screen{padding:8px;overflow:auto}.entry-card{height:auto;min-height:calc(100vh - 16px)}.entry-body{grid-template-columns:1fr}.code-grid{grid-template-columns:repeat(3,1fr);gap:9px}.code-btn{min-height:78px;font-size:29px}.code-emoji{font-size:29px}.entry-body label{font-size:22px}}
+</style>
+<style id="splash-child-mode">html,body{width:100%!important;height:100%!important;overflow:hidden!important}#pageSelect,#backBtn,#nextBtn,#submitWork,#pdfReport,#resetBtn{display:none!important}.app{height:100vh!important;min-height:0!important;grid-template-columns:190px minmax(0,1fr)!important;overflow:hidden!important}.side{padding:6px!important;overflow:auto!important}.side h2{font-size:16px!important;margin:3px 0!important}.stat{padding:3px 0!important;font-size:12px!important}.side select,.side textarea{padding:4px!important;margin:2px 0 4px!important;border-width:2px!important}.side textarea{height:38px!important}.check-list{gap:3px!important;margin-bottom:4px!important}.check-list label{padding:3px!important;font-size:11px!important}.splash-child-brand{display:flex;align-items:center;gap:6px;border-bottom:2px solid #b7c9d8;padding-bottom:4px}.splash-child-brand img{width:32px;height:32px;object-fit:contain}.splash-child-brand strong{font-size:16px;color:#1f4f7f}.main{height:100vh!important;min-height:0!important;padding:5px!important;gap:4px!important;overflow:hidden!important}.top-row{padding:4px!important;gap:5px!important;border-width:3px!important}.prompt{min-width:0!important;font-size:18px!important}.controls{gap:4px!important}.controls button,.controls select,.submit-btn{padding:5px 8px!important;border-width:2px!important}.work{min-height:0!important;flex:1!important;padding:5px!important;border-width:3px!important;overflow:auto!important}.feedback{padding:4px!important;font-size:14px!important;border-width:2px!important}.bank{padding:5px!important;gap:5px!important;border-width:3px!important}.bank-title{font-size:18px!important}.row{gap:6px!important}.drop{min-height:76px!important;padding:5px!important}.number-mid{min-height:76px!important;font-size:38px!important}.pv-head{padding:3px!important;font-size:15px!important}.ten{height:76px!important;width:28px!important;background-size:auto}.one{width:28px!important;height:28px!important}.answer-panel{padding:5px!important;font-size:18px!important}.answer-select{padding:4px!important;font-size:20px!important}.hundred{grid-template-columns:repeat(10,1fr)!important;gap:2px!important}.cell{height:27px!important;font-size:12px!important}.word-list,.equiv-list{gap:4px!important}.word-row,.equiv-row{padding:4px!important}.numberline-title,.tensones-title,.bt-title,.before-after-title,.round-title{padding:5px!important;font-size:24px!important;margin-bottom:6px!important}.nl-questions{gap:4px!important}.nl-row{padding:3px!important}.mini-point{min-height:55px!important}.model-panel{min-height:220px!important;padding:8px!important}.answer-box{padding:8px!important}.bt-grid{gap:4px!important}.bt-panel{min-height:118px!important;padding:4px!important}.bt-panel h3{font-size:16px!important;margin:0 0 3px!important}.hundreds-area{grid-template-columns:repeat(3,52px)!important;gap:4px!important}.hundred-block{width:52px!important;height:52px!important;background-size:5px 5px!important}.bt-ten{width:18px!important;height:64px!important}.ones-area{grid-template-columns:repeat(3,30px)!important;gap:4px!important}.bt-one{width:27px!important;height:27px!important}.bt-counters{gap:4px!important;margin-top:4px!important}.bt-counter,.bt-note{padding:4px!important;font-size:14px!important;margin-top:4px!important}.doubles-wrap{grid-template-columns:1fr 190px!important;gap:4px!important}.doubles-grid{gap:3px!important}.doubles-card{min-height:82px!important;padding:3px!important}.doubles-card h3{font-size:18px!important;margin:0 0 3px!important}.strategy-drop{min-height:32px!important;margin:3px 0!important;font-size:15px!important}.strategy-bank{padding:4px!important}.strategy-bank h3{margin:0 0 3px!important;font-size:16px!important}.strategy-card{margin:3px 0!important;padding:4px!important;font-size:15px!important}.remove-bank{padding:4px!important;margin-bottom:3px!important;font-size:12px!important}.order-title,.landing-title{font-size:25px!important;margin:0!important;padding-top:3px!important}.order-bank .drag-card{font-size:34px!important;min-height:58px!important}.order-pad-row{gap:5px!important}.order-pad{min-height:70px!important}.round-list{gap:5px!important}.round-row{padding:5px!important}.before-after-list{gap:3px!important}.before-after-row{grid-template-columns:105px 78px 105px!important;padding:3px!important;gap:5px!important}.center-number{min-height:48px!important;font-size:30px!important}.ba-label{font-size:13px!important;margin-bottom:2px!important}.before-after-row .answer-select{font-size:17px!important;min-width:75px!important}.tf-title{padding:6px!important;font-size:26px!important;margin:2px auto 8px!important}.tf-model{min-height:0!important;margin-bottom:5px!important}.tf-choice-row{margin:8px auto!important}.line{margin:8px auto!important}@media(max-width:850px){.app{grid-template-columns:170px minmax(0,1fr)!important}.side{border-right:4px solid var(--line)!important;border-bottom:0!important}}</style><style id="dreamb-choice-buttons">
+.choice-buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:7px}.answer-choice{min-width:58px;border:3px solid #17386b;border-radius:12px;padding:9px 12px;background:#fff;color:#17386b;box-shadow:0 3px 0 #8fb6e8;font:800 20px Arial,sans-serif;cursor:pointer}.answer-choice.selected{background:#fff07a;color:#123f25;border-color:#168347;box-shadow:0 0 0 4px #9ce8b8,0 3px 0 #168347}.before-after-row>div:first-child,.before-after-row>div:last-child{min-width:260px}.moreless-row{grid-template-columns:minmax(150px,1fr) minmax(90px,.5fr) minmax(310px,2fr)!important}@media(max-width:760px){.answer-choice{min-width:48px;padding:7px 8px;font-size:17px}.moreless-row{grid-template-columns:1fr!important}.before-after-row{grid-template-columns:1fr!important}.before-after-row>div:first-child,.before-after-row>div:last-child{min-width:0}}
+</style>
+<link rel="stylesheet" href="dreamb-number-bank.css?v=20260927-02">
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-number-bank.js?v=20260927-02"></script><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script>
+<section id="app" class="app">
+  <aside class="side">
+    <div class="splash-child-brand"><img src="big-bear-math-logo.png" alt="Big Bear Math"><strong>Panther F 1 More 10 More 100 More</strong></div><h2>Admin</h2>
+    <div class="stat"><span>Student</span><b id="studentStatus"></b></div>
+    <div class="stat"><span>Total</span><b id="totalTimer" class="timer">00:00</b></div>
+    <div class="stat"><span>Page</span><b id="pageTimer" class="timer">00:00</b></div>
+    <div class="stat"><span>Attempts</span><b id="attemptStatus">0</b></div>
+    <label>Teacher Support</label>
+    <select id="teacherSupport"><option>Independent</option><option>Prompt</option><option>Some Help</option><option>High Support</option></select>
+    <label>Assessment Type</label>
+    <select id="assessmentType"><option>Formative</option><option>Summative</option></select>
+    <button id="logHelp" type="button" class="submit-btn">Log Help</button>
+    <h2>Quick Comments</h2>
+    <div id="quickChecks" class="check-list">
+      <label><input type="checkbox" value="Careful"> Careful</label>
+      <label><input type="checkbox" value="Prompt"> Prompt</label>
+      <label><input type="checkbox" value="Explain"> Explain</label>
+      <label><input type="checkbox" value="Retry"> Retry</label>
+    </div>
+    <h2>Strategy Data</h2>
+    <div id="strategyChecks" class="check-list">
+      <label><input type="checkbox" value="Used model"> Model</label>
+      <label><input type="checkbox" value="Checked"> Checked</label>
+      <label><input type="checkbox" value="Corrected"> Corrected</label>
+      <label><input type="checkbox" value="Skip count"> Skip count</label>
+    </div>
+    <label>Teacher Comments</label>
+    <textarea id="teacherComments" placeholder="Hidden teacher note"></textarea>
+    <button id="pdfReport" type="button" class="submit-btn">PDF Report</button>
+    <button id="resetBtn" type="button">Reset</button>
+  </aside>
+  <main class="main">
+    <div class="top-row">
+      <div id="prompt" class="prompt"></div>
+      <div class="controls">
+        <button id="curriculumBtn" class="curriculum-btn" type="button" aria-label="View Grade 3 Ontario mathematics curriculum expectations" title="Grade 3 Ontario curriculum expectations"><img src="assets/ontario-curriculum-trillium.png" alt=""></button>
+        <button id="pdfReportTop" type="button" class="submit-btn">PDF Report</button>
+        <span id="pageLabel">Page</span>
+        <select id="pageSelect"></select>
+        <button id="backBtn" type="button">Back</button>
+        <button id="nextBtn" type="button">Next</button>
+        <button id="checkPage" type="button" class="submit-btn">Check Page</button><button id="submitWork" type="submit" form="netlifySubmissionForm" class="submit-btn">Submit</button>
+      </div>
+    </div>
+    <div id="board" class="work"></div>
+    <div id="feedback" class="feedback"></div>
+  </main>
+</section>
+<div id="curriculumModal" class="curr-overlay" hidden>
+  <div class="curr-dialog" role="dialog" aria-modal="true" aria-labelledby="curriculumTitle">
+    <div class="curr-head"><img src="assets/ontario-curriculum-trillium.png" alt="Ontario trillium"><div><h2 id="curriculumTitle">Ontario Mathematics Curriculum</h2><p>Panther F 1 More 10 More 100 More</p></div><button id="closeCurriculum" type="button" aria-label="Close curriculum expectations">×</button></div>
+    <div class="curr-body">
+      <h3>Grade 3</h3>
+      <article class="curr-card"><div class="curr-code">B1.5 · B. Number · B1. Number Sense · Whole Numbers</div><p>Use place value when describing and representing multi-digit numbers in a variety of ways, including with base ten materials.</p><p class="curr-description"><strong>How this page addresses it:</strong> Students use the ones, tens, and hundreds places to determine how adding or subtracting 1, 10, or 100 changes a three-digit number.</p></article>
+      <article class="curr-card"><div class="curr-code">B2.3 · B. Number · B2. Operations · Mental Math</div><p>Use mental math strategies, including estimation, to add and subtract whole numbers that add up to no more than 1000, and explain the strategies used.</p><p class="curr-description"><strong>How this page addresses it:</strong> Students mentally add and subtract 1, 10, and 100, using place-value relationships to select each result.</p></article>
+    </div>
+    <p class="curr-source">Source: The Ontario Curriculum, Grades 1–8: Mathematics, 2020.</p>
+  </div>
+</div>
+<script id="panther-curriculum-script">(()=>{"use strict";const button=document.getElementById("curriculumBtn"),modal=document.getElementById("curriculumModal"),close=document.getElementById("closeCurriculum"),pdfTop=document.getElementById("pdfReportTop");function open(){modal.hidden=false;close.focus()}function shut(){modal.hidden=true;button.focus()}button.addEventListener("click",open);close.addEventListener("click",shut);modal.addEventListener("click",event=>{if(event.target===modal)shut()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!modal.hidden)shut()});pdfTop.addEventListener("click",()=>document.getElementById("pdfReport").click())})();</script>
+<form id="netlifySubmissionForm" name="inspireb-firsthalf-p26-panther-f-1-more-10-more-100-more" method="POST" data-netlify="true" netlify action="thanks.html" hidden>
+  <input type="hidden" name="form-name" value="inspireb-firsthalf-p26-panther-f-1-more-10-more-100-more">
+  <input type="hidden" name="curriculum_expectations" value="Grade 3 B1.5: use place value to describe and represent multi-digit numbers; Grade 3 B2.3: use mental math strategies to add and subtract whole numbers up to 1000. Students add and subtract 1, 10, and 100 using place-value relationships.">
+  <input type="hidden" name="project_id" id="netlifyProjectId">
+  <input type="hidden" name="student_id" id="netlifyStudentId">
+  <input type="hidden" name="finished_at" id="netlifyFinishedAt">
+  <input type="hidden" name="submitted_date" id="netlifySubmittedDate">
+  <input type="hidden" name="submitted_time" id="netlifySubmittedTime">
+  <input type="hidden" name="started_at" id="netlifyStartedAt">
+  <input type="hidden" name="total_seconds" id="netlifyTotalSeconds">
+  <input type="hidden" name="total_time" id="netlifyTotalTime">
+  <input type="hidden" name="page_timings_json" id="netlifyPageTimings">
+  <input type="hidden" name="student_responses_json" id="netlifyStudentResponses">
+  <input type="hidden" name="teacher_notes_json" id="netlifyTeacherNotes">
+  <input type="hidden" name="admin_json" id="netlifyAdmin">
+  <input type="hidden" name="summary_json" id="netlifySummary">
+  <input type="hidden" name="pages_json" id="netlifyPages">
+  <input type="hidden" name="interactions_json" id="netlifyInteractions">
+</form>
+<script>
+(()=>{"use strict";
+const PROJECT_ID="Panther F 1 More 10 More 100 More",STORAGE_KEY="inspireb-firsthalf-p26-panther-f-1-more-10-more-100-more-state-v1";
+const codeButtons=["1847","7128","4561","1472","8392","2956","6384","9025","5173","3608","7419","2865","4937","8206","1594","6742","3087","9251","5716","2469","8013","3948","6270","1359"];
+const codeEmojis=["🚗","⭐","🍎","🌈","🚀","🎈","🌻","⚽","🍀","🎵","🐾","🏀","☀️","🧩","🍓","🎯","🌙","✏️","🍕","🎲","🚌","💎","🍪","🏆"];
+const tasks=[
+{type:"place-add",q:"Build 13 and 04 with tens and ones. Choose the tens and ones in the sum.",a:13,b:4,answer:{tens:1,ones:7}},
+{type:"hundred",q:"Use the 100s chart to solve 3 + 8.",a:3,b:8,answer:11},
+{type:"word",q:"Choose each number word.",questions:[42,31,26,18,50],answer:["forty-two","thirty-one","twenty-six","eighteen","fifty"]},
+{type:"color-blocks",q:"Colour in the base-ten blocks to show 26.",n:26,answer:26},
+{type:"doubles",q:"Match each equation to the doubles-plus strategy that shows the same total.",pairs:[["3 + 5","3 + 3 + 2",8],["6 + 7","6 + 6 + 1",13],["9 + 11","9 + 9 + 2",20],["3 + 4","3 + 3 + 1",7],["6 + 8","6 + 6 + 2",14],["9 + 10","9 + 9 + 1",19]],answer:{strategies:["3 + 3 + 2","6 + 6 + 1","9 + 9 + 2","3 + 3 + 1","6 + 6 + 2","9 + 9 + 1"],sums:[8,13,20,7,14,19]}},
+{type:"equiv",q:"Choose the answer: 8 + 6 =",questions:[["8 + 6","14"]],answer:["14"]},
+{type:"compare",q:"Choose <, >, or = for each comparison.",pairs:[[35,35],[6,92],[58,70],[29,5],[81,81],[52,16]],answer:["=","<","<",">","=",">"]},
+{type:"build",q:"Build 12 with base-ten blocks.",n:12,answer:12},
+{type:"moreless100",q:"Look at each number. Add or subtract 1, 10, or 100.",questions:[{number:537,change:1,label:"Add 1"},{number:642,change:-1,label:"Subtract 1"},{number:718,change:10,label:"Add 10"},{number:855,change:-10,label:"Subtract 10"},{number:603,change:100,label:"Add 100"},{number:999,change:-100,label:"Subtract 100"}],answer:[538,641,728,845,703,899]},
+{type:"word-problem",q:"There are 5 apples in a basket. You add 4 more apples. How many apples are in the basket?",answer:9},
+{type:"line-missing",q:"Find the missing numbers on each number line.",rows:[[10,11,null,13,14],[18,null,20,21,22],[25,26,27,null,29],[32,33,null,35,36],[41,null,43,44,45],[12,13,null,15,16],[21,22,23,null,25],[35,null,37,38,39],[40,41,42,null,44]],answer:[12,19,28,34,42,14,24,36,43]},
+{type:"round",q:"Round each number to the nearest 10.",questions:[23,27,34,38],answer:[20,30,30,40],choices:[20,30,40]},
+{type:"skip",q:"Count by 2s. Fill the boxes.",start:2,step:2,count:6,answer:[2,4,6,8,10,12]},
+{type:"skip",q:"Count by 5s. Fill the boxes.",start:5,step:5,count:6,answer:[5,10,15,20,25,30]},
+{type:"skip",q:"Count by 10s. Fill the boxes.",start:10,step:10,count:6,answer:[10,20,30,40,50,60]},
+{type:"tensones",q:"How many tens and ones make 36?",n:36,answer:{tens:3,ones:6}},
+{type:"order",q:"Put the numbers in order from least to greatest.",numbers:[7,42,18,31,26,5],answer:[5,7,18,26,31,42]}
+];
+const BRANCH_INDEX=8;
+ tasks.splice(0,tasks.length,tasks[BRANCH_INDEX]);
+ const $=id=>document.getElementById(id);
+const el={entry:$("entry"),studentCode:$("studentCode"),enterBtn:$("enterBtn"),codeGrid:$("codeGrid"),app:$("app"),studentStatus:$("studentStatus"),totalTimer:$("totalTimer"),pageTimer:$("pageTimer"),attemptStatus:$("attemptStatus"),teacherSupport:$("teacherSupport"),assessmentType:$("assessmentType"),teacherComments:$("teacherComments"),quickChecks:$("quickChecks"),strategyChecks:$("strategyChecks"),logHelp:$("logHelp"),pdfReport:$("pdfReport"),resetBtn:$("resetBtn"),prompt:$("prompt"),pageSelect:$("pageSelect"),backBtn:$("backBtn"),nextBtn:$("nextBtn"),board:$("board"),feedback:$("feedback"),form:$("netlifySubmissionForm"),netlifyProjectId:$("netlifyProjectId"),netlifyStudentId:$("netlifyStudentId"),netlifyFinishedAt:$("netlifyFinishedAt"),netlifySummary:$("netlifySummary"),netlifyPages:$("netlifyPages"),netlifyInteractions:$("netlifyInteractions")};
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>a+i);
+const opts=(vals,blank="Choose")=>`<option value="">${blank}</option>`+vals.map(v=>`<option value="${v}">${v}</option>`).join("");
+function makePage(t,i){return{...JSON.parse(JSON.stringify(t)),page:i+1,response:null,correct:false,attempts:0,firstAttemptSeconds:null,timeToCorrectSeconds:null,timeAfterCorrectSeconds:0,timeBetweenAttempts:[],timeOnPageSeconds:0,teacherSupport:"Independent",assessmentType:"Formative",teacherComments:"",quickComments:[],strategyData:[],helpCount:0,helpHistory:[],placed:[],bank:t.numbers?[...t.numbers]:[],marked:[]}}
+function freshState(){return{studentId:"",startedAt:Date.now(),finishedAt:"",totalSeconds:0,pages:tasks.map(makePage),interactions:[]}}
+function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))}catch(e){return null}}
+let state=load()||freshState(),pageIndex=0,pageStartedAt=Date.now(),dragValue=null;const splashStudent=(window.parent&&window.parent.SPLASH_STUDENT)||new URLSearchParams(location.search).get("student")||"";if(splashStudent)state.studentId=splashStudent;
+function page(){return state.pages[pageIndex]}
+function store(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function fmt(s){s=Math.max(0,Math.floor(s||0));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function totalSeconds(){return Math.floor((Date.now()-state.startedAt)/1000)}
+function log(type,detail){state.interactions.push({at:new Date().toISOString(),page:pageIndex+1,type,detail})}
+function saveTime(){const p=page();p.timeOnPageSeconds+=(Date.now()-pageStartedAt)/1000;pageStartedAt=Date.now()}
+function saveAdmin(){const p=page();p.teacherSupport=el.teacherSupport.value;p.assessmentType=el.assessmentType.value;p.teacherComments=el.teacherComments.value;p.quickComments=[...el.quickChecks.querySelectorAll("input:checked")].map(x=>x.value);p.strategyData=[...el.strategyChecks.querySelectorAll("input:checked")].map(x=>x.value)}
+function setResp(v){page().response=v;page().correct=false;log("changed_value",{response:v});store()}
+function renderCodes(){el.codeGrid.innerHTML=codeButtons.map((c,i)=>`<button class="code-btn${el.studentCode.value===c?" selected":""}" type="button" data-code="${c}"><span>${c}</span><span class="code-emoji">${codeEmojis[i%codeEmojis.length]}</span></button>`).join("");el.codeGrid.querySelectorAll("button").forEach(b=>b.onclick=()=>{el.studentCode.value=b.dataset.code;log("student_code_click",{code:b.dataset.code});renderCodes()})}
+function start(){if(!el.studentCode.value){alert("Choose a student code first.");return}state=freshState();state.studentId=el.studentCode.value;pageIndex=0;pageStartedAt=Date.now();log("start",{studentId:state.studentId});store();el.entry.classList.add("hidden");el.app.classList.remove("hidden");render()}
+function setChecks(box,vals){box.querySelectorAll("input").forEach(i=>i.checked=(vals||[]).includes(i.value))}
+function feedback(msg,kind=""){el.feedback.className=`feedback ${kind}`.trim();el.feedback.textContent=msg}
+function render(){const p=page();el.prompt.textContent=`Page ${p.page} of ${state.pages.length}: ${p.q}`;el.studentStatus.textContent=state.studentId;el.pageSelect.innerHTML=state.pages.map((_,i)=>`<option value="${i}">Page ${i+1}</option>`).join("");el.pageSelect.value=pageIndex;el.backBtn.disabled=pageIndex===0;el.nextBtn.disabled=pageIndex===state.pages.length-1;el.teacherSupport.value=p.teacherSupport;el.assessmentType.value=p.assessmentType;el.teacherComments.value=p.teacherComments;setChecks(el.quickChecks,p.quickComments);setChecks(el.strategyChecks,p.strategyData);el.board.innerHTML="";({["place-add"]:placeAdd,skip,hundred,word,["color-blocks"]:colorBlocks,build,after,moreless100,["word-problem"]:wordProblem,["line-missing"]:lineMissing,round,tensones,doubles,order,compare,equiv}[p.type])();updateStatus();feedback("Work on the page, then use Check Page when ready.");store()}
+function updateStatus(){el.attemptStatus.textContent=page().attempts||0}
+function nav(i){if(i<0||i>=state.pages.length)return;saveAdmin();saveTime();pageIndex=i;render()}
+function getVal(id){return document.getElementById(id)?.value||""}
+function block(v,small=false){return `<div class="${v===10?"ten":"one"}${small?" small":""}" draggable="true" data-v="${v}"></div>`}
+function placeAdd(){const p=page();el.board.innerHTML=`<div class="bank"><div class="bank-title">Endless Bank</div>${block(10)}${block(1)}<div class="drop remove">Drag blocks back here to remove</div><button type="button" id="clearBlocks">Clear blocks</button></div><div class="pad-grid"><div class="pv-head">Tens</div><div></div><div class="pv-head">Ones</div><div class="drop pv-drop" data-name="aTens">Drop blocks here</div><div class="number-mid">1 3</div><div class="drop pv-drop" data-name="aOnes">Drop blocks here</div><div class="pv-head">Tens</div><div></div><div class="pv-head">Ones</div><div class="drop pv-drop" data-name="bTens">Drop blocks here</div><div class="number-mid">0 4</div><div class="drop pv-drop" data-name="bOnes">Drop blocks here</div></div><div class="row"><div class="answer-panel">Tens in the sum<br><select id="tensAns" class="answer-select">${opts(range(0,9))}</select></div><div class="answer-panel">Ones in the sum<br><select id="onesAns" class="answer-select">${opts(range(0,9))}</select></div></div>`;setupDrops();["tensAns","onesAns"].forEach(id=>$(id).onchange=()=>setResp({tens:Number(getVal("tensAns")),ones:Number(getVal("onesAns"))}));$("clearBlocks").onclick=()=>{p.placed=[];render()}}
+function setupDrops(){el.board.querySelectorAll("[draggable]").forEach(b=>b.ondragstart=e=>{dragValue=Number(b.dataset.v);e.dataTransfer.setData("text/plain",String(dragValue))});el.board.querySelectorAll(".pv-drop").forEach(d=>{d.ondragover=e=>e.preventDefault();d.ondrop=e=>{e.preventDefault();const v=Number(e.dataTransfer.getData("text/plain")||dragValue);page().placed.push({area:d.dataset.name,value:v});log("drop",{area:d.dataset.name,value:v});drawPlaced()};d.onclick=e=>{if(e.target!==d)return;const v=d.dataset.name.includes("Tens")?10:1;page().placed.push({area:d.dataset.name,value:v});log("tap_pad",{area:d.dataset.name,value:v});drawPlaced()}});const remove=el.board.querySelector(".remove");if(remove){remove.ondragover=e=>e.preventDefault();remove.ondrop=e=>{e.preventDefault();page().placed.pop();drawPlaced()}};drawPlaced()}
+function drawPlaced(){el.board.querySelectorAll(".pv-drop").forEach(d=>{const items=page().placed.filter(x=>x.area===d.dataset.name);d.innerHTML=items.length?items.map(x=>block(x.value,true)).join(""):"Drop blocks here"});el.board.querySelectorAll(".pv-drop [draggable]").forEach(b=>{b.ondblclick=()=>{const p=page();const idx=p.placed.findIndex(x=>x.value===Number(b.dataset.v));if(idx>-1)p.placed.splice(idx,1);drawPlaced()}})}
+function skip(){const p=page();const seq=range(0,p.count-1).map(i=>p.start+i*p.step);p.answer=seq;el.board.innerHTML=`<div class="row"><div class="answer-panel">Count by ${p.step}s.</div></div><div class="row">${seq.map((n,i)=>i===0?`<div class="slot">${n}</div>`:`<select class="answer-select answer">${opts(shuffle([n,n+p.step,n-p.step,n+p.step*2,n+3].filter(x=>x>0)))}</select>`).join("")}</div>`;el.board.querySelectorAll(".answer").forEach(s=>s.onchange=()=>setResp([p.start,...[...el.board.querySelectorAll(".answer")].map(x=>Number(x.value))]))}
+function hundred(){const p=page();el.board.innerHTML=`<div class="row"><div class="answer-panel">${p.a} + ${p.b} = <select id="ans" class="answer-select">${opts(shuffle([p.answer,8,10,12,13,18]))}</select></div></div><div class="hundred">${range(1,100).map(n=>`<button type="button" class="cell" data-n="${n}">${n}</button>`).join("")}</div>`;el.board.querySelectorAll(".cell").forEach(c=>{c.onclick=()=>{c.classList.toggle("marked");page().marked=[...el.board.querySelectorAll(".cell.marked")].map(x=>Number(x.dataset.n));log("hundred_click",{n:c.dataset.n});store()};c.ondblclick=()=>{c.classList.toggle("red");log("hundred_double_click",{n:c.dataset.n});store()}});$("ans").onchange=()=>setResp(Number(getVal("ans")))}
+function word(){const p=page();const current=Array.isArray(p.response)?p.response:[];const wordChoices=["forty-two","thirty-one","twenty-six","eighteen","fifty","twenty-four","thirteen","sixty-two","eighty-one","fifteen"];const selected=(v,cur)=>String(v)===String(cur)?" selected":"";el.board.innerHTML=`<div class="word-list">${p.questions.map((n,i)=>`<div class="word-row"><div class="word-number">${n}</div><div class="answer-panel">Number word<br><select class="answer-select word-answer" data-i="${i}"><option value="">?</option>${shuffle([...new Set([p.answer[i],...wordChoices])]).map(v=>`<option value="${v}"${selected(v,current[i])}>${v}</option>`).join("")}</select></div></div>`).join("")}</div>`;el.board.querySelectorAll(".word-answer").forEach(s=>s.onchange=()=>setResp([...el.board.querySelectorAll(".word-answer")].map(x=>x.value)))}
+function colorBlocks(){const p=page();el.board.innerHTML=`<div class="bt-title">Colour in the base ten blocks to show ${p.n}.</div><div class="bt-grid"><div class="bt-panel"><h3>Hundreds</h3><div class="hundreds-area">${range(1,7).map(i=>`<button type="button" class="hundred-block blockpick" data-v="100" aria-label="hundred ${i}"></button>`).join("")}</div></div><div class="bt-panel"><h3>Ten Rods</h3><div class="ten-rods-area">${range(1,7).map(i=>`<button type="button" class="bt-ten blockpick" data-v="10" aria-label="ten ${i}"></button>`).join("")}</div></div><div class="bt-panel"><h3>Ones</h3><div class="ones-area">${range(1,9).map(i=>`<button type="button" class="bt-one blockpick" data-v="1" aria-label="one ${i}"></button>`).join("")}</div></div></div><div class="bt-counters"><div class="bt-counter">Hundreds: <span id="hCount">0</span></div><div class="bt-counter">Tens: <span id="tCount">0</span></div><div class="bt-counter">Ones: <span id="oCount">0</span></div><div class="bt-counter">Total: <span id="totalCount">0</span></div></div><div class="bt-note">Click blocks to colour them.</div>`;function update(){const picked=[...el.board.querySelectorAll(".blockpick.bt-selected")];const hundreds=picked.filter(x=>Number(x.dataset.v)===100).length;const tens=picked.filter(x=>Number(x.dataset.v)===10).length;const ones=picked.filter(x=>Number(x.dataset.v)===1).length;const total=hundreds*100+tens*10+ones;$("hCount").textContent=hundreds;$("tCount").textContent=tens;$("oCount").textContent=ones;$("totalCount").textContent=total;setResp(total)}el.board.querySelectorAll(".blockpick").forEach(b=>b.onclick=()=>{b.classList.toggle("bt-selected");update()})}
+function build(){const p=page();el.board.innerHTML=`<div class="answer-panel">Build ${p.n}. Drag or double-click a block to add it. Click a placed block to remove it.</div><div class="bank"><button type="button" class="tile add" draggable="true" data-v="100">100</button><button type="button" class="tile add" draggable="true" data-v="10">10</button><button type="button" class="tile add" draggable="true" data-v="1">1</button></div><div id="pad" class="drop" style="min-height:210px"></div>`;el.board.querySelectorAll(".add").forEach(b=>{b.ondblclick=()=>{page().placed.push(Number(b.dataset.v));drawBuild()};b.ondragstart=e=>{dragValue=Number(b.dataset.v);e.dataTransfer.setData("text/plain",String(dragValue))}});const pad=$("pad");pad.ondragover=e=>e.preventDefault();pad.ondrop=e=>{e.preventDefault();const v=Number(e.dataTransfer.getData("text/plain")||dragValue);if(v){page().placed.push(v);log("drop",{area:"buildPad",value:v});drawBuild()}};drawBuild()}
+function drawBuild(){const pad=$("pad");if(!pad)return;pad.innerHTML=page().placed.map((v,i)=>`<button class="tile placed ${v===10?"v10":v===1?"v1":""}" type="button" data-i="${i}">${v}</button>`).join("")||"Drop blocks here";pad.querySelectorAll(".placed").forEach(b=>b.onclick=()=>{page().placed.splice(Number(b.dataset.i),1);drawBuild()});setResp(page().placed.reduce((a,b)=>a+b,0))}
+function after(){const p=page();const current=p.response||{before:[],after:[]};const choiceSet=n=>shuffle([...new Set([n-1,n+1,n-2,n+2,n,Number(String(n).split("").reverse().join(""))].filter(x=>x>=0&&x<=1000))]);const selected=(v,cur)=>String(v)===String(cur)?" selected":"";el.board.innerHTML=`<div class="before-after-title">Choose the number before and the number after.</div><div class="before-after-list">${p.nums.map((n,i)=>`<div class="before-after-row"><div><span class="ba-label">Number before</span><select class="answer-select before-answer" data-i="${i}"><option value="">?</option>${choiceSet(n).map(v=>`<option value="${v}"${selected(v,current.before[i])}>${v}</option>`).join("")}</select></div><div class="center-number">${n}</div><div><span class="ba-label">Number after</span><select class="answer-select after-answer" data-i="${i}"><option value="">?</option>${choiceSet(n).map(v=>`<option value="${v}"${selected(v,current.after[i])}>${v}</option>`).join("")}</select></div></div>`).join("")}</div>`;const update=()=>setResp({before:[...el.board.querySelectorAll(".before-answer")].map(x=>Number(x.value)||0),after:[...el.board.querySelectorAll(".after-answer")].map(x=>Number(x.value)||0)});el.board.querySelectorAll(".before-answer,.after-answer").forEach(s=>s.onchange=update)}
+function wordProblem(){const p=page();const apples=n=>range(1,n).map(()=>`<span class="apple-symbol" aria-hidden="true">🍎</span>`).join("");el.board.innerHTML=`<div class="answer-panel">${p.q}</div><div class="row"><div class="apple-equation"><div class="apple-group" role="img" aria-label="5 apples">${apples(5)}</div><span class="apple-plus" aria-hidden="true">+</span><div class="apple-group" role="img" aria-label="4 apples">${apples(4)}</div></div><select id="ans" class="answer-select" aria-label="How many apples are in the basket?">${opts(shuffle([p.answer,7,8,10,14,1]))}</select></div><div class="line">${range(0,12).map(n=>`<div class="tick"><div class="bar"></div><span>${n}</span></div>`).join("")}</div>`;$("ans").onchange=()=>setResp(Number(getVal("ans")))}
+function lineMissing(){const p=page();const current=Array.isArray(p.response)?p.response:[];let miss=0;const choices=n=>shuffle([...new Set([n,n-1,n+1,n-2,n+2,Number(String(n).split("").reverse().join(""))].filter(x=>x>=10&&x<=45))]);if(p.rows){el.board.innerHTML=`<div class="numberline-title">Find the missing numbers on each number line.</div><div class="nl-questions">${p.rows.map((row,ri)=>`<div class="nl-row"><div class="mini-numberline">${row.map(n=>{if(n===null){const ans=p.answer[miss],i=miss++;const has=current[i];return `<div class="mini-point"><div class="mini-tick"></div><select class="answer-select mini-select answer ${has?"answered":""}" data-i="${i}"><option value="">?</option>${choices(ans).map(v=>`<option value="${v}"${String(v)===String(current[i])?" selected":""}>${v}</option>`).join("")}</select></div>`}return `<div class="mini-point"><div class="mini-tick"></div><div class="mini-label">${n}</div></div>`}).join("")}</div></div>`).join("")}</div><div class="nl-hint">Each row counts forward by 1. Choose the missing number.</div>`}else{el.board.innerHTML=`<div class="numberline-title">Find the missing numbers on the number line.</div><div class="clear-numberline">${p.nums.map(n=>{if(n===null){const ans=p.answer[miss],i=miss++;const has=current[i];return `<div class="nl-point"><div class="nl-tick"></div><select class="answer-select nl-select answer ${has?"answered":""}" data-i="${i}"><option value="">?</option>${choices(ans).map(v=>`<option value="${v}"${String(v)===String(current[i])?" selected":""}>${v}</option>`).join("")}</select></div>`}return `<div class="nl-point"><div class="nl-tick"></div><div class="nl-label">${n}</div></div>`}).join("")}</div><div class="nl-hint">The numbers count forward by 1.</div>`}el.board.querySelectorAll(".answer").forEach(s=>s.onchange=()=>{s.classList.toggle("answered",!!s.value);setResp([...el.board.querySelectorAll(".answer")].map(x=>Number(x.value)||0))})}
+function round(){const p=page();const current=Array.isArray(p.response)?p.response:[];function rowOptions(n){const right=Math.round(n/10)*10;return shuffle([...new Set([right,20,30,40,10,50].filter(v=>v>=10&&v<=50))])}el.board.innerHTML=`<div class="round-title">Round each number to the nearest 10.</div><div class="round-list">${p.questions.map((n,i)=>`<div class="round-row"><div class="answer-panel">Question ${i+1}</div><div class="round-question-number">${n}</div><div><label>Nearest 10</label><select class="answer-select round-answer" data-i="${i}"><option value="">?</option>${rowOptions(n).map(v=>`<option value="${v}"${String(current[i])===String(v)?" selected":""}>${v}</option>`).join("")}</select></div></div>`).join("")}</div>`;el.board.querySelectorAll(".round-answer").forEach(s=>s.onchange=()=>setResp([...el.board.querySelectorAll(".round-answer")].map(x=>Number(x.value)||0)))}
+function tensones(){const p=page();const current=p.response||{tens:0,ones:0};el.board.innerHTML=`<div class="tensones-title">How many tens and ones make ${p.n}?</div><div class="tensones-layout"><div class="model-panel"><h3>Base-Ten Model</h3><div id="modelBlocks" class="model-blocks"></div></div><div class="answer-box"><label for="tens">Tens</label><select id="tens" class="answer-select">${opts(range(0,9),"?")}</select><label for="ones">Ones</label><select id="ones" class="answer-select">${opts(range(0,9),"?")}</select><div id="liveTotal" class="live-total">0</div></div></div>`;const tens=$("tens"),ones=$("ones"),model=$("modelBlocks"),total=$("liveTotal");tens.value=current.tens||"";ones.value=current.ones||"";function draw(){const t=Number(tens.value)||0,o=Number(ones.value)||0;model.innerHTML=`${range(1,t).map(()=>block(10)).join("")}${range(1,o).map(()=>block(1)).join("")}`||"<div class='nl-hint'>Choose tens and ones to build the model.</div>";total.textContent=t*10+o;setResp({tens:t,ones:o})}["tens","ones"].forEach(id=>$(id).onchange=draw);draw()}
+function doubles(){const p=page();if(!Array.isArray(p.placed)||p.placed.length!==p.pairs.length)p.placed=Array(p.pairs.length).fill("");const strategies=p.pairs.map(r=>r[1]);if(!Array.isArray(p.bank)||p.bank.length!==strategies.length)p.bank=shuffle(strategies);const used=new Set(p.placed.filter(Boolean));const currentSums=(p.response&&p.response.sums)||[];const sumChoices=i=>shuffle([...new Set([p.pairs[i][2],p.pairs[i][2]-1,p.pairs[i][2]+1,p.pairs[i][2]+2,p.pairs[i][2]+3].filter(x=>x>=0&&x<=25))]);const selected=(v,cur)=>String(v)===String(cur)?" selected":"";el.board.innerHTML=`<div class="answer-panel">Page 5: Drag each doubles-plus card onto the equation with the same total.</div><div class="doubles-wrap"><div class="doubles-grid">${p.pairs.map((r,i)=>`<div class="doubles-card"><h3>${r[0]}</h3><div class="strategy-drop ${p.placed[i]?"filled":""}" data-i="${i}">${p.placed[i]||"Drop strategy here"}</div><select class="answer-select sum-answer" data-i="${i}"><option value="">?</option>${sumChoices(i).map(v=>`<option value="${v}"${selected(v,currentSums[i])}>${v}</option>`).join("")}</select></div>`).join("")}</div><div class="strategy-bank"><h3>Strategy Bank</h3><div class="remove-bank">Drag cards back here to remove them.</div>${p.bank.map(s=>`<div class="strategy-card ${used.has(s)?"used":""}" draggable="true" data-strategy="${s}">${s}</div>`).join("")}</div></div>`;const update=()=>setResp({strategies:p.placed.map(x=>x||""),sums:[...el.board.querySelectorAll(".sum-answer")].map(x=>Number(x.value)||0)});el.board.querySelectorAll(".strategy-card").forEach(card=>{card.ondragstart=e=>{e.dataTransfer.setData("text/plain",card.dataset.strategy)}});el.board.querySelectorAll(".strategy-drop").forEach(drop=>{drop.ondragover=e=>e.preventDefault();drop.ondrop=e=>{e.preventDefault();const s=e.dataTransfer.getData("text/plain");const i=Number(drop.dataset.i);const old=p.placed.indexOf(s);if(old>-1)p.placed[old]="";p.placed[i]=s;update();render()};drop.onclick=()=>{const i=Number(drop.dataset.i);if(p.placed[i]){p.placed[i]="";update();render()}}});const remove=el.board.querySelector(".remove-bank");remove.ondragover=e=>e.preventDefault();remove.ondrop=e=>{e.preventDefault();const s=e.dataTransfer.getData("text/plain");const idx=p.placed.indexOf(s);if(idx>-1){p.placed[idx]="";update();render()}};el.board.querySelectorAll(".sum-answer").forEach(s=>s.onchange=update)}
+function order(){const p=page();if(!Array.isArray(p.placed)||p.placed.length!==p.answer.length)p.placed=Array(p.answer.length).fill(null);const normalize=()=>{p.bank=[...new Set(p.bank)].filter(n=>!p.placed.includes(n));p.response=[...p.placed]};normalize();const tile=n=>`<button type="button" class="drag-card" draggable="true" data-n="${n}">${n}</button>`;el.board.innerHTML=`<div class="order-title">Number Bank</div><div class="bank order-bank">${p.bank.map(tile).join("")}</div><div class="landing-title">Landing Pads</div><div class="order-pad-row">${p.answer.map((_,i)=>`<div class="drop order-pad ${p.placed[i]?"filled":""}" data-i="${i}">${p.placed[i]?tile(p.placed[i]):"Drop"}</div>`).join("")}</div>`;function returnToBank(n){if(!p.bank.includes(n))p.bank.push(n)}function commit(detail){normalize();log("order_change",detail);setResp([...p.placed]);render()}el.board.querySelectorAll(".drag-card").forEach(card=>{card.ondragstart=e=>{dragValue=Number(card.dataset.n);e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",String(dragValue))};card.onclick=e=>e.stopPropagation()});el.board.querySelectorAll(".order-pad").forEach(pad=>{pad.ondragover=e=>e.preventDefault();pad.ondrop=e=>{e.preventDefault();const n=Number(e.dataTransfer.getData("text/plain")||dragValue);if(!n)return;const i=Number(pad.dataset.i);const oldIndex=p.placed.indexOf(n);if(oldIndex>-1)p.placed[oldIndex]=null;if(p.placed[i])returnToBank(p.placed[i]);p.placed[i]=n;p.bank=p.bank.filter(x=>x!==n);commit({action:"drop",number:n,pad:i})};pad.onclick=e=>{if(e.target!==pad)return;const i=Number(pad.dataset.i);if(p.placed[i]){const n=p.placed[i];p.placed[i]=null;returnToBank(n);commit({action:"pad_return",number:n,pad:i})}}});const bank=el.board.querySelector(".order-bank");bank.ondragover=e=>e.preventDefault();bank.ondrop=e=>{e.preventDefault();const n=Number(e.dataTransfer.getData("text/plain")||dragValue);const idx=p.placed.indexOf(n);if(idx>-1){p.placed[idx]=null;returnToBank(n);commit({action:"drag_back_to_bank",number:n})}}}
+function compare(){const p=page();el.board.innerHTML=`<div class="compare-grid">${p.pairs.map(r=>`<div>${r[0]}</div><select class="answer-select answer">${opts(shuffle(["<",">","="]))}</select><div>${r[1]}</div>`).join("")}</div>`;el.board.querySelectorAll(".answer").forEach(s=>s.onchange=()=>setResp([...el.board.querySelectorAll(".answer")].map(x=>x.value)))}
+function equiv(){const p=page();const current=Array.isArray(p.response)?p.response:[];const allChoices=[...new Set([...p.answer,"12","13","14","15","16"])];const selected=(v,cur)=>String(v)===String(cur)?" selected":"";el.board.innerHTML=`<div class="equiv-list">${p.questions.map((q,i)=>`<div class="equiv-row"><div class="equiv-equation">${q[0]} =</div><div class="answer-panel">Answer<br><select class="answer-select equiv-answer" data-i="${i}"><option value="">?</option>${shuffle([...new Set([q[1],...allChoices])]).map(v=>`<option value="${v}"${selected(v,current[i])}>${v}</option>`).join("")}</select></div></div>`).join("")}</div>`;el.board.querySelectorAll(".equiv-answer").forEach(s=>s.onchange=()=>setResp([...el.board.querySelectorAll(".equiv-answer")].map(x=>x.value)))}
+function moreless100(){const p=page();const tasks=p.questions.map((item,index)=>({number:item.number,label:item.label,answer:p.answer[index],assessLabel:item.label+' to '+item.number}));DreamBNumberBank.render({board:el.board,mode:'moreless',tasks,response:p.response,onChange:setResp})}
+function equal(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+function equationTotal(value){const match=String(value||"").match(/^\s*(-?\d+)\s*\+\s*(-?\d+)\s*$/);return match?Number(match[1])+Number(match[2]):NaN}
+function correctResponse(p){if(p.type==="doubles")return !!p.response&&equal(p.response.strategies,p.answer.strategies)&&equal(p.response.sums,p.answer.sums);if(p.type==="after")return !!p.response&&equal(p.response.before,p.answer.before)&&equal(p.response.after,p.answer.after);if(p.type==="equiv")return Array.isArray(p.response)&&p.response.length===p.questions.length&&p.response.every((answer,i)=>Number.isFinite(equationTotal(answer))&&equationTotal(answer)===equationTotal(p.questions[i][0]));return equal(p.response,p.answer)}
+function check(){saveAdmin();saveTime();const p=page();const now=totalSeconds();p.attempts++;if(p.firstAttemptSeconds===null)p.firstAttemptSeconds=now;if(p.lastAttemptSeconds!==null)p.timeBetweenAttempts.push(now-p.lastAttemptSeconds);p.lastAttemptSeconds=now;p.correct=correctResponse(p);if(p.correct&&p.timeToCorrectSeconds===null)p.timeToCorrectSeconds=now;feedback(p.correct?"Correct.":"Try again.",""+(p.correct?"ok":"bad"));log("check_page",{correct:p.correct,response:p.response,answer:p.answer});updateStatus();store()}
+function assessAllPages(){state.pages.forEach(p=>{p.correct=correctResponse(p)})}
+function setHidden(id,value){const field=$(id);if(field)field.value=typeof value==="string"?value:JSON.stringify(value)}
+function fillNetlify(){saveAdmin();saveTime();assessAllPages();state.totalSeconds=totalSeconds();const submittedAt=state.finishedAt||new Date().toISOString();const submittedDate=new Date(submittedAt);const pageTimings=state.pages.map(p=>({page:p.page,type:p.type,question:p.q,timeOnPageSeconds:p.timeOnPageSeconds,timeOnPage:fmt(p.timeOnPageSeconds),attempts:p.attempts,firstAttemptSeconds:p.firstAttemptSeconds,timeToCorrectSeconds:p.timeToCorrectSeconds,timeAfterCorrectSeconds:p.timeAfterCorrectSeconds,timeBetweenAttempts:p.timeBetweenAttempts}));const studentResponses=state.pages.map(p=>({page:p.page,type:p.type,question:p.q,response:p.response,correctAnswer:p.answer,correct:p.correct,placed:p.placed,marked:p.marked,bank:p.bank}));const teacherNotes=state.pages.map(p=>({page:p.page,teacherSupport:p.teacherSupport,assessmentType:p.assessmentType,teacherComments:p.teacherComments,quickComments:p.quickComments,strategyData:p.strategyData,helpCount:p.helpCount,helpHistory:p.helpHistory}));const admin={projectId:PROJECT_ID,studentId:state.studentId,startedAt:new Date(state.startedAt).toISOString(),finishedAt:submittedAt,submittedDate:submittedDate.toLocaleDateString(),submittedTime:submittedDate.toLocaleTimeString(),totalSeconds:state.totalSeconds,totalTime:fmt(state.totalSeconds),pageCount:state.pages.length,attempted:state.pages.filter(p=>p.response!==null).length,correct:state.pages.filter(p=>p.correct).length};el.netlifyProjectId.value=PROJECT_ID;el.netlifyStudentId.value=state.studentId;el.netlifyFinishedAt.value=submittedAt;setHidden("netlifySubmittedDate",admin.submittedDate);setHidden("netlifySubmittedTime",admin.submittedTime);setHidden("netlifyStartedAt",admin.startedAt);setHidden("netlifyTotalSeconds",String(state.totalSeconds));setHidden("netlifyTotalTime",admin.totalTime);setHidden("netlifyPageTimings",pageTimings);setHidden("netlifyStudentResponses",studentResponses);setHidden("netlifyTeacherNotes",teacherNotes);setHidden("netlifyAdmin",admin);el.netlifySummary.value=JSON.stringify({...admin,pageSummary:studentResponses.map((r,i)=>({...r,timeOnPageSeconds:pageTimings[i].timeOnPageSeconds,attempts:pageTimings[i].attempts}))});el.netlifyPages.value=JSON.stringify(state.pages);el.netlifyInteractions.value=JSON.stringify(state.interactions);store()}
+function submitWork(e){if(!confirm("Are you sure you want to submit your work?")){e.preventDefault();return}state.finishedAt=new Date().toISOString();log("submit",{normalPost:true});fillNetlify()}
+function reportHtml(){
+fillNetlify();
+const p=state.pages[0],responses=Array.isArray(p.response)?p.response:[],individualCorrect=p.answer.filter((answer,i)=>Number(responses[i])===Number(answer)).length;
+const questionRows=p.questions.map((question,i)=>{const answered=responses[i]!==undefined&&responses[i]!==null&&responses[i]!==0,correct=answered&&Number(responses[i])===Number(p.answer[i]);return `<tr><td>${i+1}</td><td>${question.label}</td><td>${question.number}</td><td>${answered?responses[i]:"Blank"}</td><td>${p.answer[i]}</td><td class="${correct?"correct":answered?"review":"blank"}">${correct?"Correct":answered?"Review":"Not answered"}</td></tr>`}).join("");
+return `<!doctype html><html><head><title>${PROJECT_ID} Report</title><style>@page{size:letter;margin:.55in}body{font-family:Arial,sans-serif;padding:24px;color:#202020}h1,h2{color:#17386b}h1{font-size:34px}.report-table{width:100%;border-collapse:collapse}.report-table th,.report-table td{border:1px solid #333;padding:8px}.report-table th{background:#dbe8fa;color:#17386b}.correct{background:#e2f7df;color:#165c19;font-weight:bold}.review{background:#ffe2df;color:#8b1e18;font-weight:bold}.blank{background:#fff4c7;color:#6b5200;font-weight:bold}.curriculum{margin-top:18px;border:2px solid #333;padding:14px;border-radius:8px}.expectation{margin:10px 0;padding:10px;border-left:5px solid #78bfe5;background:#f4fbff}.expectation h3{margin:0 0 6px;color:#17386b}.expectation p{margin:5px 0;line-height:1.4}.description{padding-top:6px;border-top:1px solid #9fb7c5}</style></head><body><h1>${PROJECT_ID} Student Report</h1><p><b>Student:</b> ${state.studentId} | <b>Total time:</b> ${fmt(state.totalSeconds)} | <b>Attempts:</b> ${p.attempts} | <b>Individual score:</b> ${individualCorrect}/${p.questions.length}</p><table class="report-table"><tr><th>Question</th><th>Instruction</th><th>Starting Number</th><th>Student Answer</th><th>Correct Answer</th><th>Result</th></tr>${questionRows}</table><section class="curriculum"><h2>Ontario Mathematics Curriculum Expectations — Grade 3</h2><div class="expectation"><h3>B1.5 · B. Number · B1. Number Sense · Whole Numbers</h3><p>Use place value when describing and representing multi-digit numbers in a variety of ways, including with base ten materials.</p><p class="description"><b>How this page addresses it:</b> Students use the ones, tens, and hundreds places to determine how adding or subtracting 1, 10, or 100 changes a three-digit number.</p></div><div class="expectation"><h3>B2.3 · B. Number · B2. Operations · Mental Math</h3><p>Use mental math strategies, including estimation, to add and subtract whole numbers that add up to no more than 1000, and explain the strategies used.</p><p class="description"><b>How this page addresses it:</b> Students mentally add and subtract 1, 10, and 100, using place-value relationships to select each result.</p></div><p><small>Source: The Ontario Curriculum, Grades 1–8: Mathematics, 2020.</small></p></section></body></html>`;
+}
+function openReport(){const w=window.open("","_blank");if(!w){alert("Allow popups to view the PDF report.");return}w.document.open();w.document.write(reportHtml());w.document.close();log("pdf_report",{});store()}
+if(el.enterBtn)el.enterBtn.onclick=start;$("checkPage").onclick=check;el.backBtn.onclick=()=>nav(pageIndex-1);el.nextBtn.onclick=()=>nav(pageIndex+1);el.pageSelect.onchange=()=>nav(Number(el.pageSelect.value));el.pdfReport.onclick=openReport;el.logHelp.onclick=()=>{const p=page();p.helpCount++;p.helpHistory.push({at:new Date().toISOString(),support:el.teacherSupport.value});log("teacher_help",{count:p.helpCount});store();updateStatus()};el.resetBtn.onclick=()=>{if(confirm("Reset this project?")){localStorage.removeItem(STORAGE_KEY);state=freshState();state.studentId="Student";pageIndex=0;pageStartedAt=Date.now();render()}};el.form.addEventListener("submit",submitWork);[el.teacherSupport,el.assessmentType,el.teacherComments].forEach(x=>x.onchange=()=>{saveAdmin();log("changed_admin",{field:x.id,value:x.value});store()});[...document.querySelectorAll(".check-list input")].forEach(x=>x.onchange=()=>{saveAdmin();log("changed_check",{value:x.value,checked:x.checked});store()});
+let pullStartY=0;
+document.addEventListener("touchstart",e=>{if(e.touches.length===1)pullStartY=e.touches[0].clientY},{passive:true});
+document.addEventListener("touchmove",e=>{if(e.touches.length!==1||e.touches[0].clientY<=pullStartY)return;let node=e.target instanceof Element?e.target:null;while(node&&node!==document.documentElement){if(node.scrollHeight>node.clientHeight&&node.scrollTop>0)return;node=node.parentElement}const root=document.scrollingElement;if(!root||root.scrollTop<=0)e.preventDefault()},{passive:false});
+setInterval(()=>{if(!el.app.classList.contains("hidden")){el.totalTimer.textContent=fmt(totalSeconds());el.pageTimer.textContent=fmt(page().timeOnPageSeconds+(Date.now()-pageStartedAt)/1000)}},500);
+if(!state.studentId)state.studentId="Student";render();
+})();
+</script>
+<script id="panther-bridge">(()=>{"use strict";const branch=9,key="inspireb-firsthalf-p26-panther-f-1-more-10-more-100-more-state-v1";function send(){let state=null;try{state=JSON.parse(localStorage.getItem(key)||"null")}catch(e){};try{parent.postMessage({type:"PANTHER_STATE",branch,state},"*")}catch(e){}}["change","click","drop","pointerup"].forEach(name=>document.addEventListener(name,()=>setTimeout(send,80),true));window.addEventListener("load",()=>setTimeout(send,120));setInterval(send,1000)})();</script>
+<script>
+/* Mirror the six visible page-one answers into the DreamB cumulative report. */
+(()=>{const expected=[538,641,728,845,703,899],labels=['Add 1','Subtract 1','Add 10','Subtract 10','Add 100','Subtract 100'];const saveDreamB=()=>{try{const inputs=[...document.querySelectorAll('.moreless-answer')];if(inputs.length!==6)return;const answers=inputs.map(input=>input.value===''?null:Number(input.value)),results=answers.map((answer,index)=>({label:labels[index],result:answer===null?'Not answered':answer===expected[index]?'Correct':'Incorrect'})),answered=answers.some(answer=>answer!==null),correct=results.filter(result=>result.result==='Correct').length,student=new URLSearchParams(location.search).get('student')||'Student',key='inspireb-firsthalf-assessment-'+student,record=JSON.parse(localStorage.getItem(key)||'{}');record.pages=record.pages||{};record.pages[1]={...(record.pages[1]||{}),page:1,title:'More 10 / More 100',completed:correct===6,score:correct+'/6',answer:answers,questionResults:results,updatedAt:new Date().toISOString()};localStorage.setItem(key,JSON.stringify(record));}catch(_){}};document.addEventListener('change',event=>{if(event.target.matches('.moreless-answer'))saveDreamB()},true);document.addEventListener('click',event=>{if(event.target.closest('#checkPage,#submitWork'))setTimeout(saveDreamB,0)},true);window.addEventListener('load',()=>setTimeout(saveDreamB,150));})();
+</script>
+</body>
+</html>

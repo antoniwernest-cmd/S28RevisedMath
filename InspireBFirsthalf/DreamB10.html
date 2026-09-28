@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TeamMystery</title>
+  <style>
+    :root {
+      --ink: #0b1014;
+      --muted: #526272;
+      --line: #15283d;
+      --blue: #135dab;
+      --blue-deep: #0d3971;
+      --gold: #f7c84d;
+      --cream: #fff2c9;
+      --paper: #fff;
+      --pad: #eaf6ff;
+      --extra: #fff3d8;
+      --green: #176b4b;
+      --red: #ab3232;
+      --shadow: 0 14px 34px rgba(12, 20, 28, 0.14);
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: linear-gradient(135deg, #f7fcff, #eaf5fc 62%, #fff5dd);
+    }
+
+    main {
+      width: min(1260px, calc(100% - 20px));
+      margin: 0 auto;
+      padding: 18px 0 32px;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      min-height: 44px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: var(--paper);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    button:hover { background: #eff8fd; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .primary {
+      color: #fff;
+      border-color: var(--blue-deep);
+      background: var(--blue-deep);
+    }
+
+    .primary:hover { background: #082c57; }
+
+    input, select {
+      width: 100%;
+      min-height: 42px;
+      border: 2px solid var(--blue);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .start-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: rgba(247, 252, 255, 0.96);
+    }
+
+    .start-card {
+      width: min(520px, 100%);
+      padding: 22px;
+      border: 4px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .start-card h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 500;
+    }
+
+    .start-card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-grid label, .admin-panel label, .pad label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 286px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .admin-panel {
+      position: sticky;
+      top: 10px;
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 4px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: var(--shadow);
+    }
+
+    .admin-panel h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 6px;
+      font-size: 0.94rem;
+    }
+
+    .status-list div {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid #d4e5ef;
+      padding-bottom: 4px;
+    }
+
+    .status-list strong {
+      min-width: 72px;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .timer-value {
+      min-width: 64px;
+      font-family: "Segoe UI Mono", Consolas, monospace;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    .barcode {
+      display: grid;
+      gap: 5px;
+      padding: 8px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .barcode-bars {
+      height: 34px;
+      background:
+        repeating-linear-gradient(90deg,
+          var(--line) 0 3px,
+          transparent 3px 6px,
+          var(--line) 6px 9px,
+          transparent 9px 14px,
+          var(--line) 14px 16px,
+          transparent 16px 22px);
+    }
+
+    .check-list {
+      display: grid;
+      gap: 7px;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    .check-list label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink);
+    }
+
+    .check-list input {
+      width: 18px;
+      min-height: 18px;
+      padding: 0;
+    }
+
+    .admin-actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .topbar {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .title-band {
+      border: 5px solid var(--line);
+      background: var(--cream);
+      text-align: center;
+      padding: 14px 10px;
+    }
+
+    .title-band h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 4vw, 3rem);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: end;
+      border: 4px solid var(--line);
+      padding: 12px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .nav label {
+      flex: 1 1 170px;
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+    }
+
+    .page-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 2px solid var(--blue);
+      border-radius: 8px;
+      background: #f6fcff;
+      font-weight: 500;
+    }
+
+    .nav button {
+      flex: 1 1 118px;
+    }
+
+    .activity-layout {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .character-card, .share-area {
+      border: 5px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .character-card {
+      padding: 8px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .character-card img {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .amount-box {
+      border: 3px solid var(--line);
+      background: var(--cream);
+      min-height: 64px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .share-area {
+      display: grid;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .question-line {
+      text-align: center;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 500;
+    }
+
+    .object-bank {
+      min-height: 122px;
+      border: 4px dashed var(--blue);
+      background: #fff;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 5px;
+    }
+
+    .share-card {
+      width: 28px;
+      aspect-ratio: 2 / 3;
+      border: 1px solid #0b4f89;
+      border-radius: 4px;
+      background: #fff;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .pads-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pad {
+      min-height: 210px;
+      border: 4px solid var(--blue);
+      border-radius: 8px;
+      background: var(--pad);
+      padding: 10px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 8px;
+    }
+
+    .pad.extra {
+      border-color: #9e6d12;
+      background: var(--extra);
+    }
+
+    .pad h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .pad select {
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    .pad-objects {
+      min-height: 76px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 4px;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 6px;
+    }
+
+    .pad .share-card {
+      width: 22px;
+    }
+
+    .model-total {
+      min-height: 54px;
+      display: grid;
+      place-items: center;
+      border: 3px solid var(--line);
+      background: var(--cream);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .feedback {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      border: 4px solid var(--line);
+      background: var(--paper);
+      padding: 10px 14px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .feedback.good { color: var(--green); }
+    .feedback.try { color: var(--red); }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .admin-panel { position: static; }
+      .activity-layout { grid-template-columns: 1fr; }
+      .character-card {
+        grid-template-columns: 120px 1fr;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 12px, 1260px);
+        padding-top: 10px;
+      }
+
+      .title-band { padding: 10px 8px; }
+      .nav > * { flex: 1 1 145px; }
+      .character-card { grid-template-columns: 1fr; }
+      .pads-grid { grid-template-columns: 1fr; }
+      .object-bank { min-height: 100px; }
+    }
+    .start-screen{display:none!important}
+    .curriculum-launch{position:fixed;right:12px;bottom:12px;z-index:40;width:58px;height:58px;padding:0;border:3px solid #153225;border-radius:50%;overflow:hidden;background:#08713a;box-shadow:0 5px 0 #034b25;cursor:pointer}
+    .curriculum-launch img{width:100%;height:100%;display:block;object-fit:cover}
+    .curriculum-overlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(10,25,20,.68)}
+    .curriculum-overlay[hidden]{display:none}
+    .curriculum-dialog{width:min(760px,96vw);max-height:88vh;overflow:auto;background:#fff;border:4px solid #163328;padding:18px}
+    .curriculum-dialog h2{margin-top:0}.curriculum-item{border-left:8px solid #08713a;background:#eef9f0;padding:10px 12px;margin:10px 0;line-height:1.45}
+    .curriculum-close{float:right;border:3px solid #26333b;background:#c9f5c7;padding:8px 18px;font-weight:700}
+    /* DreamB group frame supplies the timer, curriculum/report, and page navigation.
+       Keep this activity focused on the fair-share work instead of repeating those controls. */
+    body.dreamb-navigation {
+      overflow: hidden;
+    }
+    body.dreamb-navigation main {
+      width: min(1500px, calc(100% - 18px));
+      padding: 70px 0 74px;
+    }
+    body.dreamb-navigation .topbar {
+      margin: 0 0 8px;
+    }
+    body.dreamb-navigation .title-band {
+      display: none;
+    }
+    body.dreamb-navigation .nav {
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    body.dreamb-navigation .nav > * {
+      display: none !important;
+    }
+    body.dreamb-navigation .nav #checkPage {
+      display: inline-flex !important;
+      flex: 0 0 auto;
+      align-items: center;
+      min-height: 36px;
+      padding: 5px 16px;
+    }
+    body.dreamb-navigation .activity-layout {
+      grid-template-columns: 126px minmax(0, 1fr);
+      gap: 8px;
+    }
+    body.dreamb-navigation .character-card {
+      gap: 5px;
+      padding: 5px;
+      border-width: 3px;
+    }
+    body.dreamb-navigation .amount-box {
+      min-height: 46px;
+      font-size: 1rem;
+    }
+    body.dreamb-navigation .share-area {
+      gap: 6px;
+      padding: 7px;
+      border-width: 3px;
+    }
+    body.dreamb-navigation .question-line {
+      font-size: clamp(1.1rem, 2.1vw, 1.55rem);
+      line-height: 1.15;
+    }
+    body.dreamb-navigation .subtitle {
+      font-size: .8rem;
+    }
+    body.dreamb-navigation .object-bank {
+      min-height: 68px;
+      padding: 5px;
+      gap: 3px;
+      border-width: 3px;
+    }
+    body.dreamb-navigation .share-card {
+      width: 20px;
+    }
+    body.dreamb-navigation .pads-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+    body.dreamb-navigation .pad {
+      min-height: 132px;
+      gap: 4px;
+      padding: 6px;
+      border-width: 3px;
+    }
+    body.dreamb-navigation .pad h2 {
+      font-size: 1rem;
+    }
+    body.dreamb-navigation .pad label {
+      gap: 2px;
+      font-size: .76rem;
+    }
+    body.dreamb-navigation .pad select {
+      min-height: 32px;
+      padding: 3px 6px;
+    }
+    body.dreamb-navigation .pad-objects {
+      min-height: 48px;
+      gap: 2px;
+      padding: 4px;
+    }
+    body.dreamb-navigation .pad .share-card {
+      width: 16px;
+    }
+    body.dreamb-navigation .model-total {
+      min-height: 36px;
+      font-size: 1.1rem;
+    }
+    body.dreamb-navigation .feedback {
+      min-height: 36px;
+      padding: 6px 10px;
+      border-width: 3px;
+      font-size: .88rem;
+    }
+    @media (max-width: 950px) {
+      body.dreamb-navigation .activity-layout { grid-template-columns: 100px minmax(0, 1fr); }
+      body.dreamb-navigation .pads-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      body.dreamb-navigation .pad { min-height: 118px; padding: 4px; }
+      body.dreamb-navigation .pad h2 { font-size: .88rem; }
+    }
+    @media (max-width: 720px) {
+      body.dreamb-navigation { overflow: auto; }
+      body.dreamb-navigation .activity-layout { grid-template-columns: 1fr; }
+      body.dreamb-navigation .character-card { display: none; }
+      body.dreamb-navigation .pads-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script>
+  <div class="start-screen" id="startScreen">
+    <form class="start-card" id="startForm">
+      <h1>TeamMystery</h1>
+      <p>P26 student start screen. Enter details to begin or resume saved work.</p>
+      <div class="field-grid">
+        <label>
+          Student ID
+          <input id="studentIdInput" autocomplete="off" required>
+        </label>
+        <label>
+          Grade Level
+          <select id="gradeInput" required>
+            <option value="">Choose grade</option>
+            <option value="1">Grade 1</option>
+            <option value="2">Grade 2</option>
+            <option value="3">Grade 3</option>
+          </select>
+        </label>
+        <button type="submit" class="primary">Start Project</button>
+      </div>
+    </form>
+  </div>
+
+  <main>
+    <div class="shell">
+      <aside class="admin-panel" aria-label="P26 teacher admin and status panel">
+        <h2>P26 Admin / Status</h2>
+        <div class="status-list">
+          <div><span>Student</span><strong id="studentStatus">Not started</strong></div>
+          <div><span>Grade</span><strong id="gradeStatus">-</strong></div>
+          <div><span>Project</span><strong id="projectStatus">TeamMystery</strong></div>
+          <div><span>Total Timer</span><strong class="timer-value" id="totalTimer">00:00</strong></div>
+          <div><span>Page Timer</span><strong class="timer-value" id="pageTimer">00:00</strong></div>
+          <div><span>Attempts</span><strong id="attemptStatus">0</strong></div>
+          <div><span>Help</span><strong id="helpStatus">0</strong></div>
+        </div>
+        <div class="barcode" aria-label="Project barcode CatMystery">
+          <div class="barcode-bars"></div>
+          <span>TeamMystery</span>
+        </div>
+
+        <label>
+          Teacher Support Level
+          <select id="supportLevel">
+            <option value="">None</option>
+            <option>Independent</option>
+            <option>Prompt</option>
+            <option>Guided</option>
+            <option>Modeled</option>
+          </select>
+        </label>
+
+        <label>
+          Assessment Type
+          <select id="assessmentType">
+            <option>Formative</option>
+            <option>Summative</option>
+          </select>
+        </label>
+
+        <div>
+          <span class="subtitle">Quick Teacher Comments</span>
+          <div class="check-list" id="quickComments">
+            <label><input type="checkbox" value="Shared equally">Shared equally</label>
+            <label><input type="checkbox" value="Used extra correctly">Used extra correctly</label>
+            <label><input type="checkbox" value="Needed fair-share support">Needed fair-share support</label>
+            <label><input type="checkbox" value="Corrected after feedback">Corrected after feedback</label>
+          </div>
+        </div>
+
+        <div>
+          <span class="subtitle">Strategy Data</span>
+          <div class="check-list" id="strategyChecks">
+            <label><input type="checkbox" value="Dealt one at a time">Dealt one at a time</label>
+            <label><input type="checkbox" value="Used repeated subtraction">Used repeated subtraction</label>
+            <label><input type="checkbox" value="Checked extras">Checked extras</label>
+            <label><input type="checkbox" value="Checked total">Checked total</label>
+          </div>
+        </div>
+
+        <label>
+          Teacher Comments
+          <input id="teacherComments" type="password" placeholder="Hidden teacher note">
+        </label>
+
+        <label>
+          Student Reflection
+          <input id="reflectionInput" placeholder="Student reflection">
+        </label>
+
+        <div class="admin-actions">
+          <button type="button" id="logHelp">Log Help</button>
+          <button type="button" id="pdfReport">PDF Report</button>
+          <button type="button" id="pdfSnaps">PDF Snaps</button>
+        </div>
+      </aside>
+
+      <section>
+        <div class="topbar">
+          <div class="title-band">
+            <h1 id="storyTitle">Fair share the cards. Put leftovers in Extra.</h1>
+          </div>
+          <nav class="nav" aria-label="Page controls">
+            <span class="page-pill" id="pageDisplay">Page 1 of 20</span>
+            <label>
+              Go to Page
+              <select id="pageSelect"></select>
+            </label>
+            <button type="button" id="backPage">Back</button>
+            <button type="button" id="nextPage">Next</button>
+            <button type="button" id="checkPage" class="primary">Check Page</button>
+            <button type="submit" id="submitWork" form="netlifySubmissionForm">Submit</button>
+            <button type="button" id="resetWork">Reset</button>
+          </nav>
+        </div>
+
+        <section class="activity-layout" aria-label="CatMystery fair share activity">
+          <section class="character-card">
+            <img src="catmystery-card.png" alt="CatMystery character card">
+            <div class="amount-box">
+              <span id="amountLabel">Share 24 cards onto 4 pads</span>
+            </div>
+          </section>
+
+          <section class="share-area">
+            <div class="question-line" id="questionLine">Share 24 cards onto 4 pads.</div>
+            <div>
+              <div class="subtitle">Original amount remaining</div>
+              <div class="object-bank" id="objectBank"></div>
+            </div>
+            <div class="pads-grid" id="padsGrid"></div>
+            <div class="model-total" id="modelTotal">Remaining: 24</div>
+          </section>
+        </section>
+
+        <div class="feedback" id="feedback" aria-live="polite">Choose numbers on the pads to share the cards.</div>
+      </section>
+    </div>
+
+    <form id="netlifySubmissionForm" name="inspireb-firsthalf-p26-catmystery-submission" method="POST" data-netlify="true" netlify action="thanks.html" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+      <input type="hidden" name="form-name" value="inspireb-firsthalf-p26-catmystery-submission">
+      <input type="hidden" id="netlifyStudentId" name="student_id">
+      <input type="hidden" id="netlifyGrade" name="grade">
+      <input type="hidden" id="netlifyProtocol" name="protocol">
+      <input type="hidden" id="netlifyProjectId" name="project_id">
+      <input type="hidden" id="netlifySummary" name="summary_json">
+      <input type="hidden" id="netlifyPages" name="pages_json">
+      <input type="hidden" id="netlifyInteractions" name="interactions_json">
+      <input type="hidden" id="netlifyFinishedAt" name="finished_at">
+      <input type="hidden" id="netlifyCurriculum" name="curriculum_expectations_json">
+    </form>
+
+    <p class="sr-only" id="liveStatus" aria-live="polite"></p>
+  </main>
+
+  <button type="button" id="curriculumLaunch" class="curriculum-launch" title="Grade 3 Ontario math expectations" aria-label="Show Grade 3 Ontario math expectations"><img src="ontario-grade2-expectations.png" alt=""></button>
+  <div id="curriculumOverlay" class="curriculum-overlay" hidden><div class="curriculum-dialog" role="dialog" aria-modal="true" aria-labelledby="curriculumTitle"><button type="button" id="curriculumClose" class="curriculum-close">Close</button><h2 id="curriculumTitle">Ontario Grade 3 Mathematics</h2><div id="curriculumContent"></div></div></div>
+
+  <script>
+    const PROTOCOL_NAME = "P26";
+    const PROJECT_ID = "TeamMystery";
+    const DATA_VERSION = "teammystery-cards-inspireb-firsthalf-p26-v1";
+    const STORAGE_KEY = "inspireb-firsthalf-p26-teammystery-cards-v1";
+    const TEACHER_CODE = "259";
+    const query = new URLSearchParams(location.search);
+    const EMBEDDED = query.get("league") === "1";
+    const EMBED_STUDENT = query.get("student") || "student";
+    const curriculumExpectations = [
+      {code:"B2.6 - Operations",wording:"Represent multiplication of numbers up to 10 x 10 and division up to 100 / 10, using a variety of tools and drawings, including arrays.",how:"On every page, the student shares the stated number of cards equally among the stated number of pads and records any cards left over in Extra."},
+      {code:"B2.7 - Operations",wording:"Represent and solve problems involving multiplication and division, including problems that involve groups of one-half, one-fourth, and one-third, using tools and drawings.",how:"The student models 40 divided into 4 equal groups by distributing cards, checking that each pad has 10 cards, and confirming that there are 0 extras."},
+      {code:"A2.2 - Problem Solving",wording:"Apply a process for solving problems, including understanding the problem, making and carrying out a plan, and checking the reasonableness of the solution.",how:"The student plans an equal share, adjusts each pad, checks that all groups are equal, and confirms that the shared cards plus extras equal the original amount."}
+    ];
+    const pagesData = [[40, 4]];
+
+    const state = {
+      started: false,
+      studentId: "",
+      grade: "",
+      pageIndex: 0,
+      startedAt: null,
+      finishedAt: null,
+      dataVersion: DATA_VERSION,
+      totalElapsed: 0,
+      lastTick: Date.now(),
+      pages: pagesData.map((pageData, index) => makePage(index, pageData)),
+      interactions: []
+    };
+
+    const el = {
+      startScreen: document.getElementById("startScreen"),
+      startForm: document.getElementById("startForm"),
+      studentIdInput: document.getElementById("studentIdInput"),
+      gradeInput: document.getElementById("gradeInput"),
+      studentStatus: document.getElementById("studentStatus"),
+      gradeStatus: document.getElementById("gradeStatus"),
+      projectStatus: document.getElementById("projectStatus"),
+      totalTimer: document.getElementById("totalTimer"),
+      pageTimer: document.getElementById("pageTimer"),
+      attemptStatus: document.getElementById("attemptStatus"),
+      helpStatus: document.getElementById("helpStatus"),
+      supportLevel: document.getElementById("supportLevel"),
+      assessmentType: document.getElementById("assessmentType"),
+      quickComments: document.getElementById("quickComments"),
+      strategyChecks: document.getElementById("strategyChecks"),
+      teacherComments: document.getElementById("teacherComments"),
+      reflectionInput: document.getElementById("reflectionInput"),
+      logHelp: document.getElementById("logHelp"),
+      pdfReport: document.getElementById("pdfReport"),
+      pdfSnaps: document.getElementById("pdfSnaps"),
+      storyTitle: document.getElementById("storyTitle"),
+      pageDisplay: document.getElementById("pageDisplay"),
+      pageSelect: document.getElementById("pageSelect"),
+      backPage: document.getElementById("backPage"),
+      nextPage: document.getElementById("nextPage"),
+      checkPage: document.getElementById("checkPage"),
+      submitWork: document.getElementById("submitWork"),
+      resetWork: document.getElementById("resetWork"),
+      amountLabel: document.getElementById("amountLabel"),
+      questionLine: document.getElementById("questionLine"),
+      objectBank: document.getElementById("objectBank"),
+      padsGrid: document.getElementById("padsGrid"),
+      modelTotal: document.getElementById("modelTotal"),
+      feedback: document.getElementById("feedback"),
+      liveStatus: document.getElementById("liveStatus"),
+      netlifyStudentId: document.getElementById("netlifyStudentId"),
+      netlifyGrade: document.getElementById("netlifyGrade"),
+      netlifyProtocol: document.getElementById("netlifyProtocol"),
+      netlifyProjectId: document.getElementById("netlifyProjectId"),
+      netlifySummary: document.getElementById("netlifySummary"),
+      netlifyPages: document.getElementById("netlifyPages"),
+      netlifyInteractions: document.getElementById("netlifyInteractions"),
+      netlifyFinishedAt: document.getElementById("netlifyFinishedAt"),
+      netlifyCurriculum: document.getElementById("netlifyCurriculum"),
+      netlifyForm: document.querySelector('form[data-netlify="true"]')
+    };
+
+    function makePage(index, pageData) {
+      const [amount, groups] = pageData;
+      const each = Math.floor(amount / groups);
+      const extra = amount % groups;
+      return {
+        pageNumber: index + 1,
+        amount,
+        groups,
+        each,
+        extra,
+        padValues: [0, 0, 0, 0, 0, 0],
+        answerHistory: [],
+        correctAnswer: { each, extra, groups },
+        correctAnswerRecorded: { each, extra, groups },
+        isComplete: false,
+        attempts: 0,
+        firstAttemptTime: null,
+        timeToCorrect: null,
+        timeAfterCorrect: 0,
+        timeBetweenAttempts: [],
+        lastAttemptTime: null,
+        pageTime: 0,
+        teacherSupportLevel: "",
+        teacherHelpCount: 0,
+        teacherHelpHistory: [],
+        assessmentType: "Formative",
+        teacherComments: "",
+        quickComments: [],
+        strategies: [],
+        reflection: "",
+        wordBankClicks: [],
+        storyTextClicks: [],
+        pageInteractions: []
+      };
+    }
+
+    function currentPage() {
+      return state.pages[state.pageIndex];
+    }
+
+    function formatTime(seconds) {
+      const safe = Math.max(0, Math.round(seconds || 0));
+      const minutes = Math.floor(safe / 60);
+      const rest = safe % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+    }
+
+    function checkedValues(container) {
+      return [...container.querySelectorAll("input:checked")].map((input) => input.value);
+    }
+
+    function setCheckedValues(container, values) {
+      const selected = new Set(values || []);
+      container.querySelectorAll("input").forEach((input) => {
+        input.checked = selected.has(input.value);
+      });
+    }
+
+    function saveAdminFields() {
+      const page = currentPage();
+      page.teacherSupportLevel = el.supportLevel.value;
+      page.assessmentType = el.assessmentType.value;
+      page.teacherComments = el.teacherComments.value;
+      page.reflection = el.reflectionInput.value;
+      page.quickComments = checkedValues(el.quickComments);
+      page.strategies = checkedValues(el.strategyChecks);
+    }
+
+    function recordInteraction(type, detail = {}) {
+      const page = currentPage();
+      const event = {
+        at: new Date().toISOString(),
+        totalSeconds: Math.round(state.totalElapsed),
+        pageNumber: page.pageNumber,
+        type,
+        detail
+      };
+      state.interactions.push(event);
+      page.pageInteractions.push(event);
+      if (type === "word-bank-click") page.wordBankClicks.push(event);
+      if (type === "story-text-click") page.storyTextClicks.push(event);
+      saveState();
+    }
+
+    function saveState() {
+      syncHiddenFields();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        ...state,
+        dataVersion: DATA_VERSION,
+        lastTick: Date.now()
+      }));
+      if (EMBEDDED && window.parent !== window) window.parent.postMessage({type:"LEAGUE_STATE",letter:"Mystery",raw:JSON.stringify({summary:summaryData(),pages:state.pages,interactions:state.interactions,curriculum:curriculumExpectations})},"*");
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      try {
+        const data = JSON.parse(saved);
+        if (data.dataVersion !== DATA_VERSION) {
+          localStorage.removeItem(STORAGE_KEY);
+          return;
+        }
+        Object.assign(state, data);
+        state.pages = pagesData.map((pageData, index) => {
+          const fresh = makePage(index, pageData);
+          return {
+            ...fresh,
+            ...(data.pages && data.pages[index] ? data.pages[index] : {}),
+            amount: fresh.amount,
+            groups: fresh.groups,
+            each: fresh.each,
+            extra: fresh.extra,
+            correctAnswer: fresh.correctAnswer,
+            correctAnswerRecorded: fresh.correctAnswerRecorded
+          };
+        });
+        state.lastTick = Date.now();
+        el.studentIdInput.value = state.studentId || "";
+        el.gradeInput.value = state.grade || "";
+      } catch (error) {
+        console.warn("Saved CatMystery work could not be loaded.", error);
+      }
+    }
+
+    function cardMarkup(count) {
+      return Array.from({ length: count }, () => `<img class="share-card" src="catmystery-card.png" alt="">`).join("");
+    }
+
+    function remainingAmount(page = currentPage()) {
+      return Math.max(0, page.amount - page.padValues.reduce((total, value) => total + Number(value), 0));
+    }
+
+    function buildPageSelect() {
+      el.pageSelect.innerHTML = "";
+      pagesData.forEach((pageData, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `Page ${index + 1}: ${pageData[0]} shared with ${pageData[1]}`;
+        el.pageSelect.appendChild(option);
+      });
+    }
+
+    function buildPadSelect(select, padIndex, value) {
+      const page = currentPage();
+      const current = Number(value);
+      const max = remainingAmount(page) + current;
+      select.innerHTML = "";
+      for (let amount = 0; amount <= max; amount += 1) {
+        const option = document.createElement("option");
+        option.value = amount;
+        option.textContent = amount;
+        select.appendChild(option);
+      }
+      select.value = current;
+          select.addEventListener("change", () => {
+            const oldValue = page.padValues[padIndex];
+            page.padValues[padIndex] = Number(select.value);
+            const activeGroups = page.padValues.slice(0, page.groups);
+            page.isComplete = activeGroups.every((value) => Number(value) === page.each) && Number(page.padValues[5]) === page.extra && remainingAmount(page) === 0;
+            page.answerHistory.push({ at: new Date().toISOString(), padValues: [...page.padValues], changedPad: padIndex + 1, oldValue, newValue: page.padValues[padIndex] });
+            recordInteraction("changed-value", { field: `pad-${padIndex + 1}`, oldValue, newValue: page.padValues[padIndex] });
+            renderShareModel();
+            updateFeedback(page.isComplete ? "Fair share recorded." : "Cards moved to the pad.", page.isComplete ? "good" : "");
+            saveState();
+          });
+    }
+
+    function renderShareModel() {
+      const page = currentPage();
+      el.objectBank.innerHTML = cardMarkup(remainingAmount(page));
+      el.padsGrid.innerHTML = "";
+      const renderedIndexes = [...Array.from({ length: page.groups }, (_, index) => index), 5];
+      renderedIndexes.forEach((index) => {
+        const isExtra = index === 5;
+        const pad = document.createElement("section");
+        pad.className = `pad ${isExtra ? "extra" : ""}`.trim();
+        const label = isExtra ? "Extra" : `Pad ${index + 1}`;
+        pad.innerHTML = `
+          <h2>${label}</h2>
+          <label>
+            Move cards here
+            <select></select>
+          </label>
+          <div class="pad-objects">${cardMarkup(page.padValues[index])}</div>
+        `;
+        buildPadSelect(pad.querySelector("select"), index, page.padValues[index]);
+        el.padsGrid.appendChild(pad);
+      });
+      el.modelTotal.textContent = `Remaining: ${remainingAmount(page)}`;
+      updateStatus();
+      saveState();
+    }
+
+    function setAdminFields(page) {
+      el.supportLevel.value = page.teacherSupportLevel || "";
+      el.assessmentType.value = page.assessmentType || "Formative";
+      el.teacherComments.value = page.teacherComments || "";
+      el.reflectionInput.value = page.reflection || "";
+      setCheckedValues(el.quickComments, page.quickComments);
+      setCheckedValues(el.strategyChecks, page.strategies);
+    }
+
+    function renderPage() {
+      const page = currentPage();
+      el.pageDisplay.textContent = `Page ${page.pageNumber} of ${pagesData.length}`;
+      el.pageSelect.value = state.pageIndex;
+      el.backPage.disabled = state.pageIndex === 0;
+      el.nextPage.disabled = state.pageIndex === pagesData.length - 1;
+      el.amountLabel.textContent = `Share ${page.amount} cards onto ${page.groups} pads`;
+      el.questionLine.textContent = `Share ${page.amount} cards onto ${page.groups} pads. Use each dropdown to choose how many cards go on that pad.`;
+      setAdminFields(page);
+      renderShareModel();
+      updateFeedback(page.isComplete ? "Fair share recorded." : "Choose numbers on the pads to share the cards.");
+    }
+
+    function enterPage(index) {
+      saveAdminFields();
+      state.pageIndex = Math.max(0, Math.min(pagesData.length - 1, Number(index)));
+      renderPage();
+      recordInteraction("page-navigation", { pageNumber: currentPage().pageNumber });
+    }
+
+    function checkPage() {
+      const page = currentPage();
+      const now = Date.now();
+      page.attempts += 1;
+      if (page.firstAttemptTime === null) page.firstAttemptTime = Math.round(page.pageTime);
+      if (page.lastAttemptTime) page.timeBetweenAttempts.push(Math.round((now - page.lastAttemptTime) / 1000));
+      page.lastAttemptTime = now;
+      const activeGroups = page.padValues.slice(0, page.groups);
+      const complete =
+        activeGroups.every((value) => Number(value) === page.each) &&
+        Number(page.padValues[5]) === page.extra &&
+        remainingAmount(page) === 0;
+      page.isComplete = complete;
+      if (complete && page.timeToCorrect === null) page.timeToCorrect = Math.round(page.pageTime);
+      page.answerHistory.push({ at: new Date().toISOString(), padValues: [...page.padValues], complete });
+      recordInteraction("check-page", { padValues: [...page.padValues], complete, each: page.each, extra: page.extra });
+      updateStatus();
+      saveState();
+      if (complete) {
+        updateFeedback("Fair share recorded.", "good");
+      } else {
+        updateFeedback("Check equal pads, Extra, and remaining cards.", "try");
+      }
+    }
+
+    function updateFeedback(message, kind = "") {
+      el.feedback.className = `feedback ${kind}`.trim();
+      el.feedback.textContent = message;
+      el.liveStatus.textContent = message;
+    }
+
+    function updateStatus() {
+      saveAdminFields();
+      const page = currentPage();
+      el.studentStatus.textContent = state.studentId || "Not started";
+      el.gradeStatus.textContent = state.grade || "-";
+      el.projectStatus.textContent = PROJECT_ID;
+      el.totalTimer.textContent = formatTime(state.totalElapsed);
+      el.pageTimer.textContent = formatTime(page.pageTime);
+      el.attemptStatus.textContent = page.attempts;
+      el.helpStatus.textContent = page.teacherHelpCount;
+      syncHiddenFields();
+    }
+
+    function summaryData() {
+      return {
+        protocol: PROTOCOL_NAME,
+        projectId: PROJECT_ID,
+        studentId: state.studentId,
+        grade: state.grade,
+        startedAt: state.startedAt ? new Date(state.startedAt).toISOString() : "",
+        finishedAt: state.finishedAt || "",
+        totalTime: Math.round(state.totalElapsed),
+        completedPages: state.pages.filter((page) => page.isComplete).length,
+        pageCount: pagesData.length
+      };
+    }
+
+    function syncHiddenFields() {
+      const summary = summaryData();
+      el.netlifyStudentId.value = state.studentId;
+      el.netlifyGrade.value = state.grade;
+      el.netlifyProtocol.value = PROTOCOL_NAME;
+      el.netlifyProjectId.value = PROJECT_ID;
+      el.netlifySummary.value = JSON.stringify(summary);
+      el.netlifyPages.value = JSON.stringify(state.pages);
+      el.netlifyInteractions.value = JSON.stringify(state.interactions);
+      el.netlifyFinishedAt.value = state.finishedAt || "";
+      el.netlifyCurriculum.value = JSON.stringify(curriculumExpectations);
+    }
+
+    function submitNetlifyForm() {
+      syncHiddenFields();
+      el.netlifyForm.submit();
+      setTimeout(() => {
+        window.location.href = "thanks.html";
+      }, 900);
+    }
+
+    function submitWork(event) {
+      saveAdminFields();
+      const complete = state.pages.every((page) => page.isComplete);
+      if (!complete) {
+        const code = prompt("Teacher override required to submit unfinished work. Enter code:");
+        if (code !== TEACHER_CODE) {
+          event.preventDefault();
+          recordInteraction("submit-blocked", { completedPages: state.pages.filter((page) => page.isComplete).length });
+          alert("Submit cancelled. Teacher override code was not accepted.");
+          return;
+        }
+      }
+      state.finishedAt = new Date().toISOString();
+      recordInteraction("submit", { complete, completedPages: state.pages.filter((page) => page.isComplete).length });
+      saveState();
+      updateFeedback("Submitted. Report data is ready.", "good");
+    }
+
+    function resetWork() {
+      if (!confirm("Reset all TeamMystery work for this student?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      state.pageIndex = 0;
+      state.startedAt = Date.now();
+      state.finishedAt = null;
+      state.totalElapsed = 0;
+      state.lastTick = Date.now();
+      state.pages = pagesData.map((pageData, index) => makePage(index, pageData));
+      state.interactions = [];
+      renderPage();
+      recordInteraction("reset-all");
+    }
+
+    function reportHtml(snapsOnly = false) {
+      saveAdminFields();
+      const rows = state.pages.map((page) => `
+        <tr>
+          <td>${page.pageNumber}</td>
+          <td>${page.amount} cards onto ${page.groups} pads</td>
+          <td>${page.padValues.slice(0, page.groups).join(", ")}</td>
+          <td>${page.padValues[5]}</td>
+          <td>${page.each}</td>
+          <td>${page.extra}</td>
+          <td>${page.isComplete ? "Recorded" : ""}</td>
+          <td>${page.attempts}</td>
+          <td>${page.teacherHelpCount}</td>
+          <td>${formatTime(page.pageTime)}</td><td>${formatTime((state.totalSeconds !== undefined ? state.totalSeconds : state.totalElapsed) || 0)}</td>
+          <td>${page.teacherSupportLevel || ""}</td>
+        </tr>
+      `).join("");
+      const details = state.pages.map((page) => `
+        <section>
+          <h2>Page ${page.pageNumber}</h2>
+          <p><strong>Question:</strong> Share ${page.amount} cards onto ${page.groups} pads.</p>
+          <p><strong>Student pads:</strong> ${page.padValues.slice(0, page.groups).join(", ")} | <strong>Extra:</strong> ${page.padValues[5]}</p>
+          <p><strong>Correct:</strong> ${page.each} each, ${page.extra} extra</p>
+          <p><strong>First attempt:</strong> ${page.firstAttemptTime === null ? "" : formatTime(page.firstAttemptTime)} | <strong>Time to correct:</strong> ${page.timeToCorrect === null ? "" : formatTime(page.timeToCorrect)} | <strong>Time after correct:</strong> ${formatTime(page.timeAfterCorrect)}</p>
+          <p><strong>Between attempts:</strong> ${page.timeBetweenAttempts.map(formatTime).join(", ")}</p>
+          <p><strong>Strategies:</strong> ${page.strategies.join(", ")}</p>
+          <p><strong>Quick comments:</strong> ${page.quickComments.join(", ")}</p>
+          <p><strong>Teacher comments:</strong> ${page.teacherComments || ""}</p>
+          <p><strong>Reflection:</strong> ${page.reflection || ""}</p>
+        </section>
+      `).join("");
+      return `
+        <!doctype html>
+        <html>
+        <head>
+          <title>${PROTOCOL_NAME} ${PROJECT_ID} Report</title>
+          <style>
+            body{font-family:Arial,sans-serif;margin:24px;color:#111}
+            h1,h2{font-weight:500}
+            table{border-collapse:collapse;width:100%;margin:14px 0 24px}
+            th,td{border:1px solid #777;padding:6px;text-align:left}
+            section{break-inside:avoid;border-top:2px solid #333;padding-top:10px;margin-top:18px}
+            @media print{button{display:none}}
+          </style>
+        </head>
+        <body>
+          <button onclick="window.print()">Print / Save PDF</button>
+          <h1>${PROTOCOL_NAME} ${PROJECT_ID} ${snapsOnly ? "PDF Snaps" : "Student Report"}</h1>
+          <p><strong>Student:</strong> ${state.studentId} | <strong>Grade:</strong> ${state.grade}</p>
+          <p><strong>Completed pages:</strong> ${summaryData().completedPages} / ${pagesData.length} | <strong>Total time:</strong> ${formatTime(state.totalElapsed)}</p>
+          <table>
+            <thead><tr><th>Page</th><th>Question</th><th>Pads</th><th>Extra</th><th>Each</th><th>Correct Extra</th><th>Status</th><th>Attempts</th><th>Help</th><th>Page Time</th><th>Project Time</th><th>Support</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+          ${details}
+          <h2>Ontario Grade 3 Mathematics Expectations</h2>
+          ${curriculumExpectations.map((item) => `<section><p><strong>${item.code}</strong></p><p>${item.wording}</p><p><strong>How this activity addresses it:</strong> ${item.how}</p></section>`).join("")}
+          <h2>Interaction Log</h2>
+          <pre>${JSON.stringify(state.interactions, null, 2)}</pre>
+        </body>
+        </html>
+      `;
+    }
+
+    function openReport(snapsOnly = false) {
+      const win = window.open("", "_blank");
+      if (!win) {
+        alert("Please allow pop-ups to create the PDF report.");
+        return;
+      }
+      win.document.open();
+      win.document.write(reportHtml(snapsOnly));
+      win.document.close();
+      win.focus();
+    }
+
+    function requestPdfReport() {
+      const code = prompt("Teacher code required to view PDF Report:");
+      if (code === TEACHER_CODE) {
+        recordInteraction("pdf-report", { approved: true });
+        openReport(false);
+      } else {
+        recordInteraction("pdf-report", { approved: false });
+        alert("Incorrect teacher code.");
+      }
+    }
+
+    function requestSnaps() {
+      const code = prompt("Teacher override code required for PDF Snaps:");
+      if (code === TEACHER_CODE) {
+        recordInteraction("pdf-snaps", { approved: true });
+        openReport(true);
+      } else {
+        recordInteraction("pdf-snaps", { approved: false });
+        alert("Incorrect override code.");
+      }
+    }
+
+    function tick() {
+      if (!state.started) return;
+      const now = Date.now();
+      const delta = Math.max(0, (now - state.lastTick) / 1000);
+      state.totalElapsed += delta;
+      currentPage().pageTime += delta;
+      if (currentPage().isComplete) currentPage().timeAfterCorrect += delta;
+      state.lastTick = now;
+      updateStatus();
+      saveState();
+    }
+
+    el.startForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      state.studentId = el.studentIdInput.value.trim();
+      state.grade = el.gradeInput.value;
+      state.started = true;
+      state.startedAt = state.startedAt || Date.now();
+      state.lastTick = Date.now();
+      el.startScreen.style.display = "none";
+      renderPage();
+      recordInteraction("start", { studentId: state.studentId, grade: state.grade });
+      saveState();
+    });
+
+    el.backPage.addEventListener("click", () => enterPage(state.pageIndex - 1));
+    el.nextPage.addEventListener("click", () => enterPage(state.pageIndex + 1));
+    el.pageSelect.addEventListener("change", () => enterPage(el.pageSelect.value));
+    el.checkPage.addEventListener("click", checkPage);
+    el.netlifyForm.addEventListener("submit", submitWork);
+    el.resetWork.addEventListener("click", resetWork);
+    el.pdfReport.addEventListener("click", requestPdfReport);
+    el.pdfSnaps.addEventListener("click", requestSnaps);
+    el.logHelp.addEventListener("click", () => {
+      const page = currentPage();
+      page.teacherHelpCount += 1;
+      page.teacherHelpHistory.push({ at: new Date().toISOString(), supportLevel: el.supportLevel.value, note: el.teacherComments.value });
+      recordInteraction("teacher-help", { count: page.teacherHelpCount, supportLevel: el.supportLevel.value });
+      updateStatus();
+      saveState();
+    });
+
+    [el.supportLevel, el.assessmentType, el.teacherComments, el.reflectionInput].forEach((input) => {
+      input.addEventListener("change", () => {
+        saveAdminFields();
+        recordInteraction("changed-value", { field: input.id, value: input.value });
+      });
+    });
+
+    [el.quickComments, el.strategyChecks].forEach((container) => {
+      container.addEventListener("change", (event) => {
+        saveAdminFields();
+        recordInteraction("changed-value", { field: container.id, value: event.target.value, checked: event.target.checked });
+      });
+    });
+
+    el.storyTitle.addEventListener("click", () => {
+      recordInteraction("story-text-click", { text: el.storyTitle.textContent });
+    });
+
+    document.getElementById("curriculumContent").innerHTML = curriculumExpectations.map((item) => `<div class="curriculum-item"><strong>${item.code}</strong><p>${item.wording}</p><p><strong>How this activity addresses it:</strong> ${item.how}</p></div>`).join("");
+    document.getElementById("curriculumLaunch").addEventListener("click", () => { document.getElementById("curriculumOverlay").hidden = false; });
+    document.getElementById("curriculumClose").addEventListener("click", () => { document.getElementById("curriculumOverlay").hidden = true; });
+    document.getElementById("curriculumOverlay").addEventListener("click", (event) => { if (event.target.id === "curriculumOverlay") event.currentTarget.hidden = true; });
+    if (EMBEDDED && query.get("fresh") === "1") localStorage.removeItem(STORAGE_KEY);
+    loadState();
+    state.studentId = EMBED_STUDENT;
+    state.grade = "3";
+    state.started = true;
+    state.startedAt = state.startedAt || Date.now();
+    state.lastTick = Date.now();
+    el.startScreen.style.display = "none";
+    if (EMBEDDED) el.submitWork.style.display = "none";
+    buildPageSelect();
+    if (state.started && state.studentId) el.startScreen.style.display = "none";
+    renderPage();
+    setInterval(tick, 1000);
+  </script>
+<script id="league-snapshot-request">if(new URLSearchParams(location.search).get("league")==="1")window.addEventListener("message",e=>{if(e.data&&e.data.type==="LEAGUE_SNAPSHOT_REQUEST")try{store()}catch(_e){}});</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>TeamNumberWordsF</title>
+<style>
+:root{--ink:#172733;--blue:#2b6691;--pale:#eef7fb;--yellow:#fff4b8;--green:#bff0c2}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;color:var(--ink);background:#dff2f6;overscroll-behavior:none}button,select,input{font:inherit}button{cursor:pointer;border:3px solid var(--ink);background:#fff;padding:8px 14px;font-weight:700}.app{display:grid;grid-template-columns:230px 1fr;gap:10px;min-height:100vh;padding:10px}.admin,.workspace{border:4px solid var(--ink);background:white}.admin{padding:12px;display:flex;flex-direction:column;gap:9px}.admin h2{margin:0;font-size:24px}.row{display:flex;justify-content:space-between;border-bottom:1px solid #aac2d0;padding:4px 0}.admin label{font-weight:700}.admin select,.teacher-note{width:100%;border:2px solid var(--ink);padding:7px;background:#fff}.teacher-note{-webkit-text-security:disc}.checks{display:grid;grid-template-columns:1fr 1fr;gap:5px}.checks label{border:1px solid #aac2d0;padding:5px;font-size:13px}.admin-actions{display:flex;gap:6px;flex-wrap:wrap}.admin-actions button{padding:7px 9px}.workspace{display:grid;grid-template-rows:auto auto 1fr auto;min-width:0}.topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:4px solid var(--ink);background:#fff9cf}.topbar h1{margin:0;font-size:27px}.topbar p{margin:0;font-weight:700}.curriculum-btn{margin-left:auto;width:54px;height:54px;padding:0;border-radius:50%;overflow:hidden;background:#08713a;box-shadow:0 5px 0 #034b25}.curriculum-btn img{width:100%;height:100%;object-fit:cover;display:block}.prompt{font-size:25px;font-weight:800;text-align:center;padding:10px;background:var(--yellow);border-bottom:4px solid #b49827}.board{padding:10px;display:flex;flex-direction:column;justify-content:center;min-height:0}.bt-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:12px;align-items:stretch}.bt-panel{border:3px dashed var(--blue);background:#f7fbfd;padding:8px;text-align:center;min-height:285px}.bt-panel h3{margin:0 0 8px;font-size:21px}.hundreds-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.hundred-block{width:112px;height:112px;padding:0;border:3px solid var(--ink);border-radius:0;background-color:#fff;background-image:linear-gradient(#8ba0ac 1px,transparent 1px),linear-gradient(90deg,#8ba0ac 1px,transparent 1px);background-size:10% 10%}.ten-rods-area{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;align-items:flex-start}.bt-ten{width:31px;height:150px;padding:0;border:3px solid var(--ink);border-radius:0;background-color:#fff;background-image:linear-gradient(#8ba0ac 1px,transparent 1px);background-size:100% 10%}.ones-area{display:grid;grid-template-columns:repeat(3,48px);gap:10px;justify-content:center}.bt-one{width:48px;height:48px;padding:0;border:3px solid var(--ink);border-radius:0;background:#fff}.blockpick.selected{background-color:#ffc400}.hundred-block.selected{background-image:linear-gradient(#8d7100 1px,transparent 1px),linear-gradient(90deg,#8d7100 1px,transparent 1px)}.bt-ten.selected{background-image:linear-gradient(#8d7100 1px,transparent 1px)}.counters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.counter{border:3px solid var(--ink);padding:7px;text-align:center;font-weight:800;background:#fff}.note{text-align:center;border:3px solid var(--ink);padding:7px;margin-top:8px;font-weight:700}.actions{display:flex;justify-content:flex-end;gap:10px;padding:8px 12px;border-top:4px solid var(--ink);background:#eef7fb}.actions button:first-child{background:#ccecff}.actions button:last-child{background:#c9f4c7}.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.open{display:flex}.modal-card{background:#fff;border:4px solid var(--ink);max-width:760px;width:100%;padding:18px;max-height:90vh;overflow:auto}.modal-card h2{margin-top:0}.expectation{border-left:8px solid #08713a;padding:10px;background:#eef9f0}.close-row{text-align:right;margin-top:12px}.status{min-height:24px;font-weight:800;text-align:center;color:#075c2d}.hidden-form{display:none}
+@media(max-width:900px){.app{grid-template-columns:185px 1fr;padding:5px;gap:5px}.admin{padding:8px}.admin h2{font-size:20px}.topbar h1{font-size:22px}.prompt{font-size:21px;padding:7px}.bt-panel{min-height:235px;padding:5px}.hundred-block{width:88px;height:88px}.bt-ten{height:118px;width:27px}.ones-area{grid-template-columns:repeat(3,38px);gap:7px}.bt-one{width:38px;height:38px}.board{padding:6px}.counters{gap:4px}.counter{padding:5px;font-size:14px}}
+body.league-embedded{background:#fff;overflow:hidden}body.league-embedded .app{display:block;min-height:100vh;padding:0}body.league-embedded .admin,body.league-embedded .topbar,body.league-embedded .actions{display:none}body.league-embedded .workspace{border:0;display:grid;grid-template-rows:auto 1fr;height:100vh}body.league-embedded .prompt{font-size:22px;padding:7px}body.league-embedded .board{padding:6px}body.league-embedded .bt-panel{min-height:225px}body.league-embedded .hundred-block{width:86px;height:86px}body.league-embedded .bt-ten{height:116px}body.league-embedded .bt-one{width:38px;height:38px}body.league-embedded .ones-area{grid-template-columns:repeat(3,38px)}
+/* Place-value colour key for 249. */
+.hundred-block.selected{background-color:#ef4444!important;background-image:linear-gradient(#8a1f1f 1px,transparent 1px),linear-gradient(90deg,#8a1f1f 1px,transparent 1px)!important}
+.bt-ten.selected{background-color:#9333ea!important;background-image:linear-gradient(#5b168f 1px,transparent 1px)!important}
+.bt-one.selected{background:#22c55e!important}
+/* Proportional base-ten pieces use a 16px unit with tablet-sized hit areas. */
+.hundred-block{width:160px;height:160px;background-size:16px 16px}
+.bt-ten,.bt-one{position:relative;border:0!important;background:transparent!important;padding:0}
+.bt-ten{width:40px;height:160px}
+.bt-one{width:40px;height:40px}
+.bt-ten::before,.bt-one::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;border:3px solid var(--ink);background:#fff}
+.bt-ten::before{width:16px;height:160px;background-image:linear-gradient(#8ba0ac 1px,transparent 1px);background-size:100% 16px}
+.bt-one::before{width:16px;height:16px}
+.bt-ten.selected::before{background-color:#9333ea;background-image:linear-gradient(#5b168f 1px,transparent 1px)}
+.bt-one.selected::before{background:#22c55e}
+.bt-ten.selected,.bt-one.selected{background:transparent!important;background-image:none!important}
+@media(max-width:900px){.hundred-block{width:140px;height:140px;background-size:14px 14px}.bt-ten{height:140px}.bt-ten::before{width:14px;height:140px;background-size:100% 14px}.bt-one::before{width:14px;height:14px}}
+</style>
+<script defer src="../tablet-drag-guard.js?v=20260928-2"></script></head>
+<body><script src="dreamb-nav.js?v=20260927-stadium-audit-01"></script><script src="dreamb-next-fallback.js?v=20260927-stadium-audit-01"></script>
+<main class="app">
+  <aside class="admin">
+    <h2>Admin</h2>
+    <div class="row"><span>Student</span><strong id="studentDisplay">student</strong></div>
+    <div class="row"><span>Total</span><strong id="totalTimer">00:00</strong></div>
+    <div class="row"><span>Page</span><strong id="pageTimer">00:00</strong></div>
+    <div class="row"><span>Attempts</span><strong id="attemptsDisplay">0</strong></div>
+    <label for="support">Teacher Support</label>
+    <select id="support"><option>Independent</option><option>Some support</option><option>Intensive support</option></select>
+    <label for="assessment">Assessment Type</label>
+    <select id="assessment"><option>Formative</option><option>Summative</option></select>
+    <div class="checks">
+      <label><input type="checkbox" data-note="Careful"> Careful</label>
+      <label><input type="checkbox" data-note="Prompt"> Prompt</label>
+      <label><input type="checkbox" data-note="Explain"> Explain</label>
+      <label><input type="checkbox" data-note="Retry"> Retry</label>
+      <label><input type="checkbox" data-strategy="Base-ten model"> Model</label>
+      <label><input type="checkbox" data-strategy="Counted"> Counted</label>
+    </div>
+    <label for="teacherNote">Teacher Comments</label>
+    <input id="teacherNote" class="teacher-note" type="password" autocomplete="off" placeholder="Hidden teacher note">
+    <div class="admin-actions"><button id="pdfBtn" type="button">PDF Report</button><button id="resetBtn" type="button">Reset</button></div>
+  </aside>
+  <section class="workspace">
+    <header class="topbar">
+      <div><h1>TeamNumberWordsF</h1><p>Base-ten model</p></div>
+<button id="curriculumBtn" class="curriculum-btn" type="button" aria-label="Ontario Grade 3 curriculum expectations" title="Ontario Grade 3 curriculum expectations"><img src="ontario-grade2-expectations.png" alt="Ontario curriculum"></button>
+    </header>
+    <div class="prompt">Colour the base-ten blocks to show 249. Hundreds are red, tens are purple, and ones are green.</div>
+    <div class="board">
+      <div class="bt-grid">
+        <section class="bt-panel"><h3>Hundreds</h3><div id="hundreds" class="hundreds-area"></div></section>
+        <section class="bt-panel"><h3>Ten Rods</h3><div id="tens" class="ten-rods-area"></div></section>
+        <section class="bt-panel"><h3>Ones</h3><div id="ones" class="ones-area"></div></section>
+      </div>
+      <div class="counters"><div class="counter">Hundreds: <span id="hCount">0</span></div><div class="counter">Tens: <span id="tCount">0</span></div><div class="counter">Ones: <span id="oCount">0</span></div><div class="counter">Total: <span id="totalCount">0</span></div></div>
+      <div class="note">Click blocks to colour them.</div><div id="status" class="status" aria-live="polite"></div>
+    </div>
+    <footer class="actions"><button id="checkBtn" type="button">Check Page</button><button id="submitBtn" type="button">Submit</button></footer>
+  </section>
+</main>
+
+<div id="curriculumModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="curriculumTitle">
+<div class="modal-card"><h2 id="curriculumTitle">Ontario Grade 3 Mathematics</h2><div class="expectation"><strong>B1.1 - Whole Numbers</strong><p>Read, represent, compose, and decompose whole numbers up to and including 1000, using a variety of tools and strategies, and describe various ways they are used in everyday life.</p><p><strong>How this page addresses it:</strong> The student represents 249 by colouring 2 hundreds red, 4 tens purple, and 9 ones green.</p></div><div class="expectation"><strong>B1.5 - Whole Numbers</strong><p>Use place value when describing and representing multi-digit numbers in a variety of ways, including with base ten materials.</p><p><strong>How this page addresses it:</strong> The student uses proportional base-ten blocks to show that 249 is composed of 2 hundreds, 4 tens, and 9 ones.</p></div><div class="close-row"><button id="closeCurriculum" type="button">Close</button></div></div>
+</div>
+
+<form id="netlifyForm" class="hidden-form" name="inspireb-firsthalf-p26-panthernumberwordsf-submission" method="POST" data-netlify="true" action="thanks.html">
+  <input type="hidden" name="form-name" value="inspireb-firsthalf-p26-panthernumberwordsf-submission">
+  <input type="hidden" name="project_id" value="TeamNumberWordsF">
+  <input type="hidden" name="student_id" id="nfStudent">
+  <input type="hidden" name="started_at" id="nfStarted">
+  <input type="hidden" name="finished_at" id="nfFinished">
+  <input type="hidden" name="date" id="nfDate">
+  <input type="hidden" name="total_seconds" id="nfTotalSeconds">
+  <input type="hidden" name="page_seconds" id="nfPageSeconds">
+  <input type="hidden" name="student_response" id="nfResponse">
+  <input type="hidden" name="correct" id="nfCorrect">
+  <input type="hidden" name="attempts" id="nfAttempts">
+  <input type="hidden" name="teacher_data" id="nfTeacher">
+  <input type="hidden" name="curriculum_expectations" id="nfCurriculum">
+</form>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id), params=new URLSearchParams(location.search), embedded=params.get('league')==='1', startedAt=new Date(), studentId=params.get('student_id')||params.get('student')||'student';
+const curriculum=[{grade:3,code:'B1.1',strand:'Whole Numbers',expectation:'Read, represent, compose, and decompose whole numbers up to and including 1000, using a variety of tools and strategies, and describe various ways they are used in everyday life.',connection:'The student represents 249 by colouring 2 hundreds red, 4 tens purple, and 9 ones green.'},{grade:3,code:'B1.5',strand:'Whole Numbers',expectation:'Use place value when describing and representing multi-digit numbers in a variety of ways, including with base ten materials.',connection:'The student uses proportional base-ten blocks to show that 249 is composed of 2 hundreds, 4 tens, and 9 ones.'}];
+let attempts=0;
+function makeBlocks(){for(let i=0;i<7;i++)$('hundreds').insertAdjacentHTML('beforeend','<button type="button" class="hundred-block blockpick" data-value="100" aria-label="hundred block"></button>');for(let i=0;i<7;i++)$('tens').insertAdjacentHTML('beforeend','<button type="button" class="bt-ten blockpick" data-value="10" aria-label="ten rod"></button>');for(let i=0;i<9;i++)$('ones').insertAdjacentHTML('beforeend','<button type="button" class="bt-one blockpick" data-value="1" aria-label="one block"></button>')}
+function response(){const selected=[...document.querySelectorAll('.blockpick.selected')];const hundreds=selected.filter(x=>x.dataset.value==='100').length,tens=selected.filter(x=>x.dataset.value==='10').length,ones=selected.filter(x=>x.dataset.value==='1').length;return{hundreds,tens,ones,total:hundreds*100+tens*10+ones,selected_blocks:selected.map((x,i)=>({selection:i+1,value:Number(x.dataset.value)}))}}
+function broadcast(){if(!embedded||window.parent===window)return;const r=response();parent.postMessage({type:'LEAGUE_STATE',letter:'NumberWordsF',raw:JSON.stringify({answers:[String(r.total)],response:r,correct:r.hundreds===2&&r.tens===4&&r.ones===9,attempts,seconds:seconds(),curriculum})},'*')}
+function update(){const r=response();$('hCount').textContent=r.hundreds;$('tCount').textContent=r.tens;$('oCount').textContent=r.ones;$('totalCount').textContent=r.total;broadcast()}
+function teacherData(){return{support:$('support').value,assessment_type:$('assessment').value,quick_comments:[...document.querySelectorAll('[data-note]:checked')].map(x=>x.dataset.note),strategies:[...document.querySelectorAll('[data-strategy]:checked')].map(x=>x.dataset.strategy),teacher_comments:$('teacherNote').value}}
+function seconds(){return Math.floor((Date.now()-startedAt.getTime())/1000)}function clock(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function check(show=true){attempts++;$('attemptsDisplay').textContent=attempts;const r=response(),ok=r.hundreds===2&&r.tens===4&&r.ones===9;if(show)$('status').textContent=ok?'Page checked.':'Keep working.';broadcast();return ok}
+function report(){const r=response(),ok=r.hundreds===2&&r.tens===4&&r.ones===9,t=teacherData(),curriculumHtml=curriculum.map(c=>`<p><b>Grade ${c.grade} ${c.code} - ${c.strand}</b></p><p>${c.expectation}</p><p><b>How this question addresses it:</b> ${c.connection}</p>`).join('');const html=`<!doctype html><title>TeamNumberWordsF Report</title><style>body{font-family:Arial;padding:28px;color:#172733}h1{border-bottom:3px solid #172733}table{border-collapse:collapse;width:100%}td,th{border:1px solid #777;padding:8px;text-align:left}.section{margin-top:20px}</style><h1>TeamNumberWordsF Student Report</h1><p><b>Student:</b> ${studentId}</p><p><b>Date:</b> ${new Date().toLocaleString()}</p><p><b>Total time:</b> ${clock(seconds())}</p><div class="section"><h2>Assessment</h2><table><tr><th>Question</th><th>Response</th><th>Correct answer</th><th>Correct?</th><th>Attempts</th></tr><tr><td>Colour the base-ten blocks to show 249. Hundreds are red, tens are purple, and ones are green.</td><td>${r.hundreds} hundreds, ${r.tens} tens, ${r.ones} ones = ${r.total}</td><td>2 red hundreds, 4 purple tens, 9 green ones = 249</td><td>${ok?'Yes':'No'}</td><td>${attempts}</td></tr></table></div><div class="section"><h2>Ontario Curriculum</h2>${curriculumHtml}</div><div class="section"><h2>Teacher Data</h2><pre>${JSON.stringify(t,null,2)}</pre></div>`;const w=window.open('','_blank');if(!w){alert('Allow popups to view the PDF report.');return}w.document.open();w.document.write(html);w.document.close();w.focus();setTimeout(()=>w.print(),250)}
+function fillForm(){const r=response();$('nfStudent').value=studentId;$('nfStarted').value=startedAt.toISOString();$('nfFinished').value=new Date().toISOString();$('nfDate').value=new Date().toISOString().slice(0,10);$('nfTotalSeconds').value=seconds();$('nfPageSeconds').value=seconds();$('nfResponse').value=JSON.stringify(r);$('nfCorrect').value=String(r.hundreds===2&&r.tens===4&&r.ones===9);$('nfAttempts').value=attempts;$('nfTeacher').value=JSON.stringify(teacherData());$('nfCurriculum').value=JSON.stringify(curriculum)}
+function reset(){document.querySelectorAll('.blockpick.selected').forEach(x=>x.classList.remove('selected'));attempts=0;$('attemptsDisplay').textContent='0';$('status').textContent='';$('teacherNote').value='';document.querySelectorAll('.checks input').forEach(x=>x.checked=false);update()}
+if(embedded)document.body.classList.add('league-embedded');makeBlocks();$('studentDisplay').textContent=studentId;document.querySelectorAll('.blockpick').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('selected');$('status').textContent='';update()}));$('checkBtn').onclick=()=>check(true);$('pdfBtn').onclick=report;$('resetBtn').onclick=()=>{if(confirm('Reset TeamNumberWordsF work?'))reset()};$('curriculumBtn').onclick=()=>$('curriculumModal').classList.add('open');$('closeCurriculum').onclick=()=>$('curriculumModal').classList.remove('open');$('curriculumModal').onclick=e=>{if(e.target===$('curriculumModal'))$('curriculumModal').classList.remove('open')};$('submitBtn').onclick=()=>{if(!confirm('Are you sure you want to submit your work?'))return;fillForm();$('netlifyForm').submit()};setInterval(()=>{$('totalTimer').textContent=clock(seconds());$('pageTimer').textContent=clock(seconds())},500);update();
+})();
+</script>
+<script id="league-snapshot-request">if(new URLSearchParams(location.search).get("league")==="1")window.addEventListener("message",e=>{if(e.data&&e.data.type==="LEAGUE_SNAPSHOT_REQUEST")try{broadcast()}catch(_e){}});</script>
+<script>
+/* Store this page's assessment for the DreamB cumulative Teacher / Parent Report. */
+(()=>{const saveDreamB=()=>{try{const selected=[...document.querySelectorAll('.blockpick.selected')],hundreds=selected.filter(x=>x.dataset.value==='100').length,tens=selected.filter(x=>x.dataset.value==='10').length,ones=selected.filter(x=>x.dataset.value==='1').length,answered=selected.length>0,correct=hundreds===2&&tens===4&&ones===9,student=new URLSearchParams(location.search).get('student')||'Student',key='inspireb-firsthalf-assessment-'+student,record=JSON.parse(localStorage.getItem(key)||'{}');record.pages=record.pages||{};const result=(value,expected)=>!answered?'Not answered':value===expected?'Correct':'Incorrect';record.pages[11]={...(record.pages[11]||{}),page:11,title:'Number Words',completed:correct,score:[hundreds===2,tens===4,ones===9].filter(Boolean).length+'/3',answer:{hundreds,tens,ones},questionResults:[{label:'Hundreds blocks',result:result(hundreds,2)},{label:'Ten rods',result:result(tens,4)},{label:'Ones blocks',result:result(ones,9)}],updatedAt:new Date().toISOString()};localStorage.setItem(key,JSON.stringify(record));}catch(_){}};document.addEventListener('click',event=>{if(event.target.closest('.blockpick,#checkBtn,#submitBtn'))setTimeout(saveDreamB,0)},true);saveDreamB()})();
+</script>
+</body>
+</html>
